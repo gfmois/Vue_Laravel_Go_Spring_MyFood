@@ -1,0 +1,3 @@
+[submodule "backend/spring"]
+	path = backend/spring
+	url = https://github.com/JoaquimRS/SpringBoot_MyFood.git
