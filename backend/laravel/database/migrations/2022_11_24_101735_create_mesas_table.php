@@ -25,7 +25,6 @@ return new class extends Migration
         });
 
         Schema::table('mesas', function(Blueprint $table) {
-            $table->index("id_cliente");
             $table->foreign("id_cliente")->references("id_cliente")->on("clientes")->onDelete("cascade");
         });
     }
