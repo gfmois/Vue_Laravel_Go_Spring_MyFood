@@ -4,6 +4,9 @@ services:
     image: mysql:5.7
     container_name: mysql_container
     restart: always
+    command: --init-file /data/application/init.sql
+    volumes:
+      - ./configuration/db/init.sql:/data/application/init.sql
     environment:
       - MYSQL_ROOT_PASSWORD=#GX_2daw
       - DB_NAME=myfood
