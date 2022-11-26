@@ -2,13 +2,14 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { OhVueIcon, addIcons } from "oh-vue-icons";
-import * as VIcons from "oh-vue-icons/icons"
-
+// import * as VIcons from "oh-vue-icons/icons"
+import {GiForkKnifeSpoon, BiCalendarFill,FaUser} from 'oh-vue-icons/icons';
 
 import './assets/main.css'
 
-const Vi = Object.values({ ...VIcons })
-addIcons(...Vi);
+// const Vi = Object.values({ ...VIcons })
+// addIcons(...Vi);
+addIcons(GiForkKnifeSpoon,BiCalendarFill,FaUser)
 
 const app = createApp(App)
 
