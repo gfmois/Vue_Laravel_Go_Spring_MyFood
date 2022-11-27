@@ -22,7 +22,7 @@
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
     nav {
-        background-color: #00aae480;
+        background-color: #E8C39e;
         height: 8vh;
         display: flex;
         justify-content: space-between;
@@ -31,7 +31,7 @@
     }
     .logo-wrapper {
         height: 100%;
-        color: white;
+        color: rgb(255, 255, 255);
         cursor: pointer;
         display: flex;
         align-items: center;
