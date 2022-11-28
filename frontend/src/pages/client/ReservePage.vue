@@ -1,50 +1,63 @@
 <script>
+import DatePicker from "../../components/Datepicker.vue";
+import CustomInput from "../../components/CustomInput.vue";
+
 export default {
   data: () => ({
+    date: null,
     step: 0,
     steps: {
       contact: {
-        name: "Información de Contacto",
+        name: "Información Reserva",
         children: [
+          // {
+          //   name: "Correo Electrónico",
+          //   type: "email",
+          //   required: true,
+          //   value: "",
+          // },
+          // {
+          //   name: "Nombre",
+          //   type: "text",
+          //   required: false,
+          //   value: "",
+          // },
+          // {
+          //   name: "Teléfono",
+          //   type: "text",
+          //   required: true,
+          //   value: ""
+          // },
           {
-            name: "Correo Electrónico",
-            type: "email",
+            name: "Comensales",
+            type: "number",
             required: true,
             value: ""
           },
           {
-            name: "Nombre",
-            type: "text",
-            required: false,
-            value: ""
-          },
+            name: "Servicio"
+          }
         ],
       },
       date: {
         name: "Fecha de Reserva",
-        children: [
-          {
-            name: "Fecha Reserva",
-            type: "date",
-          },
-          {
-            name: "Nombre",
-            type: "text",
-          },
-        ],
+        children: [],
       },
       ximo: {
         name: "daqsdahdla",
       },
-    }
+    },
   }),
   computed: {
     stepperProgress() {
       return (100 / 3) * this.step + "%";
     },
   },
-  setup() {
-  },
+  components: {
+    DatePicker,
+    CustomInput
+  }
+
 };
 </script>
 
@@ -89,10 +102,8 @@ export default {
         class="stepper-pane"
         v-if="step == Object.keys(steps).findIndex((i) => i == step_name)"
       >
-      <div class="form__group field" v-for="(input, input_index) in step_collection.children" :key="input.name">
-        <input :placeholder="input.name" :type="input.type" class="form__field" :required="input.required" v-model="input.value">
-        <label class="form__label">{{ input.name }}</label>
-      </div >
+        <CustomInput :step_collection="step_collection" />
+        <DatePicker v-if="step == Object.keys(steps).findIndex((i) => i == 'date')"/>
       </div>
     </div>
 
@@ -208,11 +219,15 @@ export default {
 }
 
 .stepper-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .stepper-pane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   background-color: #fff;
   color: #333;
   text-align: center;
@@ -253,68 +268,4 @@ export default {
   color: #fff;
   margin-left: auto;
 }
-
-.form__group {
-    position: relative;
-    padding: 20px 0 0;
-    margin-top: 10px;
-    width: 100%;
-    max-width: 180px;
-  }
-  
-  .form__field {
-    font-family: inherit;
-    width: 100%;
-    border: none;
-    border-bottom: 2px solid #9b9b9b;
-    outline: 0;
-    font-size: 17px;
-    color: rgb(0, 0, 0);
-    padding: 7px 0;
-    background: transparent;
-    transition: border-color 0.2s;
-  }
-  
-  .form__field::placeholder {
-    color: transparent;
-  }
-  
-  .form__field:placeholder-shown ~ .form__label {
-    font-size: 17px;
-    cursor: text;
-    top: 20px;
-  }
-  
-  .form__label {
-    position: absolute;
-    top: 0;
-    display: block;
-    transition: 0.2s;
-    font-size: 17px;
-    color: #9b9b9b;
-    pointer-events: none;
-  }
-  
-  .form__field:focus {
-    padding-bottom: 6px;
-    font-weight: 700;
-    border-width: 3px;
-    border-image: linear-gradient(to right, #116399, #38caef);
-    border-image-slice: 1;
-  }
-  
-  .form__field:focus ~ .form__label {
-    position: absolute;
-    top: 0;
-    display: block;
-    transition: 0.2s;
-    font-size: 17px;
-    color: #38caef;
-    font-weight: 700;
-  }
-  
-  /* reset input */
-  .form__field:required, .form__field:invalid {
-    box-shadow: none;
-  }
 </style>

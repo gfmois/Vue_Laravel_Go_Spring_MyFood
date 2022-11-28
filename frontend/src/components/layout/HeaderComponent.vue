@@ -12,8 +12,8 @@
         </div>
         <div class="routes">
             <!-- <v-icon name="bi-house-fill" hover="true" fill="white" scale="2.15"/> -->
-            <v-icon name="gi-fork-knife-spoon" hover="true" animation="float" fill="white" scale="2"/>
-            <v-icon name="bi-calendar-fill" hover="true" animation="float" fill="white" scale="2"/>
+            <RouterLink to="home"><v-icon name="gi-fork-knife-spoon" hover="true" animation="float" fill="white" scale="2"/></RouterLink>
+            <RouterLink to="reserve"><v-icon name="bi-calendar-fill" hover="true" animation="float" fill="white" scale="2" /></RouterLink>
             <v-icon name="fa-user" fill="white" hover="true" animation="float" scale="2"/>
         </div>
     </nav>

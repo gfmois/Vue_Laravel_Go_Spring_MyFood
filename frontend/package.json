@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^3.5.3",
     "oh-vue-icons": "^1.0.0-rc3",
     "vue": "^3.2.41",
     "vue-router": "^4.1.5",

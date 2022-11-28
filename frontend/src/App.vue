@@ -11,11 +11,11 @@ export default {
 </script>
 
 <template>
-  <Header/>
+  <Header />
   <main>
     <RouterView />
   </main>
-  <Footer/>
+  <Footer />
 </template>
 
 <style>
