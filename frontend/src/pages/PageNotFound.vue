@@ -65,6 +65,12 @@
     </div>
 </template>
 <style scoped>
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 16vh);
+}
 .main > svg {
     transform: scale(2);
 }

@@ -14,7 +14,7 @@ import { RouterLink } from 'vue-router';
         <div class="routes">
             <!-- <v-icon name="bi-house-fill" hover="true" fill="white" scale="2.15"/> -->
             <v-icon name="gi-fork-knife-spoon" hover="true" animation="float" fill="white" scale="2"/>
-            <RouterLink to="/calendar"><v-icon name="bi-calendar-fill" hover="true" animation="float" fill="white" scale="2"/></RouterLink>
+            <RouterLink to="/reserve"><v-icon name="bi-calendar-fill" hover="true" animation="float" fill="white" scale="2"/></RouterLink>
             <RouterLink to="/admin"><v-icon name="fa-user" fill="white" hover="true" animation="float" scale="2" /></RouterLink>
         </div>
     </nav>
@@ -35,7 +35,7 @@ import { RouterLink } from 'vue-router';
     }
     .logo-wrapper {
         height: 100%;
-        color: rgb(255, 255, 255);
+        color: #ffffff;
         cursor: pointer;
         display: flex;
         align-items: center;

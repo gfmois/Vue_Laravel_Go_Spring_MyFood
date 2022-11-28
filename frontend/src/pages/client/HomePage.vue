@@ -55,6 +55,7 @@
 
     .l-carousel {
         grid-area: 1 / 1 / 3 / 4;
+        overflow: hidden;
     }
     .s-carousel {
         grid-area: 3 / 1 / 4 / 2;

@@ -3,19 +3,19 @@ import { RouterView } from 'vue-router'
 import {Header, Footer} from './components/layout'
 
 export default {
-    components: {
-        Header,
-        Footer
-    }
+  components: {
+      Header,
+    Footer
+  }
 }
 </script>
 
 <template>
-  <Header/>
+  <Header v-if="!$route.matched.some(({ name }) => name === 'admin')"/>
   <main>
     <RouterView />
   </main>
-  <Footer/>
+  <Footer v-if="!$route.matched.some(({ name }) => name === 'admin')"/>
 </template>
 
 <style>

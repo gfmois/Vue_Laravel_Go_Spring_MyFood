@@ -12,23 +12,35 @@ const router = createRouter({
       component: () => import('../pages/client/HomePage.vue')
     },
     {
-      path: '/admin',
-      redirect: {name: "home_admin"}
+      path: '/reserve',
+      name: 'reserve',
+      component: () => import('../pages/client/ReservePage.vue')
     },
     {
-      path: '/admin/home',
-      name:"home_admin",
-      component: () => import('../pages/admin/HomePage.vue')
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../pages/admin/HomePage.vue'),
+      children:[
+        {
+          path: '', 
+          redirect: '/admin/dashboard'
+        },
+        {
+          path: 'dashboard',
+          name: 'dashboard',
+          component:() => import('../pages/admin/DashboardPage.vue')
+        },
+        {
+          path: 'productos', 
+          name: 'productos',
+          component: () => import('../pages/admin/ProductsPage.vue')
+        }
+      ]
     },
     {
       path: '/:pathMatch(.*)*',
       component: () => import('../pages/PageNotFound.vue')
     }, 
-    {
-      path: '/reserve',
-      name: 'reserve',
-      component: () => import('../pages/client/ReservePage.vue')
-    }
   ]
 })
 
