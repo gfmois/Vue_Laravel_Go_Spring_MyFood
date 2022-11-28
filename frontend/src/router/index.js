@@ -12,6 +12,19 @@ const router = createRouter({
       name: 'home',
       component: () => import('../pages/client/HomePage.vue')
     },
+    {
+      path: '/admin',
+      redirect: {name: "home_admin"}
+    },
+    {
+      path: '/admin/home',
+      name:"home_admin",
+      component: () => import('../pages/admin/HomePage.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: () => import('../pages/PageNotFound.vue')
+    }
   ]
 })
 
