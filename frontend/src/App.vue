@@ -24,8 +24,11 @@ export default {
   padding: 0px;
 }
 body {
-  background-color: #B9DCE8;
+  background-color: #fdecda;
 }
+
+body::-webkit-scrollbar { display: none; }
+
 main {
   min-height: calc(100vh - 16vh);
 }
