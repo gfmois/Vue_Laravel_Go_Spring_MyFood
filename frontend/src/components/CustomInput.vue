@@ -1,10 +1,24 @@
 <script>
     export default {
         props: {
-            step_collection: Object
+            step_collection: Object,
         },
-        data () {
+        data() {
             return this.step_collection
+        },
+        setup() {
+          const tagToHtml = (element) => {
+            let open_parent = `<${element.tag} v-model="${element.value}">`;
+
+            if (element.children) {
+              element.children.map((e) => open_parent += `<${e.tag} :value="${e.name}">${e.name}</${e.tag}>`)
+              return open_parent += `</${element.tag}>`;
+            }
+
+            return `<${element.tag}></${element.tag}>`
+          }
+
+          return { tagToHtml }
         }
     }
 </script>
@@ -15,18 +29,35 @@
     v-for="(input, input_index) in step_collection.children"
     :key="input.name"
   >
-    <input
+    <input v-if="!input.tag"
       :placeholder="input.name"
+      :min="input.min ? input.min : null"
       :type="input.type"
       class="form__field"
       :required="input.required"
       v-model="input.value"
     />
-    <label class="form__label">{{ input.name }}</label>
+    <label v-if="!input.tag" class="form__label">{{ input.name }}</label>
+
+    <div v-if="input.tag" v-html="tagToHtml(input)"></div>
+
   </div>
 </template>
 
 <style>
+  select {
+    background-color: rgba(211, 207, 207, 0.507);
+    border: none;
+    font-size: 14px;
+    height: 40px;
+    padding: 5px;
+    width: 180px;
+  }
+
+  select:focus {
+    outline: none;
+  }
+
 .form__group {
   position: relative;
   padding: 20px 0 0;

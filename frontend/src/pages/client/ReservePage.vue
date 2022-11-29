@@ -32,25 +32,47 @@ export default {
             name: "Comensales",
             type: "number",
             required: true,
-            value: ""
+            value: "",
+            min: 1
           },
           {
-            name: "Servicio"
-          }
+            name: "Servicio",
+            tag: "select",
+            value: "",
+            children: [
+              {
+                name: "Servicio",
+                tag: "option"
+              },
+              {
+                name: "Almuerzo",
+                tag: "option"
+              },
+              {
+                name: "Comida",
+                tag: "option"
+              },
+              {
+                name: "Cena",
+                tag: "option"
+              }
+            ]
+          },
         ],
       },
       date: {
         name: "Fecha de Reserva",
         children: [],
       },
-      ximo: {
-        name: "daqsdahdla",
-      },
+      confirmation: {
+        name: "Confirmación",
+        children: []
+      }
     },
   }),
   computed: {
     stepperProgress() {
-      return (100 / 3) * this.step + "%";
+      return (100 / Object.keys(this.steps).length) * this.step + "%";
     },
   },
   components: {
@@ -65,24 +87,14 @@ export default {
   <div class="wrapper-stepper">
     <div class="stepper">
       <div class="stepper-progress">
-        <div
-          class="stepper-progress-bar"
-          :style="'width:' + stepperProgress"
-        ></div>
+        <div class="stepper-progress-bar" :style="'width:' + stepperProgress"></div>
       </div>
 
-      <div
-        class="stepper-item"
-        v-for="item in Object.keys(steps).length"
-        :class="{ current: step == item - 1, success: step >= item }"
-        :key="item"
-      >
+      <div class="stepper-item" v-for="item in Object.keys(steps).length"
+        :class="{ current: step == item - 1, success: step >= item }" :key="item">
         <div class="stepper-item-counter">
-          <img
-            class="icon-success"
-            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png"
-            alt=""
-          />
+          <img class="icon-success"
+            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png" alt="" />
           <span class="number">
             {{ item }}
           </span>
@@ -93,17 +105,19 @@ export default {
       </div>
     </div>
 
-    <div
-      class="stepper-content"
-      v-for="(step_collection, step_name) in steps"
-      :key="step_collection"
-    >
-      <div
-        class="stepper-pane"
-        v-if="step == Object.keys(steps).findIndex((i) => i == step_name)"
-      >
+    <div class="stepper-content" v-for="(step_collection, step_name) in steps" :key="step_collection">
+      <div class="stepper-pane" v-if="step == Object.keys(steps).findIndex((i) => i == step_name)">
         <CustomInput :step_collection="step_collection" />
-        <DatePicker v-if="step == Object.keys(steps).findIndex((i) => i == 'date')"/>
+        <div class="datepicker-pane" v-if="step == Object.keys(steps).findIndex((i) => i == 'date')">
+          <div class="dpicker">
+            <DatePicker />
+          </div>
+          <div class="img-wrapper">
+            <img
+              src="../../assets/IMG/istockphoto-675913544-612x612.jpg"
+              alt="">
+          </div>
+        </div>
       </div>
     </div>
 
@@ -111,27 +125,77 @@ export default {
       <button class="btn" @click="step--" :disabled="step == 0">
         Anterior
       </button>
-      <button
-        class="btn btn--green-1"
-        @click="step++"
-        :disabled="step == Object.keys(steps).length - 1"
-      >
+      <button class="btn btn--green-1" @click="step++" :disabled="step == Object.keys(steps).length - 1">
         Siguiente
       </button>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style>
+.datepicker-pane {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+.dp__main {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.dp__calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.dp__calendar_row {
+  gap: 10px;
+}
+
+.dp_main:nth-child(2) {
+  width: 100%;
+  height: 100%;
+}
+
+.dp__menu {
+  width: 100%;
+}
+.dpicker {
+  width: 50%;
+  height: 100%;
+}
+
+.dp__calendar_header {
+  gap: 10px;
+}
+
+.img-wrapper {
+  width: 50%;
+  display: flex;
+  height: 100%;
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 .tx-green-1 {
   color: #75cc65;
   font-weight: 600;
 }
+
 .wrapper-stepper {
   padding: 60px;
   border-radius: 32px;
   box-shadow: rgba(0, 0, 0, 0.09);
 }
+
 .stepper {
   display: flex;
   align-items: center;
@@ -140,6 +204,7 @@ export default {
   z-index: 0;
   margin-bottom: 35px;
 }
+
 .stepper-progress {
   position: absolute;
   background-color: #c5c5c5;
@@ -149,6 +214,7 @@ export default {
   right: 0;
   margin: 0 auto;
 }
+
 .stepper-progress-bar {
   position: absolute;
   left: 0;
@@ -157,6 +223,7 @@ export default {
   background-color: #75cc65;
   transition: all 500ms ease;
 }
+
 .stepper-item {
   display: flex;
   flex-direction: column;
@@ -164,6 +231,7 @@ export default {
   color: #c5c5c5;
   transition: all 500ms ease;
 }
+
 .stepper-item-counter {
   height: 68px;
   width: 68px;
@@ -175,6 +243,7 @@ export default {
   position: relative;
   margin-bottom: 10px;
 }
+
 .stepper-item-counter .icon-success {
   position: absolute;
   opacity: 0;
@@ -182,38 +251,46 @@ export default {
   width: 24px;
   transition: all 500ms ease;
 }
+
 .stepper-item-counter .number {
   font-size: 22px;
   transition: all 500ms ease;
 }
+
 .stepper-item-title {
   position: absolute;
   font-size: 14px;
   bottom: -24px;
 }
+
 .stepper-item.success .stepper-item-counter {
   border-color: #75cc65;
   background-color: #c8ebc1;
   color: #fff;
   font-weight: 600;
 }
+
 .stepper-item.success .stepper-item-counter .icon-success {
   opacity: 1;
   transform: scale(1);
 }
+
 .stepper-item.success .stepper-item-counter .number {
   opacity: 0;
   transform: scale(0);
 }
+
 .stepper-item.success .stepper-item-title {
   color: #75cc65;
 }
+
 .stepper-item.current .stepper-item-counter {
   border-color: #75cc65;
   background-color: #75cc65;
   color: #fff;
   font-weight: 600;
 }
+
 .stepper-item.current .stepper-item-title {
   color: #818181;
 }
@@ -223,6 +300,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .stepper-pane {
   display: flex;
   align-items: center;
@@ -232,13 +310,15 @@ export default {
   color: #333;
   text-align: center;
   width: 60%;
-  padding: 120px 60px;
+  height: 45vh;
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.09);
   margin: 40px 0;
 }
+
 .controls {
   display: flex;
 }
+
 .btn {
   display: flex;
   justify-content: center;
@@ -258,10 +338,12 @@ export default {
   border-color: #f0f0f0;
   border: 1px #75cc65 solid;
 }
+
 .btn:disabled {
   opacity: 0.5;
   pointer-events: none;
 }
+
 .btn--green-1 {
   background-color: #75cc65;
   border-color: #75cc65;
