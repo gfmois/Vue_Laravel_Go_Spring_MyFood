@@ -10,30 +10,12 @@ export default {
       contact: {
         name: "Información Reserva",
         children: [
-          // {
-          //   name: "Correo Electrónico",
-          //   type: "email",
-          //   required: true,
-          //   value: "",
-          // },
-          // {
-          //   name: "Nombre",
-          //   type: "text",
-          //   required: false,
-          //   value: "",
-          // },
-          // {
-          //   name: "Teléfono",
-          //   type: "text",
-          //   required: true,
-          //   value: ""
-          // },
           {
             name: "Comensales",
             type: "number",
             required: true,
             value: "",
-            min: 1
+            min: 1,
           },
           {
             name: "Servicio",
@@ -41,45 +23,55 @@ export default {
             value: "",
             children: [
               {
-                name: "Servicio",
-                tag: "option"
-              },
-              {
                 name: "Almuerzo",
-                tag: "option"
+                tag: "option",
               },
               {
                 name: "Comida",
-                tag: "option"
+                tag: "option",
               },
               {
                 name: "Cena",
-                tag: "option"
-              }
-            ]
+                tag: "option",
+              },
+            ],
           },
         ],
       },
       date: {
         name: "Fecha de Reserva",
-        children: [],
+        value: "",
       },
       confirmation: {
         name: "Confirmación",
         children: []
-      }
+      },
     },
   }),
   computed: {
     stepperProgress() {
       return (100 / Object.keys(this.steps).length) * this.step + "%";
     },
+    getValues() {
+      this.steps.confirmation.children = Object.keys(this.steps)
+        .map((e) => (e != "confirmation" ? this.steps[e] : null))
+        .filter((i) => i != null)
+        .map((j) =>
+          j.children != null
+            ? j.children.map((r) => {
+                return { name: r.name, value: r.value, disabled: true };
+              })
+            : {...j, disabled: true}
+        )
+        .flat();
+
+      return
+    },
   },
   components: {
     DatePicker,
-    CustomInput
-  }
-
+    CustomInput,
+  },
 };
 </script>
 
@@ -87,14 +79,24 @@ export default {
   <div class="wrapper-stepper">
     <div class="stepper">
       <div class="stepper-progress">
-        <div class="stepper-progress-bar" :style="'width:' + stepperProgress"></div>
+        <div
+          class="stepper-progress-bar"
+          :style="'width:' + stepperProgress"
+        ></div>
       </div>
 
-      <div class="stepper-item" v-for="item in Object.keys(steps).length"
-        :class="{ current: step == item - 1, success: step >= item }" :key="item">
+      <div
+        class="stepper-item"
+        v-for="item in Object.keys(steps).length"
+        :class="{ current: step == item - 1, success: step >= item }"
+        :key="item"
+      >
         <div class="stepper-item-counter">
-          <img class="icon-success"
-            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png" alt="" />
+          <img
+            class="icon-success"
+            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png"
+            alt=""
+          />
           <span class="number">
             {{ item }}
           </span>
@@ -105,17 +107,29 @@ export default {
       </div>
     </div>
 
-    <div class="stepper-content" v-for="(step_collection, step_name) in steps" :key="step_collection">
-      <div class="stepper-pane" v-if="step == Object.keys(steps).findIndex((i) => i == step_name)">
+    <div
+      class="stepper-content"
+      v-for="(step_collection, step_name) in steps"
+      :key="step_collection"
+    >
+      <div
+        class="stepper-pane"
+        v-if="step == Object.keys(steps).findIndex((i) => i == step_name)"
+      >
+      {{ getValues }}
         <CustomInput :step_collection="step_collection" />
-        <div class="datepicker-pane" v-if="step == Object.keys(steps).findIndex((i) => i == 'date')">
+        <div
+          class="datepicker-pane"
+          v-if="step == Object.keys(steps).findIndex((i) => i == 'date')"
+        >
           <div class="dpicker">
-            <DatePicker />
+            <DatePicker v-model="steps.date.value" />
           </div>
           <div class="img-wrapper">
             <img
               src="../../assets/IMG/istockphoto-675913544-612x612.jpg"
-              alt="">
+              alt=""
+            />
           </div>
         </div>
       </div>
@@ -125,7 +139,11 @@ export default {
       <button class="btn" @click="step--" :disabled="step == 0">
         Anterior
       </button>
-      <button class="btn btn--green-1" @click="step++" :disabled="step == Object.keys(steps).length - 1">
+      <button
+        class="btn btn--green-1"
+        @click="step++"
+        :disabled="step == Object.keys(steps).length - 1"
+      >
         Siguiente
       </button>
     </div>
@@ -163,6 +181,11 @@ export default {
 .dp__menu {
   width: 100%;
 }
+
+.dp__calendar_wrap {
+  margin-top: 5%;
+}
+
 .dpicker {
   width: 50%;
   height: 100%;

@@ -1,15 +1,3 @@
-<template>
-  <v-dpicker
-    inline
-    autoApply
-    locale="es"
-    :enableTimePicker="false"
-    :disabledWeekDays="[0]"
-    :minDate="new Date()"
-    :disabledDates="disabledDates"
-  ></v-dpicker>
-</template>
-
 <script>
 import { computed } from '@vue/reactivity';
 
@@ -33,5 +21,17 @@ export default {
     }
 }
 </script>
+
+<template>
+  <v-dpicker
+    inline
+    autoApply
+    locale="es"
+    :enableTimePicker="false"
+    :disabledWeekDays="[0]"
+    :minDate="new Date()"
+    :disabledDates="disabledDates"
+  ></v-dpicker>
+</template>
 
 <style></style>

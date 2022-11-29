@@ -8,7 +8,7 @@
         },
         setup() {
           const tagToHtml = (element) => {
-            let open_parent = `<${element.tag} v-model="${element.value}">`;
+            let open_parent = `<${element.tag}>`;
 
             if (element.children) {
               element.children.map((e) => open_parent += `<${e.tag} :value="${e.name}">${e.name}</${e.tag}>`)
@@ -35,16 +35,17 @@
       :type="input.type"
       class="form__field"
       :required="input.required"
+      :disabled="input.disabled"
       v-model="input.value"
     />
-    <label v-if="!input.tag" class="form__label">{{ input.name }}</label>
+    <label class="form__label">{{ input.name }}</label>
 
-    <div v-if="input.tag" v-html="tagToHtml(input)"></div>
+    <select v-model="input.value" v-if="input.tag" v-html="tagToHtml(input)" />
 
   </div>
 </template>
 
-<style>
+<style scoped>
   select {
     background-color: rgba(211, 207, 207, 0.507);
     border: none;
