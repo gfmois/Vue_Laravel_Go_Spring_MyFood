@@ -13,18 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mesas', function (Blueprint $table) {
-            $table->string("id_mesa");
+        Schema::create('reservas', function (Blueprint $table) {
+            $table->string("id_reserva");
             $table->string("id_cliente");
             $table->date("fecha");
             $table->string("tipo");
             $table->integer("n_comensales");
             $table->string("estado");
 
-            $table->primary(["id_mesa", "id_cliente"]);
+            $table->primary(["id_reserva", "id_cliente"]);
         });
 
-        Schema::table('mesas', function(Blueprint $table) {
+        Schema::table('reservas', function(Blueprint $table) {
             $table->foreign("id_cliente")->references("id_cliente")->on("clientes")->onDelete("cascade");
         });
     }
@@ -36,9 +36,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mesas', function(Blueprint $table) {
-            $table->dropForeign('mesas_id_cliente_foreign');
-            $table->dropIndex('mesas_id_cliente_index');
+        Schema::dropIfExists('reservas', function(Blueprint $table) {
+            $table->dropForeign('reservas_id_cliente_foreign');
+            $table->dropIndex('reservas_id_cliente_index');
             $table->dropColumn('id_cliente');
         });
     }

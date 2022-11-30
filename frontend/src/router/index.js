@@ -33,7 +33,18 @@ const router = createRouter({
         {
           path: 'productos', 
           name: 'productos',
-          component: () => import('../pages/admin/ProductsPage.vue')
+          component: () => import('../pages/admin/ProductsPage.vue'),
+          children:[
+            {
+              path: '',
+              name: 'productos',
+              component: () => import('../components/admin/ProductsListComponent.vue')
+            },
+            {
+              path: 'nuevo_producto',
+              component: () => import('../components/admin/ProductFormComponent.vue')
+            }
+          ]
         }
       ]
     },
