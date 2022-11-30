@@ -1,5 +1,5 @@
 <script>
-import UploadFile from "../UploadFileComponent.vue"
+import {UploadFile} from "../"
 export default { 
     setup() {
         const product = {
@@ -31,6 +31,14 @@ export default {
             <select name="categoria">
                 <option value="categoria">categoria</option>
             </select>
+        </div>
+        <div class="add-container">
+            <div class="add-icon">
+                <div class="card-info">
+                    <h3>Crear Producto</h3>
+                </div>
+                <v-icon name="md-addcircle" scale="2" />
+            </div>
         </div>
         <div class="product-tags">
             <h2>Alergenos</h2>
@@ -65,12 +73,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="add-icon">
-            <div class="card-info">
-                <h3>Crear Producto</h3>
-            </div>
-            <v-icon name="md-addcircle" scale="2" />
-        </div>
+        
     </div>
 </template>
 <style scoped>
@@ -80,10 +83,10 @@ export default {
     padding: 5px;
     display: grid;
     position: relative;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr) repeat(2, 2fr);
     grid-template-rows: repeat(3, 1fr);
     grid-column-gap: 10px;
-    grid-row-gap: 10px;
+    grid-row-gap: 10px; 
     box-sizing: border-box;
 }
 .add-product div {
@@ -91,11 +94,23 @@ export default {
     height: 100%;
     box-sizing: border-box;
 }
+.add-product>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+.add-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .add-icon {
     width: fit-content !important;
     height: fit-content !important;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 20px;
     display: flex;
     gap: 10px;
     justify-content: space-between;
@@ -104,9 +119,6 @@ export default {
     border-radius: 20px;
     cursor: pointer;
     transition: transform .3s ease-out;
-    position: absolute;
-    right: 0;
-    top: 0;
 }
 .add-icon * {
     fill: #888888;
@@ -120,6 +132,7 @@ export default {
 .card-info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .card-info h3 {
@@ -134,7 +147,7 @@ export default {
     height: 50px;
 }
 .product-name {
-    grid-area: 1 / 3 / 2 / 5;
+
 }
 .product-tags {
     grid-area: 3 / 1 / 4 / 5;
