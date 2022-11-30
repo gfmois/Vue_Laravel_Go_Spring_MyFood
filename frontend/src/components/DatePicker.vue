@@ -4,13 +4,16 @@ import { useStore } from 'vuex';
 import Constant from '../Constant'
 
 export default {
-    setup() {
+    props: {
+      comensales: String
+    },
+    setup(props) {
         const store = useStore();
         const state = reactive({
           holidaysList: computed(() => store.getters[`reservas/${Constant.GET_HOLIDAYS}`])
         })
 
-        store.dispatch(`reservas/${Constant.GET_HOLIDAYS}`)
+        store.dispatch(`reservas/${Constant.GET_HOLIDAYS}`, props.comensales)
 
         return { state }
     }
