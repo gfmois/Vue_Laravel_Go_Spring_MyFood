@@ -1,23 +1,21 @@
 <script>
-import { computed } from '@vue/reactivity';
+import { computed, reactive } from '@vue/reactivity';
+import { useStore } from 'vuex';
+import Constant from '../Constant'
 
 export default {
     setup() {
-        const disabledDates = computed(() => {
-            // const today = new Date();
-            
-            // const tomorrow = new Date(today)
-            // tomorrow.setDate(tomorrow.getDate() + 1)
-            
-            // const afterTomorrow = new Date(tomorrow);
-            // afterTomorrow.setDate(tomorrow.getDate() + 1);
-            
-            // return [tomorrow, afterTomorrow]
+        const store = useStore();
+        store.dispatch(`reservas/${Constant.GET_HOLIDAYS}`)
+
+        const state = reactive({
+          holidaysList: computed(() => store.getters[`reservas/${Constant.GET_HOLIDAYS}`])
         })
-        
-        return {
-            disabledDates,
-        }
+
+        console.log("Datepicker", JSON.stringify(state.holidaysList));
+
+
+        return { state }
     }
 }
 </script>
@@ -30,7 +28,7 @@ export default {
     :enableTimePicker="false"
     :disabledWeekDays="[0]"
     :minDate="new Date()"
-    :disabledDates="disabledDates"
+    :disabledDates="state.holidaysList"
   ></v-dpicker>
 </template>
 

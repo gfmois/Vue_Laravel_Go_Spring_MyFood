@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import store from "./store"
 import App from './App.vue'
 import router from './router'
 import { OhVueIcon, addIcons } from "oh-vue-icons";
@@ -18,6 +19,7 @@ addIcons(GiForkKnifeSpoon,BiCalendarFill,FaUser)
 const app = createApp(App)
 
 app.use(router)
+app.use(store)
 
 app.component('v-icon', OhVueIcon)
 app.component('v-dpicker', Datepicker);
