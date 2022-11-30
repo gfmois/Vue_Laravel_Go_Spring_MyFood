@@ -1,5 +1,5 @@
 <script>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 export default {
     setup() {
         let routes = [
@@ -33,7 +33,7 @@ export default {
             </div>
         </div>
         <ul>
-            <li v-for="route in routes" :class="{active: route.path === $route.name}" @click="$router.push(route.path)">
+            <li v-for="route in routes" :class="{active: route.path === $route.name}" @click="$router.replace({path: '/admin/'+route.path })">
                 <v-icon :name="route.icon" fill="white" :scale="route.scale"/>
                 <p>{{route.name}}</p>
             </li>
