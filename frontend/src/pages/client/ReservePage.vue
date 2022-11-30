@@ -1,5 +1,5 @@
 <script>
-import DatePicker from "../../components/Datepicker.vue";
+import DatePicker from "../../components/DatePicker.vue";
 import CustomInput from "../../components/CustomInput.vue";
 
 export default {
