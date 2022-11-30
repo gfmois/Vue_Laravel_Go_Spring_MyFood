@@ -3,14 +3,10 @@ import ReservasService from "../../services/client/ReservasService";
 
 export const reservas = {
     namespaced: true,
-    state: {
-        holidaysList: []
-    },
+    state: {},
     mutations: {
         [Constant.GET_HOLIDAYS]: (state, payload) => {
-            console.log("mutation: ", payload);
-            state.holidaysList.push({ ...payload })
-            console.log("mutation2", state.holidaysList[0]);
+            state.holidaysList = payload
         }
     },
     actions: {

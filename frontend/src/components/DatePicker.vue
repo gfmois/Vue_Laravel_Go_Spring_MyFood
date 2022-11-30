@@ -6,14 +6,11 @@ import Constant from '../Constant'
 export default {
     setup() {
         const store = useStore();
-        store.dispatch(`reservas/${Constant.GET_HOLIDAYS}`)
-
         const state = reactive({
           holidaysList: computed(() => store.getters[`reservas/${Constant.GET_HOLIDAYS}`])
         })
 
-        console.log("Datepicker", JSON.stringify(state.holidaysList));
-
+        store.dispatch(`reservas/${Constant.GET_HOLIDAYS}`)
 
         return { state }
     }
