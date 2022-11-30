@@ -5,7 +5,7 @@ import Constant from '../Constant'
 
 export default {
     props: {
-      comensales: String
+      params: Object
     },
     setup(props) {
         const store = useStore();
@@ -13,7 +13,7 @@ export default {
           holidaysList: computed(() => store.getters[`reservas/${Constant.GET_HOLIDAYS}`])
         })
 
-        store.dispatch(`reservas/${Constant.GET_HOLIDAYS}`, props.comensales)
+        store.dispatch(`reservas/${Constant.GET_HOLIDAYS}`, props.params)
 
         return { state }
     }

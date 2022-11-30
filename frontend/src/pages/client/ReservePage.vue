@@ -132,7 +132,7 @@ export default {
           v-if="step == Object.keys(steps).findIndex((i) => i == 'date')"
         >
           <div class="lf-input">
-            <DatePicker v-model="steps.date.value" />
+            <DatePicker :params="steps.contact.children" v-model="steps.date.value" />
           </div>
           <div class="rg-img">
             <img
