@@ -116,16 +116,25 @@ export default {
         class="stepper-pane"
         v-if="step == Object.keys(steps).findIndex((i) => i == step_name)"
       >
-      {{ getValues }}
-        <CustomInput :step_collection="step_collection" />
+        {{ getValues }}
+        <div class="middle-input" v-if="step_name != 'date'">
+          <div class="lf-input">
+            <div class="inputs">
+              <CustomInput :step_collection="step_collection" />
+            </div>
+          </div>
+          <div class="rg-img">
+            <img src="../../assets/GIF/chef.gif" alt="" v-if="step_name == 'contact'">
+          </div>
+        </div>
         <div
-          class="datepicker-pane"
+          class="middle-input"
           v-if="step == Object.keys(steps).findIndex((i) => i == 'date')"
         >
-          <div class="dpicker">
+          <div class="lf-input">
             <DatePicker v-model="steps.date.value" />
           </div>
-          <div class="img-wrapper">
+          <div class="rg-img">
             <img
               src="../../assets/IMG/istockphoto-675913544-612x612.jpg"
               alt=""
@@ -151,12 +160,24 @@ export default {
 </template>
 
 <style>
-.datepicker-pane {
+.middle-input {
   display: flex;
   align-items: center;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
+}
+
+.inputs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 15%;
+}
+
+.inputs * {
+  margin-top: 20px;
 }
 
 .dp__main {
@@ -186,8 +207,14 @@ export default {
   margin-top: 5%;
 }
 
-.dpicker {
+.lf-input {
   width: 50%;
+  height: 100%;
+}
+
+.rg-img {
+  width: 50%;
+  display: flex;
   height: 100%;
 }
 
@@ -195,13 +222,7 @@ export default {
   gap: 10px;
 }
 
-.img-wrapper {
-  width: 50%;
-  display: flex;
-  height: 100%;
-}
-
-.img-wrapper img {
+.rg-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;

@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('h_mesas', function (Blueprint $table) {
-            $table->id("id_mesa");
+        Schema::create('h_reservas', function (Blueprint $table) {
+            $table->id("id_reserva");
             $table->date("fecha");
             $table->string("tipo");
             $table->integer("n_comensales");
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('h_mesas');
+        Schema::dropIfExists('h_reservas');
     }
 };
