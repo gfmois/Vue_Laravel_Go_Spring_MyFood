@@ -10,8 +10,8 @@ export const reservas = {
         }
     },
     actions: {
-        [Constant.GET_HOLIDAYS]: (store) => {
-            ReservasService.getHolidays().then((res) => store.commit(Constant.GET_HOLIDAYS, res.data))
+        [Constant.GET_HOLIDAYS]: (store, payload) => {
+            ReservasService.getHolidays(payload).then((res) => store.commit(Constant.GET_HOLIDAYS, res.data))
         }
     },
     getters: {
