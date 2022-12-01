@@ -1,10 +1,14 @@
 <script>
 import { jsPDF } from "jspdf";
+import('../../assets/fonts/dancing_script')
 
 export default {
     props: {},
     setup() {
-        const doc = new jsPDF();
+        const doc = new jsPDF({
+            orientation: "l",
+            format: [180, 360],
+        });
         
         const toDataUrl = (url, cb) => {
             let image = new Image()
@@ -15,11 +19,9 @@ export default {
                 canvas.width = 1920
                 canvas.height = 1280
 
-                let context = canvas.getContext('2d')
-                context.fillStyle = "#fff";
-                context.fillRect(0, 0, canvas.width, canvas.height)
-                context.globalAlpha = 2.6;
-
+                let ctx = canvas.getContext('2d')
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillRect(0, 0, canvas.width, canvas.height)
 
                 canvas.getContext('2d').drawImage(this, 0, 0)
                 cb(canvas.toDataURL('image/jpeg'))
@@ -29,8 +31,41 @@ export default {
         }
 
         const createPDF = () => {
-            toDataUrl('http://localhost:3000/test', function(e) {
-                doc.addImage(e, "baseURL", 0, 0)
+            let obj = [
+                {
+                    title: "Nombre Reserva",
+                    value: "Moisés"
+                },
+                {
+                    title: "Nº Comensales",
+                    value: "280"
+                },
+                {
+                    title: "Fecha",
+                    value: "28-12-2022"
+                }
+            ]
+
+            toDataUrl('http://localhost:3000/test', function(img) {
+                doc.addImage(img, "baseURL", 0, 0)
+
+                // Card
+                doc.setFillColor(255, 255, 255)
+                doc.rect(20, 20, 170, 125, 'F')
+
+                // Title
+                doc.setTextColor(0, 0, 0)
+                doc.setFont("dancing", "italic")
+                doc.text(95, 35, "MyFood")
+
+                Object.keys(obj).map((e) => {
+                    console.log(obj[e].title);
+                    doc.setTextColor(0, 0, 0)
+                    doc.text(125, 70 + (e * 10), obj[e].value)
+                    doc.text(45, 70 + (e * 10), obj[e].title)
+                })
+
+                
                 doc.save("reserva")
             })
 
