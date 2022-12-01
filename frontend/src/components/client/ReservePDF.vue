@@ -1,11 +1,14 @@
 <script>
 import { jsPDF } from "jspdf";
-import base64 from "base-64"
+import('../../assets/fonts/dancing_script')
 
 export default {
     props: {},
     setup() {
-        const doc = new jsPDF();
+        const doc = new jsPDF({
+            orientation: "l",
+            format: [180, 360],
+        });
         
         const toDataUrl = (url, cb) => {
             let image = new Image()
@@ -30,8 +33,30 @@ export default {
         }
 
         const createPDF = () => {
-            toDataUrl('http://localhost:3000/test', function(e) {
-                doc.addImage(e, "baseURL", 0, 0)
+            let obj = {
+                nombre: "Moises",
+                n_comensales: "280"
+            }
+
+            toDataUrl('http://192.168.9.194:3000/test', function(img) {
+                doc.addImage(img, "baseURL", 0, 0)
+
+                // Card
+                doc.setFillColor(255, 255, 255, 255)
+                doc.rect(20, 20, 170, 125, 'F')
+
+                // Title
+                doc.setTextColor(0, 0, 0)
+                doc.setFont("dancing", "italic")
+                doc.text(95, 35, "MyFood")
+
+                Object.keys(obj).map((e, i) => {
+                    doc.setTextColor(0, 0, 0)
+                    doc.text(125, 70 + (i + 20), e )
+                    doc.text(45, 70 + (i + 20), obj[e])
+                })
+
+                
                 doc.save("reserva")
             })
 
