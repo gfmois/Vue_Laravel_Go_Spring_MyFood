@@ -1,7 +1,6 @@
 <script>
-import DatePicker from "../../components/Datepicker.vue";
-import CustomInput from "../../components/CustomInput.vue";
-import ReservePDF from "../../components/client/ReservePDF.vue"
+import { DatePicker, CustomInput } from "../../components";
+import { ReservePDF } from "../../components/client";
 
 export default {
   data: () => ({
@@ -156,12 +155,10 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-top: 15%;
+  gap: 20px;
+  width: 70%;
 }
 
-.inputs * {
-  margin-top: 20px;
-}
 
 .dp__main {
   height: 100%;
@@ -195,6 +192,9 @@ export default {
 .lf-input {
   width: 50%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .rg-img {
@@ -202,6 +202,8 @@ export default {
   align-items: center;
   justify-content: center;
   display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
 }
 

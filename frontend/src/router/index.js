@@ -14,7 +14,12 @@ const router = createRouter({
     {
       path: '/reserve',
       name: 'reserve',
-      component: () => import('../pages/client/ReservePage.vue')
+      component: () => import('../pages/client/ReservePage.vue'),
+    },
+    {
+      path: "/reserve/:id",
+      name: "pdfReserve",
+      component: () => import('../components/client/ReservePDF.vue')
     },
     {
       path: '/admin',
@@ -33,7 +38,18 @@ const router = createRouter({
         {
           path: 'productos', 
           name: 'productos',
-          component: () => import('../pages/admin/ProductsPage.vue')
+          component: () => import('../pages/admin/ProductsPage.vue'),
+          children:[
+            {
+              path: '',
+              name: 'productos',
+              component: () => import('../components/admin/ProductsListComponent.vue')
+            },
+            {
+              path: 'nuevo_producto',
+              component: () => import('../components/admin/ProductFormComponent.vue')
+            }
+          ]
         }
       ]
     },

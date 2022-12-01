@@ -1,9 +1,11 @@
 import CustomInput from "./CustomInput.vue";
 import DatePicker from "./DatePicker.vue";
-import Layout from "./layout";
+import UploadFile from "./UploadFileComponent.vue"
+import ItemsForm from "./ItemsFormComponent.vue"
 
 export {
     CustomInput,
     DatePicker,
-    Layout
+    UploadFile,
+    ItemsForm
 }

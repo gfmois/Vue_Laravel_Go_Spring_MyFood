@@ -1,5 +1,5 @@
-import ReservePDF from "./ReservePDF.vue"
+import ReservePDF from "./ReservePDF.vue";
 
-export default {
+export {
     ReservePDF
 }

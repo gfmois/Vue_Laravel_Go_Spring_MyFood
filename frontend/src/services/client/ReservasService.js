@@ -14,4 +14,7 @@ export default {
       params,
     });
   },
+  getReserva(id_reserva) {
+    return Api(`${secret.CLIENT_SERVER}`).get(`/reservas/${id_reserva}`)
+  }
 };
