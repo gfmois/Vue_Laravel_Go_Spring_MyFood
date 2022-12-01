@@ -1,18 +1,18 @@
 <script>
 import { UploadFile } from "../"
-import { CustomInput,AllergensForm } from "../"
+import { CustomInput, ItemsForm } from "../"
 export default {
     setup() {
         const product = {
-            nombre:"",
-            precio:0,
+            nombre: "",
+            precio: 0,
             imagen: "",
-            categoria:"",
+            categoria: "",
             alergenos: []
         }
         return { product }
     },
-    components: { UploadFile, CustomInput, AllergensForm },
+    components: { UploadFile, CustomInput, ItemsForm },
     data: () => ({
         name_input: {
             name: "Nombre",
@@ -66,14 +66,61 @@ export default {
                     ]
                 }
             ]
-        }
+        },
+        allergens: [
+            {
+                name: "Gluten",
+                icon: "gi-wheat",
+                color: "#f89358",
+                active: false,
+            },
+            {
+                name: "Crustáceos",
+                icon: "gi-crab",
+                color: "#00a2dc",
+                active: false,
+            },
+            {
+                name: "Huevos",
+                icon: "gi-egg-clutch",
+                color: "#ffad4e",
+                active: false
+            },
+            {
+                name: "Pescado",
+                icon: "fa-fish",
+                color: "#304892",
+                active: false
+            },
+            {
+                name: "Cacahuetes",
+                icon: "gi-peanut",
+                color: "#ce8e67",
+                active: false
+            },
+            {
+                name: "Lácteos",
+                icon: "gi-milk-carton",
+                color: "#875435",
+                active: false
+            },
+            {
+                name: "Moluscos",
+                icon: "gi-snail",
+                color: "#00cadb",
+                active: false
+            }
+        ]
     }),
-    methods : {
+    methods: {
         submitProduct() {
+            let allergensOut = []
+            this.allergens.map(allergen => allergen.active ? allergensOut.push(allergen.name) : null)
+            this.product.alergenos = allergensOut
             this.product.nombre = this.name_input.value
             this.product.precio = this.price_input.value
             this.product.categoria = this.category_input.children[0].value
-            console.log(this.product)
+            console.table(this.product)
         }
     }
 }
@@ -102,7 +149,7 @@ export default {
         </div>
         <div class="product-tags">
             <h2>Alergenos</h2>
-            <AllergensForm @allergens="product.alergenos = $event"/>
+            <ItemsForm :items="allergens" />
         </div>
 
     </div>

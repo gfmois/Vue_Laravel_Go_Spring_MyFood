@@ -61,6 +61,7 @@
   select {
     background-color: rgba(211, 207, 207, 0.507);
     border: none;
+    margin-top: 10px;
     font-size: 1rem;
     height: 40px;
     padding: 5px;
@@ -77,6 +78,7 @@
   margin-top: 10px;
   width: 80%;
   margin: 0 auto;
+  display: flex;
 }
 
 .form__group_large {
@@ -98,6 +100,7 @@
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;
+  display: flex;
 }
 
 .form__field::placeholder {
