@@ -1,39 +1,99 @@
 <script>
-import {UploadFile} from "../"
-export default { 
+import { UploadFile } from "../"
+import { CustomInput,AllergensForm } from "../"
+export default {
     setup() {
         const product = {
-            img: ""
+            nombre:"",
+            precio:0,
+            imagen: "",
+            categoria:"",
+            alergenos: []
         }
-        const changeImg = (img) => {
-            console.log(img);
-        }
-        return {product, changeImg}
+        return { product }
     },
-    components: { UploadFile },
+    components: { UploadFile, CustomInput, AllergensForm },
+    data: () => ({
+        name_input: {
+            name: "Nombre",
+            type: "text",
+            required: true,
+            value: ""
+        },
+        price_input: {
+            name: "Precio",
+            type: "number",
+            required: true,
+            value: ""
+        },
+        category_input: {
+            name: "Categoria",
+            children: [
+                {
+                    name: "Categoria",
+                    tag: "select",
+                    value: "",
+                    children: [
+                        {
+                            name: "Leche y derivados",
+                            tag: "option"
+                        },
+                        {
+                            name: "Carnes, pescados y huevos",
+                            tag: "option"
+                        },
+                        {
+                            name: "Patatas, legumbres, frutos secos",
+                            tag: "option"
+                        },
+                        {
+                            name: "Verduras y Hortalizas",
+                            tag: "option"
+                        },
+                        {
+                            name: "Frutas",
+                            tag: "option"
+                        },
+                        {
+                            name: "Creeales y derivados, azúcar y dulces",
+                            tag: "option"
+                        },
+                        {
+                            name: "Grasas, aceite y manteguilla",
+                            tag: "option"
+                        }
+
+                    ]
+                }
+            ]
+        }
+    }),
+    methods : {
+        submitProduct() {
+            this.product.nombre = this.name_input.value
+            this.product.precio = this.price_input.value
+            this.product.categoria = this.category_input.children[0].value
+            console.log(this.product)
+        }
+    }
 }
 </script>
 <template>
     <div class="add-product">
         <div class="product-image">
-            <UploadFile @uploadImage="product.img = $event" />
+            <UploadFile @uploadImage="product.imagen = $event" />
         </div>
         <div class="product-name">
-            <h2>Nombre</h2>
-            <input type="text" name="nombre">
+            <CustomInput :step_collection="name_input" />
         </div>
         <div class="product-price">
-            <h2>Precio</h2>
-            <input type="number" name="precio">
+            <CustomInput :step_collection="price_input" />
         </div>
         <div class="product-category">
-            <h2>Categoria</h2>
-            <select name="categoria">
-                <option value="categoria">categoria</option>
-            </select>
+            <CustomInput :step_collection="category_input" />
         </div>
         <div class="add-container">
-            <div class="add-icon">
+            <div class="add-icon" @click="submitProduct()">
                 <div class="card-info">
                     <h3>Crear Producto</h3>
                 </div>
@@ -42,38 +102,9 @@ export default {
         </div>
         <div class="product-tags">
             <h2>Alergenos</h2>
-            <div>
-                <div>
-                    <v-icon name="gi-wheat" scale="2" />
-                    <p>Gluten</p>
-                </div>
-                <div>
-                    <v-icon name="gi-sad-crab" scale="2" />
-                    <p>Crustáceos</p>
-                </div>
-                <div>
-                    <v-icon name="gi-egg-clutch" scale="2" />
-                    <p>Huevos</p>
-                </div>
-                <div>
-                    <v-icon name="fa-fish" scale="2" />
-                    <p>Pescado</p>
-                </div>
-                <div>
-                    <v-icon name="gi-peanut" scale="2" />
-                    <p>Cacahuetes</p>
-                </div>
-                <div>
-                    <v-icon name="gi-milk-carton" scale="2" />
-                    <p>Lácteos</p>
-                </div>
-                <div>
-                    <v-icon name="gi-snail" scale="2" />
-                    <p>Moluscos</p>
-                </div>
-            </div>
+            <AllergensForm @allergens="product.alergenos = $event"/>
         </div>
-        
+
     </div>
 </template>
 <style scoped>
@@ -86,26 +117,30 @@ export default {
     grid-template-columns: repeat(2, 1fr) repeat(2, 2fr);
     grid-template-rows: repeat(3, 1fr);
     grid-column-gap: 10px;
-    grid-row-gap: 10px; 
+    grid-row-gap: 10px;
     box-sizing: border-box;
 }
+
 .add-product div {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
 }
+
 .add-product>div {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    
+
 }
+
 .add-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .add-icon {
     width: fit-content !important;
     height: fit-content !important;
@@ -120,15 +155,19 @@ export default {
     cursor: pointer;
     transition: transform .3s ease-out;
 }
+
 .add-icon * {
     fill: #888888;
 }
+
 .add-icon:hover * {
     fill: #00aae4;
 }
+
 .add-icon:hover {
     transform: translate(0, -5px);
 }
+
 .card-info {
     display: flex;
     flex-direction: column;
@@ -138,40 +177,24 @@ export default {
 .card-info h3 {
     color: #888888;
 }
+
 .product-image {
     grid-area: 1 / 1 / 3 / 3;
     box-sizing: border-box;
 }
+
 .product-image img {
     width: 50px;
     height: 50px;
 }
-.product-name {
 
-}
+.product-name {}
+
 .product-tags {
     grid-area: 3 / 1 / 4 / 5;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-}
-.product-tags > div {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-.product-tags>div>div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    box-sizing: border-box;
-    max-width: 100px;
-    max-height: 100px;
-}
-.product-tags>div>div:hover {
-    border: 1px solid black;
-    box-sizing: border-box;
 }
 </style>

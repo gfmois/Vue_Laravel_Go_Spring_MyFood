@@ -3,7 +3,8 @@ import store from "./store"
 import App from './App.vue'
 import router from './router'
 import { OhVueIcon, addIcons } from "oh-vue-icons";
-import * as VIcons from "oh-vue-icons/icons"
+import * as VIcons from "oh-vue-icons/icons";
+import VueQrcode from '@chenfengyuan/vue-qrcode';
 // import {MdExittoappTwotone,BiBox2Fill,BiHouseFill,GiForkKnifeSpoon, BiCalendarFill,FaUser,CoHamburgerMenu} from 'oh-vue-icons/icons';
 
 //* Datepicker
@@ -21,5 +22,6 @@ app.use(store)
 
 app.component('v-icon', OhVueIcon)
 app.component('v-dpicker', Datepicker);
+app.component(VueQrcode.name, VueQrcode);
 
 app.mount('#app')

@@ -7,10 +7,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chenfengyuan/vue-qrcode": "^2.0.0",
     "@vuepic/vue-datepicker": "^3.5.3",
     "axios": "^1.2.0",
     "oh-vue-icons": "^1.0.0-rc3",
-    "vue": "^3.2.41",
+    "qrcode": "^1.5.1",
+    "vue": "^3.2.45",
     "vue-router": "^4.1.5",
     "vue3-carousel": "^0.2.5",
     "vuex": "^4.1.0"

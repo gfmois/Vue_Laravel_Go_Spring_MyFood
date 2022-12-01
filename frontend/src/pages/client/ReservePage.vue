@@ -1,6 +1,6 @@
 <script>
-import DatePicker from "../../components/DatePicker.vue";
-import CustomInput from "../../components/CustomInput.vue";
+import {DatePicker,CustomInput} from "../../components";
+import { ReservePDF } from "../../components/client";
 
 export default {
   data: () => ({
@@ -71,6 +71,7 @@ export default {
   components: {
     DatePicker,
     CustomInput,
+    ReservePDF
   },
 };
 </script>
@@ -125,6 +126,7 @@ export default {
           </div>
           <div class="rg-img">
             <img src="../../assets/GIF/chef.gif" alt="" v-if="step_name == 'contact'">
+            <ReservePDF v-if="(step_name == 'confirmation')"/>
           </div>
         </div>
         <div
@@ -173,12 +175,10 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-top: 15%;
+  gap: 20px;
+  width: 70%;
 }
 
-.inputs * {
-  margin-top: 20px;
-}
 
 .dp__main {
   height: 100%;
@@ -210,11 +210,16 @@ export default {
 .lf-input {
   width: 50%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .rg-img {
   width: 50%;
   display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
 }
 
