@@ -1,6 +1,5 @@
 <script>
 import { jsPDF } from "jspdf";
-import base64 from "base-64"
 
 export default {
     props: {},
