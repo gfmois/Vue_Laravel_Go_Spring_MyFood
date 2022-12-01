@@ -59,12 +59,19 @@ export default {
         .filter((i) => i != null)
         .map((j) =>
           j.children != null
-            ? j.children.map((r) => {
-                return { name: r.name, value: r.value, disabled: true };
-              })
-            : {...j, disabled: true}
+            ? j.children.map((k) => {
+              return { name: k.name, value: k.value, disabled: true };
+            })
+            : { ...j, disabled: true }
         )
-        .flat();
+        .flat().map((l) => { 
+          return { 
+            ...l, 
+            value: l.value == this.steps.date.value 
+              ? new Date(l.value).toLocaleDateString() 
+              : l.value 
+            }
+          })
 
       return
     },
@@ -81,24 +88,14 @@ export default {
   <div class="wrapper-stepper">
     <div class="stepper">
       <div class="stepper-progress">
-        <div
-          class="stepper-progress-bar"
-          :style="'width:' + stepperProgress"
-        ></div>
+        <div class="stepper-progress-bar" :style="'width:' + stepperProgress"></div>
       </div>
 
-      <div
-        class="stepper-item"
-        v-for="item in Object.keys(steps).length"
-        :class="{ current: step == item - 1, success: step >= item }"
-        :key="item"
-      >
+      <div class="stepper-item" v-for="item in Object.keys(steps).length"
+        :class="{ current: step == item - 1, success: step >= item }" :key="item">
         <div class="stepper-item-counter">
-          <img
-            class="icon-success"
-            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png"
-            alt=""
-          />
+          <img class="icon-success"
+            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png" alt="" />
           <span class="number">
             {{ item }}
           </span>
@@ -109,15 +106,8 @@ export default {
       </div>
     </div>
 
-    <div
-      class="stepper-content"
-      v-for="(step_collection, step_name) in steps"
-      :key="step_collection"
-    >
-      <div
-        class="stepper-pane"
-        v-if="step == Object.keys(steps).findIndex((i) => i == step_name)"
-      >
+    <div class="stepper-content" v-for="(step_collection, step_name) in steps" :key="step_collection">
+      <div class="stepper-pane" v-if="step == Object.keys(steps).findIndex((i) => i == step_name)">
         {{ getValues }}
         <div class="middle-input" v-if="step_name != 'date'">
           <div class="lf-input">
@@ -127,21 +117,15 @@ export default {
           </div>
           <div class="rg-img">
             <img src="../../assets/GIF/chef.gif" alt="" v-if="step_name == 'contact'">
-            <ReservePDF v-if="step_name == 'confirmation'" />
+            <ReservePDF v-if="step_name == 'confirmation'" :reserve_info="steps.confirmation.children" />
           </div>
         </div>
-        <div
-          class="middle-input"
-          v-if="step == Object.keys(steps).findIndex((i) => i == 'date')"
-        >
+        <div class="middle-input" v-if="step == Object.keys(steps).findIndex((i) => i == 'date')">
           <div class="lf-input">
             <DatePicker :params="steps.contact.children" v-model="steps.date.value" />
           </div>
           <div class="rg-img">
-            <img
-              src="../../assets/IMG/istockphoto-675913544-612x612.jpg"
-              alt=""
-            />
+            <img src="../../assets/IMG/istockphoto-675913544-612x612.jpg" alt="" />
           </div>
         </div>
       </div>
@@ -151,11 +135,7 @@ export default {
       <button class="btn" @click="step--" :disabled="step == 0">
         Anterior
       </button>
-      <button
-        class="btn btn--green-1"
-        @click="step++"
-        :disabled="step == Object.keys(steps).length - 1"
-      >
+      <button class="btn btn--green-1" @click="step++" :disabled="step == Object.keys(steps).length - 1">
         Siguiente
       </button>
     </div>
@@ -188,11 +168,13 @@ export default {
   width: 100%;
   position: relative;
 }
+
 .dp__calendar {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+
 .dp__calendar_row {
   gap: 10px;
 }

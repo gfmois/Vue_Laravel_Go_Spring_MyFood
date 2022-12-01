@@ -3,8 +3,12 @@ import { jsPDF } from "jspdf";
 import('../../assets/fonts/dancing_script')
 
 export default {
-    props: {},
-    setup() {
+    props: {
+        reserve_info: []
+    },
+    setup(props) {
+        console.table(props.reserve_info)
+
         const doc = new jsPDF({
             orientation: "l",
             format: [180, 360],
@@ -31,20 +35,7 @@ export default {
         }
 
         const createPDF = () => {
-            let obj = [
-                {
-                    title: "Nombre Reserva",
-                    value: "Moisés"
-                },
-                {
-                    title: "Nº Comensales",
-                    value: "280"
-                },
-                {
-                    title: "Fecha",
-                    value: "28-12-2022"
-                }
-            ]
+            let obj = props.reserve_info;
 
             toDataUrl('http://localhost:3000/test', function(img) {
                 doc.addImage(img, "baseURL", 0, 0)
@@ -59,13 +50,11 @@ export default {
                 doc.text(95, 35, "MyFood")
 
                 Object.keys(obj).map((e) => {
-                    console.log(obj[e].title);
                     doc.setTextColor(0, 0, 0)
-                    doc.text(125, 70 + (e * 10), obj[e].value)
-                    doc.text(45, 70 + (e * 10), obj[e].title)
+                    doc.text(125, 70 + (e * 10), String(obj[e].value))
+                    doc.text(45, 70 + (e * 10), obj[e].name)
                 })
 
-                
                 doc.save("reserva")
             })
 
