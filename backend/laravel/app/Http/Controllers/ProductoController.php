@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\Producto\StoreProductoRequest;
+use App\Http\Resources\Producto\ProductoCollection;
+use App\Http\Resources\Producto\ProductoResource;
+use App\Models\Producto;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+
+class ProductoController extends Controller
+{
+    protected Producto $producto;
+
+    public function __construct(Producto $producto)
+    {
+        $this->producto = $producto;
+    }
+
+    public function getProducts()
+    {
+        return $this->producto::with("categorias","alergenos")->get();
+    }
+    public function addProduct(StoreProductoRequest $request): ProductoResource
+    {
+        $newProduct = new Producto($request->toArray());
+        $newProduct->generateAttribute($request->nombre);
+        $this->producto::create($newProduct->toArray());
+        $newProduct->categorias()->attach($request->categorias);
+        $newProduct->alergenos()->attach($request->alergenos);
+        return new ProductoResource($newProduct);
+        
+    }
+    public function deleteProduct($id_producto)
+    {
+        $product = $this->producto::where("id_producto",$id_producto)->with("categorias","alergenos")->get()->first();
+        $product->categorias()->detach();
+        $product->alergenos()->detach();
+        $result = $this->producto::where("id_producto",$id_producto)->delete();
+        if ($result) {
+            return "Producto borrado";
+        } else {
+            return "No se ha podido borrar el producto";
+        }
+         
+    }
+    public function updateProduct($id_producto, StoreProductoRequest $request)
+    {
+        $oldProduct = $this->producto::where('id_producto',$id_producto)->with("categorias","alergenos")->get()->first();
+        $result1 = count(Arr::flatten($oldProduct->categorias()->sync($request->categorias)));
+        $result2 = count(Arr::flatten($oldProduct->alergenos()->sync($request->alergenos)));
+        $modProduct = new Producto($request->toArray());
+        $modProduct->generateSlug($request->nombre);
+        $result = $this->producto::where('id_producto',$id_producto)->update($modProduct->toArray());
+        if ($result || $result1 || $result2) {
+            return "Producto modificado";
+        } else {
+            return "No se ha modificado el producto";
+        }
+    }
+}
