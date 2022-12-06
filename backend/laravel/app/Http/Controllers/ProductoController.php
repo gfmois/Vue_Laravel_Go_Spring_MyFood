@@ -21,21 +21,33 @@ class ProductoController extends Controller
 
     public function getProducts()
     {
-        return $this->producto::with("categorias","alergenos")->get();
+        $allProducts = $this->producto::with("categorias","alergenos")->get();
+        foreach ($allProducts as $key => $value) {
+            $c_categories = [];
+            foreach ($value->categorias as $key2 => $value2) {
+                $c_categories[$key2]=$value2->nombre;
+            }
+            $allProducts[$key]->c_categorias = $c_categories;
+        }
+        
+
+        return $allProducts;
+
+
     }
-    public function addProduct(StoreProductoRequest $request): ProductoResource
+    public function addProduct(StoreProductoRequest $request)
     {
         $newProduct = new Producto($request->toArray());
         $newProduct->generateAttribute($request->nombre);
         $this->producto::create($newProduct->toArray());
         $newProduct->categorias()->attach($request->categorias);
         $newProduct->alergenos()->attach($request->alergenos);
-        return new ProductoResource($newProduct);
+        return $this->producto::where("id_producto",$newProduct->id_producto)->with("categorias","alergenos")->get()->first();
         
     }
     public function deleteProduct($id_producto)
     {
-        $product = $this->producto::where("id_producto",$id_producto)->with("categorias","alergenos")->get()->first();
+        $product = $this->producto::where("id_producto",$id_producto)->get()->first();
         $product->categorias()->detach();
         $product->alergenos()->detach();
         $result = $this->producto::where("id_producto",$id_producto)->delete();

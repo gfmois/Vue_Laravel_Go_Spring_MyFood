@@ -10,7 +10,8 @@
           const tagToHtml = (element) => {
             let open_parent = `<${element.tag}>`;
             if (element.children) {
-              element.children.map((e) => open_parent += `<${e.tag} :value="${e.name}">${e.name}</${e.tag}>`)
+              element.value ? element.children.map((e) => open_parent += `<${e.tag} value="${e.value}">${e.name}</${e.tag}>`) : element.children.map((e) => open_parent += `<${e.tag} :value="${e.name}">${e.name}</${e.tag}>`)
+              
               return open_parent += `</${element.tag}>`;
             }
 

@@ -1,16 +1,34 @@
 <script>
+import { reactive } from "vue"
+import { useStore } from "vuex"
 import { UploadFile } from "../"
 import { CustomInput, ItemsForm } from "../"
+import { useGetCategoriesInput } from "../../composables/categorias/useCategorias"
+import { useGetAllergensInput } from "../../composables/alergenos/useAlergenos"
+import Constant_Admin from "../../Constant_Admin"
 export default {
     setup() {
         const product = {
             nombre: "",
             precio: 0,
             imagen: "",
-            categoria: "",
+            categorias: [],
             alergenos: []
         }
-        return { product }
+        const store = useStore()
+        let category_input = reactive({
+            name: "Categoria",
+            children: [
+                {
+                    name: "Categoria",
+                    tag: "select",
+                    value: "",
+                    children:useGetCategoriesInput().categories
+                }
+            ]
+        })
+        let allergens_input = reactive(useGetAllergensInput().allergens); 
+        return { product, store,category_input, allergens_input }
     },
     components: { UploadFile, CustomInput, ItemsForm },
     data: () => ({
@@ -25,102 +43,17 @@ export default {
             type: "number",
             required: true,
             value: ""
-        },
-        category_input: {
-            name: "Categoria",
-            children: [
-                {
-                    name: "Categoria",
-                    tag: "select",
-                    value: "",
-                    children: [
-                        {
-                            name: "Leche y derivados",
-                            tag: "option"
-                        },
-                        {
-                            name: "Carnes, pescados y huevos",
-                            tag: "option"
-                        },
-                        {
-                            name: "Patatas, legumbres, frutos secos",
-                            tag: "option"
-                        },
-                        {
-                            name: "Verduras y Hortalizas",
-                            tag: "option"
-                        },
-                        {
-                            name: "Frutas",
-                            tag: "option"
-                        },
-                        {
-                            name: "Creeales y derivados, azúcar y dulces",
-                            tag: "option"
-                        },
-                        {
-                            name: "Grasas, aceite y manteguilla",
-                            tag: "option"
-                        }
-
-                    ]
-                }
-            ]
-        },
-        allergens: [
-            {
-                name: "Gluten",
-                icon: "gi-wheat",
-                color: "#f89358",
-                active: false,
-            },
-            {
-                name: "Crustáceos",
-                icon: "gi-crab",
-                color: "#00a2dc",
-                active: false,
-            },
-            {
-                name: "Huevos",
-                icon: "gi-egg-clutch",
-                color: "#ffad4e",
-                active: false
-            },
-            {
-                name: "Pescado",
-                icon: "fa-fish",
-                color: "#304892",
-                active: false
-            },
-            {
-                name: "Cacahuetes",
-                icon: "gi-peanut",
-                color: "#ce8e67",
-                active: false
-            },
-            {
-                name: "Lácteos",
-                icon: "gi-milk-carton",
-                color: "#875435",
-                active: false
-            },
-            {
-                name: "Moluscos",
-                icon: "gi-snail",
-                color: "#00cadb",
-                active: false
-            }
-        ]
+        }
     }),
     methods: {
         submitProduct() {
             let allergensOut = []
-            this.allergens.map(allergen => allergen.active ? allergensOut.push(allergen.name) : null)
+            this.allergens_input.map(allergen => allergen.active ? allergensOut.push(allergen.value) : null)
             this.product.alergenos = allergensOut
             this.product.nombre = this.name_input.value
             this.product.precio = this.price_input.value
-            this.product.categoria = this.category_input.children[0].value
-            console.table(this.product)
+            this.product.categorias = [this.category_input.children[0].value]
+            this.store.dispatch(Constant_Admin.ADD_PRODUCT, this.product)
         }
     }
 }
@@ -128,7 +61,7 @@ export default {
 <template>
     <div class="add-product">
         <div class="product-image">
-            <UploadFile @uploadImage="product.imagen = $event" />
+            <UploadFile @uploadImage="(product.imagen = $event.name)" />
         </div>
         <div class="product-name">
             <CustomInput :step_collection="name_input" />
@@ -149,7 +82,7 @@ export default {
         </div>
         <div class="product-tags">
             <h2>Alergenos</h2>
-            <ItemsForm :items="allergens" />
+            <ItemsForm :items="allergens_input" />
         </div>
 
     </div>
@@ -234,8 +167,6 @@ export default {
     width: 50px;
     height: 50px;
 }
-
-.product-name {}
 
 .product-tags {
     grid-area: 3 / 1 / 4 / 5;
