@@ -10,7 +10,7 @@ export default {
       ])
     );
 
-    return Api(`${secret.CLIENT_SERVER}`).get("", {
+    return Api(`${secret.CLIENT_SERVER}`).get("/reservas/getBannedDays", {
       params,
     });
   },

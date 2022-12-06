@@ -8,6 +8,6 @@
     }
 </script>
 <template>
-    <ReservePDFVue />
+    <ReservePDFVue :mini="true" />
 </template>
 <style></style>
