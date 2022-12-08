@@ -1,5 +1,6 @@
 <script>
 import { jsPDF } from "jspdf";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import reservasService from "../../services/client/ReservasService";
 import secret from "../../secret"
@@ -13,18 +14,19 @@ export default {
   },
   setup(props) {
     const currentRoute = useRoute();
-
-    let done = false;
+    
+    const done = ref(false);
     let inRoute = true;
-    let url = `${location.href}`;
+    let url = `${secret.LOCALHOST}/reserve`;
 
     const doc = new jsPDF({
       orientation: "l",
       format: [180, 360],
     });
 
-    const awaitReserveInfo = () => {
-
+    const createReserve = () => {
+      done.value = true
+      return 
     }
 
     const toDataUrl = (url, cb) => {
@@ -77,7 +79,7 @@ export default {
         doc.text(45, 70 + e * 10, obj[e].name);
       });
 
-      toDataUrl(`${secret.CLIENT_SERVER}/reservas/image`, function (img) {
+      toDataUrl(`${secret.CLIEN_SERVER}/reservas/image`, function (img) {
         doc.addImage(img, "baseURL", 0, 0);
 
         // Card
@@ -99,24 +101,24 @@ export default {
       });
     };
 
-    return { createPDF, done, url, inRoute, mini: props.mini };
+    return { createPDF, done, url, inRoute, mini: props.mini, createReserve };
   },
   methods: {},
 };
 </script>
 
 <template>
-  <div class="confirm">
-    <div class="loader" v-if="!done"></div>
+  <div class="confirm" v-if="!done">
+    <div class="loader"></div>
     <div class="container confirm">
-        <label>
+        <label @click="createReserve()">
             <v-icon name="gi-knife-fork" animation="float" scale="2" />
             Confirmar Reserva
         </label>
     </div>
   </div>
   <div v-if="done && inRoute && !mini_style" class="container">
-    <vue-qrcode :value="url" @ready="awaitReserveInfo()" :options="{ width: 300 }"></vue-qrcode>
+    <vue-qrcode :value="url" :options="{ width: 300 }"></vue-qrcode>
     <label @click="createPDF()">
         <v-icon name="hi-solid-document-download" animation="float" scale="2" />
         Descargar PDF

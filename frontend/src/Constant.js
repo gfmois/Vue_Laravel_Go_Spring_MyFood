@@ -1,4 +1,4 @@
 export default {
     // RESERVAS
-    GET_HOLIDAYS: "getHolidays"
+    GET_RESERVES: "getReserves"
 }

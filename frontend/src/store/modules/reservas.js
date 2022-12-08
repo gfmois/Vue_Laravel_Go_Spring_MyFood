@@ -5,18 +5,17 @@ export const reservas = {
     namespaced: true,
     state: {},
     mutations: {
-        [Constant.GET_HOLIDAYS]: (state, payload) => {
-            state.holidaysList = payload
+        [Constant.GET_RESERVES]: (state, payload) => {
+            state.reserves = payload
         }
     },
     actions: {
-        [Constant.GET_HOLIDAYS]: (store, payload) => {
-            ReservasService.getHolidays(payload).then((res) => store.commit(Constant.GET_HOLIDAYS, res.data))
+        [Constant.GET_RESERVES]: (store, _) => {
+            ReservasService.getReserves()
+                .then((res) => store.commit(
+                    Constant.GET_RESERVES,
+                    res.data.reservas
+                ))
         }
     },
-    getters: {
-        getHolidays(state) {
-            return state.holidaysList
-        }
-    }
 }

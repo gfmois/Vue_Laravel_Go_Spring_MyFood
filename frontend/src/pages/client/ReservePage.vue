@@ -383,4 +383,11 @@ export default {
   color: #fff;
   margin-left: auto;
 }
+
+.confirm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 </style>
