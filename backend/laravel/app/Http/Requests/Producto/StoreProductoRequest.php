@@ -15,8 +15,7 @@ class StoreProductoRequest extends FormRequest
     {
         return [
             "nombre" => ["required"],
-            "precio" => ["required"],
-            "imagen" => ["required"]
+            "precio" => ["required"]
         ];
     }
 }

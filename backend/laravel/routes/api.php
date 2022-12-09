@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlergenoController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProductoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/public/{image}',[FileController::class, 'getImage']);
 
 Route::prefix('productos')->group(function (){
     Route::get('/',[ProductoController::class, 'getProducts']);

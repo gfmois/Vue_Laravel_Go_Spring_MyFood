@@ -29,25 +29,25 @@ services:
     networks:
       - vlsg_network
 
-  laravel:
-    image: bitnami/laravel:8
-    restart: always
-    working_dir: /app
-    container_name: laravel_containter
-    volumes:
-      - ./backend/laravel:/app
-      - ./configuration/laravel/.env:/app/.env
-    ports:
-      - 8000:3000
-    command: >
-      bash -c " composer install
-      && php artisan route:list
-      && php artisan key:generate
-      && php artisan migrate
-      && php artisan serve --host=0.0.0.0 --port=3000"
-    depends_on:
-      - db
-    networks:
-      - vlsg_network
+  # laravel:
+  #   image: bitnami/laravel:8
+  #   restart: always
+  #   working_dir: /app
+  #   container_name: laravel_containter
+  #   volumes:
+  #     - ./backend/laravel:/app
+  #     - ./configuration/laravel/.env:/app/.env
+  #   ports:
+  #     - 8000:3000
+  #   command: >
+  #     bash -c " composer install
+  #     && php artisan route:list
+  #     && php artisan key:generate
+  #     && php artisan migrate
+  #     && php artisan serve --host=0.0.0.0 --port=3000"
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - vlsg_network
 networks:
   vlsg_network:

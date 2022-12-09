@@ -17,7 +17,7 @@ export default {
     <div class="products-list">
             <div class="product-item" v-for="product in state.productsList">
                 <div class="product-image">
-                    <img src="/src/assets/IMG/plato_1.jpg">
+                    <img :src="'http://localhost:8000/api/public/'+product.imagen">
                 </div>
                 <div class="product-info">
                     <div>

@@ -12,6 +12,7 @@ export default {
             nombre: "",
             precio: 0,
             imagen: "",
+            upload_image: "",
             categorias: [],
             alergenos: []
         }
@@ -48,12 +49,17 @@ export default {
     methods: {
         submitProduct() {
             let allergensOut = []
+            let newProduct = new FormData()
             this.allergens_input.map(allergen => allergen.active ? allergensOut.push(allergen.value) : null)
-            this.product.alergenos = allergensOut
-            this.product.nombre = this.name_input.value
-            this.product.precio = this.price_input.value
-            this.product.categorias = [this.category_input.children[0].value]
-            this.store.dispatch(Constant_Admin.ADD_PRODUCT, this.product)
+            
+            newProduct.append('nombre',this.name_input.value)
+            newProduct.append('upload_image',this.product.upload_image)
+            newProduct.append('alergenos', allergensOut)
+            newProduct.append('precio',this.price_input.value)
+            newProduct.append('categorias',[this.category_input.children[0].value])
+            newProduct.append('imagen',this.product.upload_image.name)
+            
+            this.store.dispatch(Constant_Admin.ADD_PRODUCT, newProduct)
         }
     }
 }
@@ -61,7 +67,7 @@ export default {
 <template>
     <div class="add-product">
         <div class="product-image">
-            <UploadFile @uploadImage="(product.imagen = $event.name)" />
+            <UploadFile @uploadImage="(product.upload_image = $event)" />
         </div>
         <div class="product-name">
             <CustomInput :step_collection="name_input" />
