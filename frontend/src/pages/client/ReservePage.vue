@@ -116,7 +116,7 @@ export default {
           </div>
           <div class="rg-img">
             <img src="../../assets/GIF/chef.gif" alt="" v-if="step_name == 'contact'">
-            <ReservePDF v-if="step_name == 'confirmation'" :reserve_info="steps.confirmation.children" />
+            <ReservePDF v-if="step_name == 'confirmation'" :mini_style="false" :reserve_info="steps.confirmation.children" />
           </div>
         </div>
         <div class="middle-input" v-if="step == Object.keys(steps).findIndex((i) => i == 'date')">

@@ -1,9 +1,10 @@
 <script>
 import { jsPDF } from "jspdf";
-import { ref } from "vue";
+import { onMounted, ref, reactive } from "vue";
 import { useRoute } from "vue-router";
 import reservasService from "../../services/client/ReservasService";
-import secret from "../../secret"
+import secret from "../../secret";
+import { useCreateReserve } from "../../composables/reservas/useReservas";
 
 import("../../assets/fonts/dancing_script");
 
@@ -14,9 +15,8 @@ export default {
   },
   setup(props) {
     const currentRoute = useRoute();
-    
+
     const done = ref(false);
-    let inRoute = true;
     let url = `${secret.LOCALHOST}/reserve`;
 
     const doc = new jsPDF({
@@ -25,9 +25,23 @@ export default {
     });
 
     const createReserve = () => {
-      done.value = true
-      return 
-    }
+      let obj = props.reserve_info;
+      let f_obj = {};
+      let obj_mapped = obj
+        .map((i) => Object.values(i))
+        .map((v) => {
+          return { key: v[0].toLowerCase().split(" ")[0], value: v[1] };
+        });
+
+      f_obj["n_" + obj_mapped[0].key] = obj_mapped[0].value;
+      f_obj[obj_mapped[1].key] = obj_mapped[1].value;
+      f_obj[obj_mapped[2].key] = obj_mapped[2].value;
+
+      console.log(reactive(useCreateReserve(f_obj)));
+      url += "";
+      done.value = true;
+      return;
+    };
 
     const toDataUrl = (url, cb) => {
       let image = new Image();
@@ -79,7 +93,7 @@ export default {
         doc.text(45, 70 + e * 10, obj[e].name);
       });
 
-      toDataUrl(`${secret.CLIEN_SERVER}/reservas/image`, function (img) {
+      toDataUrl(`${secret.CLIENT_SERVER}/reservas/image`, function (img) {
         doc.addImage(img, "baseURL", 0, 0);
 
         // Card
@@ -101,31 +115,43 @@ export default {
       });
     };
 
-    return { createPDF, done, url, inRoute, mini: props.mini, createReserve };
+    onMounted(() => {
+      console.log(props.reserve_info);
+      if (Object.keys(currentRoute.params).includes("id") == true) {
+        createPDF();
+      }
+    });
+
+    return {
+      createPDF,
+      done,
+      url,
+      mini_style: props.mini_style,
+      createReserve,
+    };
   },
-  methods: {},
 };
 </script>
 
 <template>
+  <!-- Confirm Reserve -->
   <div class="confirm" v-if="!done">
     <div class="loader"></div>
     <div class="container confirm">
-        <label @click="createReserve()">
-            <v-icon name="gi-knife-fork" animation="float" scale="2" />
-            Confirmar Reserva
-        </label>
+      <label @click="createReserve()">
+        <v-icon name="gi-knife-fork" animation="float" scale="2" />
+        Confirmar Reserva
+      </label>
     </div>
   </div>
-  <div v-if="done && inRoute && !mini_style" class="container">
+
+  <!-- Download PDF with QR -->
+  <div v-if="!mini_style && done" class="container">
     <vue-qrcode :value="url" :options="{ width: 300 }"></vue-qrcode>
     <label @click="createPDF()">
-        <v-icon name="hi-solid-document-download" animation="float" scale="2" />
-        Descargar PDF
+      <v-icon name="hi-solid-document-download" animation="float" scale="2" />
+      Descargar PDF
     </label>
-  </div>
-  <div v-if="done && inRoute && mini_style">
-    {{ createPDF() }}
   </div>
 </template>
 
@@ -191,6 +217,6 @@ export default {
 }
 
 .container.confirm {
-    margin-top: 65px;
-  }
+  margin-top: 65px;
+}
 </style>

@@ -14,10 +14,13 @@ export default {
       params,
     });
   },
-  getReserva(id_reserva) {
-    return Api(`${secret.CLIENT_SERVER}`).get(`/reservas/${id_reserva}`)
+  getPDFReserva(id_reserva) {
+    return Api(`${secret.CLIENT_SERVER}`).get(`/reservas/pdf/${id_reserva}`)
   },
   getReserves() {
     return Api(`${secret.CLIENT_SERVER}`).get(`/reservas`)
+  },
+  saveReserva(reserva) {
+    return Api(`${secret.CLIENT_SERVER}`).post("/reservas", reserva)
   }
 };
