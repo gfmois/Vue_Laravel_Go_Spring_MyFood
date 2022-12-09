@@ -12,7 +12,10 @@ export const useGetHolidays = (params) => {
 export const useCreateReserve = (reserva) => {
     const reservaID = ref("");
     reservaService.saveReserva(reserva)
-        .then((data) => reservaID.value = data.data)
+        .then((data) => {
+            console.log(data.data);
+            reservaID.value = data
+        })
 
     return { reservaID }
 }

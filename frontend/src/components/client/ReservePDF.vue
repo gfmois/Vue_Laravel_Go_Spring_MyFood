@@ -17,7 +17,7 @@ export default {
     const currentRoute = useRoute();
 
     const done = ref(false);
-    let url = `${secret.LOCALHOST}/reserve`;
+    let url = ref(`${secret.LOCALHOST}/reserve`);
 
     const doc = new jsPDF({
       orientation: "l",
@@ -37,9 +37,14 @@ export default {
       f_obj[obj_mapped[1].key] = obj_mapped[1].value;
       f_obj[obj_mapped[2].key] = obj_mapped[2].value;
 
-      console.log(reactive(useCreateReserve(f_obj)));
-      url += "";
-      done.value = true;
+      
+      url.value = `${url.value}/${reactive(useCreateReserve(f_obj)).reservaID}`;
+      console.log(url);
+      
+      setTimeout(() => { done.value = true; }, 1000)
+
+      // console.log(reactive(useCreateReserve(f_obj)).reservaID);
+
       return;
     };
 
