@@ -1,10 +1,11 @@
 <script>
 import { jsPDF } from "jspdf";
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import reservasService from "../../services/client/ReservasService";
 import secret from "../../secret";
 import { useCreateReserve } from "../../composables/reservas/useReservas";
+import { toRawType } from "@vue/shared";
 
 import("../../assets/fonts/dancing_script");
 
@@ -37,13 +38,12 @@ export default {
       f_obj[obj_mapped[1].key] = obj_mapped[1].value;
       f_obj[obj_mapped[2].key] = obj_mapped[2].value;
 
+      const reserveID = ref(useCreateReserve(f_obj))
       
-      url.value = `${url.value}/${reactive(useCreateReserve(f_obj)).reservaID}`;
-      console.log(url);
-      
-      setTimeout(() => { done.value = true; }, 1000)
-
-      // console.log(reactive(useCreateReserve(f_obj)).reservaID);
+      watchEffect(() => {
+        url.value += `/${reserveID.value.reservaID}`;
+        done.value = true;
+      });
 
       return;
     };
@@ -73,7 +73,7 @@ export default {
       let obj =
         props.reserve_info ||
         (await reservasService
-          .getReserva(currentRoute.params.id)
+          .getPDFReserva(currentRoute.params.id)
           .then((data) => {
             fromUrl = true;
             return data.data;
