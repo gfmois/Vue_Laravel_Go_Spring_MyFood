@@ -36,7 +36,7 @@
         </div>
         <div class="reserve">
             <img src="/src/assets/IMG/restaurant_5.jpg">
-            <h1>RESERVAR</h1>
+            <h1 @click="$router.push('/reserve')">RESERVAR</h1>
         </div>
     </div>
 </template>
