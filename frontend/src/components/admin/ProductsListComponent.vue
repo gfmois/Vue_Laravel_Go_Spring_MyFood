@@ -1,30 +1,39 @@
+<script>
+import { computed,reactive } from '@vue/reactivity';
+import { useStore } from 'vuex';
+import Constant_Admin from '../../Constant_Admin';
+export default {
+    setup() {
+        const store = useStore();
+        const state = reactive({
+            productsList: computed(()=>store.state.productos.productsList)
+        })
+        store.dispatch(Constant_Admin.GET_PRODUCTS)
+        return { state }
+    }
+}
+</script>
 <template>
     <div class="products-list">
-            <div class="product-item" v-for="index in 20">
+            <div class="product-item" v-for="product in state.productsList">
                 <div class="product-image">
-                    <img src="/src/assets/IMG/plato_1.jpg">
+                    <img :src="'http://localhost:8000/api/public/'+product.imagen">
                 </div>
                 <div class="product-info">
                     <div>
                         <p>Nombre</p>
-                        <h3>Salmon al pilpil</h3>
+                        <h3>{{product.nombre}}</h3>
                     </div>
                     <div>
                         <p>Precio</p>
-                        <h3>20€</h3>
+                        <h3>{{product.precio}}€</h3>
                     </div>
                     <div>
-                        <p>Categoria</p>
-                        <h3>Pescados</h3>
+                        <p>Categorias</p>
+                        <h3>{{product.c_categorias.join(", ")}}</h3>
                     </div>
                     <div class="tags">
-                        <!-- <v-icon name="gi-wheat" scale="2" />  -->
-                        <!-- <v-icon name="gi-sad-crab" scale="2" /> -->
-                        <!-- <v-icon name="gi-egg-clutch" scale="2" /> -->
-                        <v-icon name="fa-fish" scale="2" /> 
-                        <!-- <v-icon name="gi-peanut" scale="2" />
-                        <v-icon name="gi-milk-carton" scale="2" />
-                        <v-icon name="gi-snail" scale="2" />  -->
+                        <v-icon :name="alergeno.imagen.split('|')[0]" scale="2" v-for="alergeno in product.alergenos" /> 
                     </div>
                 </div>
             </div>
