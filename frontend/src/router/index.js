@@ -50,6 +50,11 @@ const router = createRouter({
               component: () => import('../components/admin/ProductFormComponent.vue')
             }
           ]
+        },
+        {
+          path: 'reservas',
+          name: 'reservas',
+          component: () => import('../pages/admin/ReservesPage.vue')
         }
       ]
     },
