@@ -1,5 +1,5 @@
 export default {
     ADMIN_SERVER: "http://localhost:3001",
-    CLIENT_SERVER: "http://localhost:8080",
-    LOCALHOST: "http://192.168.188.23:5173"
+    CLIENT_SERVER: "http://localhost:8080/api",
+    LOCALHOST: "http://localhost:5173"
 }

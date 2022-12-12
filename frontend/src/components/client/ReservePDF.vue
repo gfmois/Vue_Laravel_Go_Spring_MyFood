@@ -1,23 +1,23 @@
 <script>
 import { jsPDF } from "jspdf";
-import { ref } from "vue";
+import { onMounted, ref, reactive, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import reservasService from "../../services/client/ReservasService";
-import secret from "../../secret"
+import secret from "../../secret";
+import { useCreateReserve } from "../../composables/reservas/useReservas";
 
 import("../../assets/fonts/dancing_script");
 
 export default {
   props: {
     reserve_info: [],
-    mini_style: false,
   },
   setup(props) {
     const currentRoute = useRoute();
-    
     const done = ref(false);
-    let inRoute = true;
-    let url = `${secret.LOCALHOST}/reserve`;
+    const url = ref(`${secret.LOCALHOST}/reserve/`);
+    const mini = ref(false);
+    const inRoute = ref(false)
 
     const doc = new jsPDF({
       orientation: "l",
@@ -25,9 +25,27 @@ export default {
     });
 
     const createReserve = () => {
-      done.value = true
-      return 
-    }
+      let obj = props.reserve_info;
+      let f_obj = {};
+      let obj_mapped = obj
+        .map((i) => Object.values(i))
+        .map((v) => {
+          return { key: v[0].toLowerCase().split(" ")[0], value: v[1] };
+        });
+
+      f_obj["n_" + obj_mapped[0].key] = obj_mapped[0].value;
+      f_obj[obj_mapped[1].key] = obj_mapped[1].value;
+      f_obj[obj_mapped[2].key] = obj_mapped[2].value;
+
+      const reserveID = ref(useCreateReserve(f_obj))
+
+      watchEffect(() => {
+        url.value += `${reserveID.value.reservaID}`;
+        done.value = true;
+      });
+
+      return;
+    };
 
     const toDataUrl = (url, cb) => {
       let image = new Image();
@@ -54,7 +72,7 @@ export default {
       let obj =
         props.reserve_info ||
         (await reservasService
-          .getReserva(currentRoute.params.id)
+          .getPDFReserva(currentRoute.params.id)
           .then((data) => {
             fromUrl = true;
             return data.data;
@@ -79,7 +97,7 @@ export default {
         doc.text(45, 70 + e * 10, obj[e].name);
       });
 
-      toDataUrl(`${secret.CLIEN_SERVER}/reservas/image`, function (img) {
+      toDataUrl(`${secret.CLIENT_SERVER}/reservas/image`, function (img) {
         doc.addImage(img, "baseURL", 0, 0);
 
         // Card
@@ -101,31 +119,46 @@ export default {
       });
     };
 
-    return { createPDF, done, url, inRoute, mini: props.mini, createReserve };
+    onMounted(() => {
+      if (Object.keys(currentRoute.params).includes("id")) {
+        mini.value = true
+        inRoute.value = true;
+        createPDF();
+      }
+    });
+
+    return {
+      createPDF,
+      done,
+      url,
+      mini,
+      createReserve,
+      inRoute
+    };
   },
-  methods: {},
 };
 </script>
 
 <template>
-  <div class="confirm" v-if="!done">
+  <!-- Confirm Reserve -->
+  <div class="confirm" v-if="!done && !mini">
     <div class="loader"></div>
     <div class="container confirm">
-        <label @click="createReserve()">
-            <v-icon name="gi-knife-fork" animation="float" scale="2" />
-            Confirmar Reserva
-        </label>
+      <label @click="createReserve()">
+        <v-icon name="gi-knife-fork" animation="float" scale="2" />
+        Confirmar Reserva
+      </label>
     </div>
   </div>
-  <div v-if="done && inRoute && !mini_style" class="container">
-    <vue-qrcode :value="url" :options="{ width: 300 }"></vue-qrcode>
-    <label @click="createPDF()">
-        <v-icon name="hi-solid-document-download" animation="float" scale="2" />
-        Descargar PDF
+
+  <!-- Download PDF with QR -->
+  <div :class="{ 'centered-div': mini }" class="container">
+    <vue-qrcode v-if="done && !inRoute" :value="url" :options="{ width: 300 }"></vue-qrcode>
+    <p class="text-pdf" v-if="mini && inRoute">Si la descarga no ha iniciado automáticamente pulse en el botón de descargar PDF.</p>
+    <label v-if="done || inRoute" @click="createPDF()">
+      <v-icon name="hi-solid-document-download" animation="float" scale="2" />
+      Descargar PDF
     </label>
-  </div>
-  <div v-if="done && inRoute && mini_style">
-    {{ createPDF() }}
   </div>
 </template>
 
@@ -136,6 +169,15 @@ export default {
   width: 100px;
   height: 100px;
   transform: scale(2);
+}
+
+.centered-div {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .loader::before,
@@ -181,6 +223,7 @@ export default {
 }
 
 .container label {
+  margin-top: 20px;
   cursor: pointer;
   padding: 10px;
   background-color: #75cc65;
@@ -191,6 +234,6 @@ export default {
 }
 
 .container.confirm {
-    margin-top: 65px;
-  }
+  margin-top: 65px;
+}
 </style>

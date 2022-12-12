@@ -1,18 +1,18 @@
 <script>
-import { reactive, ref } from '@vue/reactivity';
-import { useGetHolidays } from "../composables/reservas/useReservas"
+import { reactive, ref } from "@vue/reactivity";
+import { useGetHolidays } from "../composables/reservas/useReservas";
 
 export default {
-    props: {
-      params: Object
-    },
-    setup(props) {
-      const date = ref(new Date());
-        const holidays = reactive(useGetHolidays(props.params).holidays)
-  
-        return { holidays, date }
-    }
-}
+  props: {
+    params: Object,
+  },
+  setup(props) {
+    const date = ref(new Date());
+    const holidays = reactive(useGetHolidays(props.params).holidays);
+
+    return { holidays, date };
+  },
+};
 </script>
 
 <template>

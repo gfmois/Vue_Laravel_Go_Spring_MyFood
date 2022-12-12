@@ -9,6 +9,10 @@ export const useGetHolidays = (params) => {
     return { holidays }
 }
 
-export const useCreateReserve = () => {
-    
+export const useCreateReserve = (reserva) => {
+    const reservaID = ref("");
+    reservaService.saveReserva(reserva)
+        .then((data) => reservaID.value = data.data);
+        
+    return { reservaID }
 }
