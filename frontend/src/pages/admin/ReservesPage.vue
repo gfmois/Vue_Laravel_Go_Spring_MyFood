@@ -1,7 +1,20 @@
+<script>
+import { ref } from 'vue';
+import QrReaderComponentVue from '../../components/admin/QrReaderComponent.vue';
+export default {
+    components: {
+        QrReaderComponentVue
+    },
+    data: () => ({
+        clicked:false
+    })
+}
+</script>
 <template>
 <div class="main">
     <div class="qr-reader">
-        <v-icon name="bi-qr-code-scan" scale="2" />
+        <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = !clicked"/>
+        <QrReaderComponentVue v-if="clicked" @open_close="clicked = $event"/>
     </div>
     <table>
         <thead>
@@ -14,7 +27,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="i in 100">
+            <tr v-for="i in 5">
                 <td>Hola</td>
                 <td>Hola</td>
                 <td>Hola</td>
@@ -28,7 +41,7 @@
 <style scoped>
 .qr-reader {
     position: absolute;
-    top: 10px;
+    top: 20px;
     box-sizing: border-box;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     width: 60px;
