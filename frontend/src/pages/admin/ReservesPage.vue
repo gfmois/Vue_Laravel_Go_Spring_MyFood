@@ -1,20 +1,21 @@
 <script>
+import QrReaderComponentVue from '../../components/QrReaderComponent.vue';
 import { ref } from 'vue';
-import QrReaderComponentVue from '../../components/admin/QrReaderComponent.vue';
+
 export default {
     components: {
         QrReaderComponentVue
     },
     data: () => ({
-        clicked:false
-    })
+        clicked: false  
+    }),
 }
 </script>
 <template>
 <div class="main">
     <div class="qr-reader">
-        <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = !clicked"/>
-        <QrReaderComponentVue v-if="clicked" @open_close="clicked = $event"/>
+        <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
+        <QrReaderComponentVue @open_close="clicked = $event" v-if="clicked" />
     </div>
     <table>
         <thead>
