@@ -13,10 +13,6 @@ export default {
     
     store.dispatch(Constant_Admin.GET_PRODUCTS);
 
-    const deleteProduct = (id_product) => {
-        
-    }
-
     return { state };
   },
 };
