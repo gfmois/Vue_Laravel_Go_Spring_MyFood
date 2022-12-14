@@ -5,7 +5,6 @@ import { useRoute } from "vue-router";
 import reservasService from "../../services/client/ReservasService";
 import secret from "../../secret";
 import { useCreateReserve } from "../../composables/reservas/useReservas";
-import { toRawType } from "@vue/shared";
 
 import("../../assets/fonts/dancing_script");
 
@@ -18,7 +17,7 @@ export default {
     const currentRoute = useRoute();
 
     const done = ref(false);
-    let url = ref(`${secret.LOCALHOST}/reserve`);
+    let url = ref(`${secret.LOCALHOST}/reserve/`);
 
     const doc = new jsPDF({
       orientation: "l",
@@ -41,7 +40,7 @@ export default {
       const reserveID = ref(useCreateReserve(f_obj))
       
       watchEffect(() => {
-        url.value += `/${reserveID.value.reservaID}`;
+        url.value += `${reserveID.value.reservaID}`;
         done.value = true;
       });
 
@@ -121,7 +120,6 @@ export default {
     };
 
     onMounted(() => {
-      console.log(props.reserve_info);
       if (Object.keys(currentRoute.params).includes("id") == true) {
         createPDF();
       }
