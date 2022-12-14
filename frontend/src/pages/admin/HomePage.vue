@@ -14,6 +14,12 @@ export default {
                 scale: "2",
                 name: "Productos",
                 path: "productos"
+            },
+            {
+                icon: "io-calendar-clear",
+                scale: "2",
+                name: "Reservas",
+                path: "reservas"
             }
         ]
         return {routes}
@@ -24,11 +30,11 @@ export default {
 <div class="admin-panel">
     <input type="checkbox" id="show_menu" class="show-menu" checked> 
     <aside>
-        <div class="logo-wrapper" @click="$router.push('/')">
-            <div class="logo">
+        <div class="logo-wrapper">
+            <div class="logo" @click="$router.push('/')">
                 <img src="../../assets/MyFood.png">
             </div>
-            <div class="app-name">
+            <div class="app-name" @click="$router.push('/')">
                 <h1>MyFood</h1>
             </div>
         </div>
@@ -153,6 +159,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 10px;
     padding: 0px 20px 0px 20px;
 }
 
@@ -333,4 +340,29 @@ aside ul li:hover svg {
     display: none;
 }
 
+@media (max-width: 900px) {
+    aside {
+        position: absolute;
+        z-index: 2;
+        display: none;
+    }
+    main {
+        width: 100%;
+    }
+    input[type="checkbox"]:checked ~ aside {
+        width: 100%;
+        display: block;
+    }
+    input[type="checkbox"]:checked ~ main {
+        width: 100%;
+    }
+    
+    .logo-wrapper {
+        justify-content: flex-end;
+        padding-right: 20px;
+    }
+    .main-admin {
+        padding: 0px;
+    }
+}
 </style>

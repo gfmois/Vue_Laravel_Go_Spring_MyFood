@@ -11,13 +11,13 @@ import("../../assets/fonts/dancing_script");
 export default {
   props: {
     reserve_info: [],
-    mini_style: false,
   },
   setup(props) {
     const currentRoute = useRoute();
-
     const done = ref(false);
-    let url = ref(`${secret.LOCALHOST}/reserve/`);
+    const url = ref(`${secret.LOCALHOST}/reserve/`);
+    const mini = ref(false);
+    const inRoute = ref(false)
 
     const doc = new jsPDF({
       orientation: "l",
@@ -38,7 +38,7 @@ export default {
       f_obj[obj_mapped[2].key] = obj_mapped[2].value;
 
       const reserveID = ref(useCreateReserve(f_obj))
-      
+
       watchEffect(() => {
         url.value += `${reserveID.value.reservaID}`;
         done.value = true;
@@ -120,7 +120,9 @@ export default {
     };
 
     onMounted(() => {
-      if (Object.keys(currentRoute.params).includes("id") == true) {
+      if (Object.keys(currentRoute.params).includes("id")) {
+        mini.value = true
+        inRoute.value = true;
         createPDF();
       }
     });
@@ -129,8 +131,9 @@ export default {
       createPDF,
       done,
       url,
-      mini_style: props.mini_style,
+      mini,
       createReserve,
+      inRoute
     };
   },
 };
@@ -138,7 +141,7 @@ export default {
 
 <template>
   <!-- Confirm Reserve -->
-  <div class="confirm" v-if="!done">
+  <div class="confirm" v-if="!done && !mini">
     <div class="loader"></div>
     <div class="container confirm">
       <label @click="createReserve()">
@@ -149,9 +152,10 @@ export default {
   </div>
 
   <!-- Download PDF with QR -->
-  <div v-if="!mini_style && done" class="container">
-    <vue-qrcode :value="url" :options="{ width: 300 }"></vue-qrcode>
-    <label @click="createPDF()">
+  <div :class="{ 'centered-div': mini }" class="container">
+    <vue-qrcode v-if="done && !inRoute" :value="url" :options="{ width: 300 }"></vue-qrcode>
+    <p class="text-pdf" v-if="mini && inRoute">Si la descarga no ha iniciado automáticamente pulse en el botón de descargar PDF.</p>
+    <label v-if="done || inRoute" @click="createPDF()">
       <v-icon name="hi-solid-document-download" animation="float" scale="2" />
       Descargar PDF
     </label>
@@ -165,6 +169,15 @@ export default {
   width: 100px;
   height: 100px;
   transform: scale(2);
+}
+
+.centered-div {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .loader::before,
@@ -210,6 +223,7 @@ export default {
 }
 
 .container label {
+  margin-top: 20px;
   cursor: pointer;
   padding: 10px;
   background-color: #75cc65;
