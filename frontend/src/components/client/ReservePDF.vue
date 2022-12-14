@@ -1,6 +1,6 @@
 <script>
 import { jsPDF } from "jspdf";
-import { onMounted, ref, reactive, watchEffect } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import reservasService from "../../services/client/ReservasService";
 import secret from "../../secret";

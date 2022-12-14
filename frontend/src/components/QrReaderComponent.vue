@@ -7,10 +7,6 @@ export default {
         const qr_reader = ref(null)
         const data = ref()
         const loadScanner = () => {
-            navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then((r) => {
-                data.value =  r.id
-            })
-
             const qrScanner = new QrScanner(
                 qr_reader.value,
                 result => data.value = result,
@@ -20,6 +16,7 @@ export default {
                     maxScansPerSecond: 10,
                 }
             )
+            qrScanner.start()
             QrScanner.listCameras(true).then((d) => {
                 qrScanner.start()
             })

@@ -2,19 +2,20 @@
 import QrReaderComponentVue from '../../components/QrReaderComponent.vue';
 import { ref, reactive } from 'vue';
 import { useGetReserves } from '../../composables/reservas/useReservas';
+import ListTableComponent from "../../components/ListTableComponent.vue"
 
 export default {
     setup() {
         const reserves = reactive(useGetReserves().reserves)
+        const clicked = ref(false);
+        const headOptions = ['Cliente', 'Fecha', 'Servicio', 'Nº Comensales', 'Estado'];
 
-        return { reserves }
+        return { reserves, clicked, headOptions }
     },
     components: {
-        QrReaderComponentVue
+        QrReaderComponentVue,
+        ListTableComponent
     },
-    data: () => ({
-        clicked: false  
-    }),
 }
 </script>
 <template>
@@ -23,26 +24,7 @@ export default {
         <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
         <QrReaderComponentVue @open_close="clicked = $event" v-if="clicked" />
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Cliente</th>
-                <th>Fecha</th>
-                <th>Nº Comensales</th>
-                <th>Servicio</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="i in reserves.reservas">
-                <td>{{ i.id_cliente }}</td>
-                <td>{{ i.fecha }}</td>
-                <td>{{ i.n_comensales }}</td>
-                <td>{{ i.tipo }}</td>
-                <td>{{ i.estado }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <ListTableComponent :key="reserves" :route="'reservas'" :thead="headOptions" :tbody="reserves" />
 </div>
 </template>
 <style scoped>
@@ -70,47 +52,6 @@ export default {
     overflow-y: scroll;
     width: 100%;
     border-radius: 10px;
-}
-table {
-    width: 100%;
-    position: relative;
-    border-radius: 20px;
-    text-align: center;
-}
-* {
-    border-collapse: collapse;
-    box-sizing: border-box;
-}
-th,td {
-    padding: 15px;
-    font-size: 1.2rem;
-}
-th {
-    top: 0;
-    position: sticky;
-    background-color: #362e4a;
-    padding: 10px;
-    color: white;
-}
-
-tbody {
-    overflow-y: scroll;
-}
-tr:nth-child(2n) {
-    background-color: #f6f7f7;
-}
-
-tr:hover {
-    cursor: pointer;
-    background-color: #a69bf932;
-}
-@media (max-width: 500px) {
-    .main {
-        border-radius: 0px;
-    }
-    th:nth-child(3), td:nth-child(3){
-        display: none;
-    }
 }
 
 </style>

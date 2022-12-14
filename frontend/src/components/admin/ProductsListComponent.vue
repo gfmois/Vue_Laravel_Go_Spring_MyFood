@@ -3,6 +3,7 @@ import { computed, reactive } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { useDeleteProduct } from "../../composables/productos/useProducts"
 import Constant_Admin from "../../Constant_Admin";
+import secret from "../../secret";
 
 export default {
   setup() {
@@ -13,7 +14,7 @@ export default {
     
     store.dispatch(Constant_Admin.GET_PRODUCTS);
 
-    return { state };
+    return { state, secret };
   },
 };
 </script>
@@ -21,7 +22,8 @@ export default {
   <div class="products-list">
     <div class="product-item" v-for="product in state.productsList">
       <div class="product-image">
-        <img :src="'http://localhost:8000/api/public/' + product.imagen" />
+        <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`" />
+
       </div>
       <div class="product-info">
         <div>
