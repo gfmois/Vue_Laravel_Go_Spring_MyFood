@@ -3,6 +3,7 @@ import QrReaderComponentVue from '../../components/QrReaderComponent.vue';
 import { ref, reactive } from 'vue';
 import { useGetReserves } from '../../composables/reservas/useReservas';
 import ListTableComponent from "../../components/ListTableComponent.vue"
+import { ReserveFormComponent } from "../../components/admin"
 
 export default {
     setup() {
@@ -14,7 +15,8 @@ export default {
     },
     components: {
         QrReaderComponentVue,
-        ListTableComponent
+        ListTableComponent,
+        ReserveFormComponent
     },
 }
 </script>
@@ -24,7 +26,10 @@ export default {
         <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
         <QrReaderComponentVue @open_close="clicked = $event" v-if="clicked" />
     </div>
-    <ListTableComponent :key="reserves" :route="'reservas'" :thead="headOptions" :tbody="reserves" />
+    <ListTableComponent v-if="!$route.params.id" :key="reserves" :route="'reservas'" :thead="headOptions" :tbody="reserves" />
+    <div v-if="$route.params.id">
+        <ReserveFormComponent />
+    </div>
 </div>
 </template>
 <style scoped>

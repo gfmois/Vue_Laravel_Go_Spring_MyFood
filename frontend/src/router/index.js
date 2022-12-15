@@ -56,6 +56,11 @@ const router = createRouter({
           name: 'reservas',
           component: () => import('../pages/admin/ReservesPage.vue')
         },
+        {
+          path: "reservas/:id",
+          name: "reserva",
+          component: () => import("../pages/admin/ReservesPage.vue")
+        }
       ]
     },
     {

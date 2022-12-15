@@ -1,5 +1,10 @@
 <script>
 import { ref } from "vue"
+import { Vue3Lottie } from 'vue3-lottie'
+import 'vue3-lottie/dist/style.css'
+import json from "../assets/animation.json"
+
+
 export default {
     props: {
         thead: [],
@@ -9,15 +14,20 @@ export default {
     setup(props) {
         const tbody = ref(props.tbody)
         const thead = ref(props.thead)
+        //! FIXME: Tarda un poco en quitar o poner la tabla 
+        const data = ref(props.tbody.length > 0)
         const methods = Object.keys(props.tbody[0] || props.tbody)
         const tableMethods = Object.keys(props.tbody[0] || props.tbody).splice(1)
 
-        return { tbody, thead, methods, tableMethods, route: props.route }
+        return { tbody, thead, methods, tableMethods, route: props.route, json, data }
+    },
+    components: {
+        Vue3Lottie
     }
 }
 </script>
 <template>
-    <table>
+    <table v-if="data">
         <thead>
             <tr>
                 <th v-for="h in thead">{{ h }}</th> 
@@ -29,6 +39,10 @@ export default {
             </tr>
         </tbody>
     </table>
+    <div class="no-data-container" v-if="!data">
+        <Vue3Lottie :animationData="json" :height="400" :width="400" />
+        <h1>No tienes {{ route }} todavia</h1>
+    </div>
 </template>
 <style scoped>
 table {
@@ -41,6 +55,16 @@ table {
     border-collapse: collapse;
     box-sizing: border-box;
 }
+
+.no-data-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+}
+
 th,td {
     padding: 15px;
     font-size: 1.2rem;

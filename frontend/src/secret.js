@@ -1,5 +1,5 @@
 export default {
-    ADMIN_SERVER: "http://192.168.137.1:3001/api",
-    CLIENT_SERVER: "http://192.168.137.1:8080/api", // Change to 3000 when Docker
-    LOCALHOST: "http://192.168.137.1:5173"
+    ADMIN_SERVER: "http://localhost:8000/api",
+    CLIENT_SERVER: "http://localhost:8080/api", // Change to 3000 when Docker
+    LOCALHOST: "http://localhost:5173"
 }
