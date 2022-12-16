@@ -6,12 +6,17 @@ export default {
   props: {
     params: Object,
   },
-  setup(props) {
+  setup(props, context) {
     const date = ref(new Date());
     const holidays = reactive(useGetHolidays(props.params).holidays);
 
     return { holidays, date };
   },
+  watch: {
+    holidays() {
+      setTimeout(() => this.$emit('loading', false), 250)
+    }
+  }
 };
 </script>
 

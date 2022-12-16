@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlergenoController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ReservaController;
@@ -28,6 +29,10 @@ Route::get('/public/{image}',[FileController::class, 'getImage']);
 Route::prefix("/reservas")->group(function() {
     Route::get("/", [ReservaController::class, 'getReserves']);
     Route::get("/{id_reserva}", [ReservaController::class, 'getReserva']);
+});
+
+Route::prefix("/clients")->group(function() {
+    Route::get("/", [ClienteController::class, "getClientes"]);
 });
 
 Route::prefix('productos')->group(function (){

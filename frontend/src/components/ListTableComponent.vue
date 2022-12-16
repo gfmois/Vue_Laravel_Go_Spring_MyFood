@@ -2,7 +2,7 @@
 import { ref } from "vue"
 import { Vue3Lottie } from 'vue3-lottie'
 import 'vue3-lottie/dist/style.css'
-import json from "../assets/animation.json"
+import json from "../assets/loading_food.json"
 
 
 export default {
@@ -41,7 +41,7 @@ export default {
     </table>
     <div class="no-data-container" v-if="!data">
         <Vue3Lottie :animationData="json" :height="400" :width="400" />
-        <h1>No tienes {{ route }} todavia</h1>
+        <h1>Cargando {{ route }}</h1>
     </div>
 </template>
 <style scoped>

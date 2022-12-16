@@ -1,6 +1,8 @@
 <script>
 import { DatePicker, CustomInput } from "../../components";
 import { ReservePDF } from "../../components/client";
+import json from "../../assets/loading_dp.json"
+import { Vue3Lottie } from 'vue3-lottie';
 
 export default {
   data: () => ({
@@ -78,8 +80,12 @@ export default {
   components: {
     DatePicker,
     CustomInput,
-    ReservePDF
+    ReservePDF,
+    Vue3Lottie
   },
+  setup() {
+    return { json }
+  }
 };
 </script>
 
@@ -124,7 +130,7 @@ export default {
             <DatePicker :params="steps.contact.children" v-model="steps.date.value" />
           </div>
           <div class="rg-img">
-            <img src="../../assets/IMG/istockphoto-675913544-612x612.jpg" alt="" />
+            <Vue3Lottie :animation-data="json" :height="400" :width="400" />
           </div>
         </div>
       </div>

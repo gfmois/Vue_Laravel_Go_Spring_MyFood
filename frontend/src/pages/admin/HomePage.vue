@@ -314,8 +314,7 @@ aside ul li:hover svg {
 .main-admin {
     box-sizing: border-box;
     padding: 20px;
-
-    height: 92vh;
+    height: 90vh;
 }
 .return {
     position: absolute;

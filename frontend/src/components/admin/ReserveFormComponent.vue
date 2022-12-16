@@ -1,45 +1,167 @@
 <script>
 import CustomInputVue from '../CustomInput.vue';
-    export default {
-        setup() {
-            const info_inputs = {
-                name: "Información Cliente",
-                // tag: "div",
-                children: [
-                    {
-                        name: "test",
-                        tag: "div",
-                        value: "asdf"
-                    },
-                    {
-                        name: "test2",
-                        tag: "div",
-                        value: "asdf2"
-                    }
-                ]
-            }
+import DatePicker from "../DatePicker.vue"
+import { ref, computed, reactive } from "vue"
+import { useGetClients } from "../../composables/clientes/useClientes"
+import json from "../../assets/loading_calendar.json"
+import { Vue3Lottie } from 'vue3-lottie';
 
-            return { info_inputs }
-        },
-        components: {
-            CustomInputVue
-        }
+export default {
+    setup() {
+        const loading = ref(true)
+        const selectedClient = ref()
+        const clients = reactive(useGetClients().clients)
+        const comensales = ref()
+        const servicio = ref()
+        const params = computed(() => {
+            loading.value = true
+            return {
+                comensales: comensales.value,
+                servicio: servicio.value
+            }
+        })
+
+        selectedClient.value = { id_cliente: "", telefono: "", nombre: "Cliente", email: "" }
+
+        return { params, comensales, servicio, loading, json, clients, selectedClient }
+    },
+    components: {
+        CustomInputVue,
+        DatePicker,
+        Vue3Lottie
     }
+}
 </script>
 
 <template>
     <div class="wrapper">
-        <div class="card">
-            <div class="title">{{ info_inputs.name }}</div>
+        <div class="card w-lf-top">
+            <div class="title">Información del Cliente</div>
             <div class="input-wrapper">
-                <CustomInputVue :step_collection="info_inputs" />
+                <v-select class="lf-top" placeholder="Cliente" v-model="selectedClient" label="nombre"
+                    :options="clients"></v-select>
+                <input class="lf-bt" v-model="selectedClient.telefono" placeholder="Teléfono" disabled>
+                <input class="rg-top" v-model="selectedClient.id_cliente" placeholder="ID" disabled>
+                <input class="rg-bt" v-model="selectedClient.email" placeholder="Email" disabled>
             </div>
         </div>
+
+        <div class="card w-lf-bt">
+            <div class="title">Información de la Reserva</div>
+            <div class="input-wrapper">
+                <v-select class="lf-top" placeholder="Servicio" v-model="servicio"
+                    :options="['Almuerzo', 'Comida', 'Cena']"></v-select>
+                <input class="rg-top" type="number" min="1" max="50" v-model="comensales" placeholder="Comensales">
+                {{ params }}
+            </div>
+        </div>
+
+        <div class="card w-rg-top">
+            <DatePicker @loading="loading = $event" v-show="!loading" :key="params" :params="params" />
+            <Vue3Lottie :animation-data="json" :height="350" :width="600" v-show="loading" />
+        </div>
+
+        <div class="card w-rg-bt">A</div>
+
     </div>
 </template>
 
 <style scoped>
+.lottie-animation-container {
+    width: 100%;
+}
 .wrapper {
-    background-color: aquamarine;
+    justify-items: center;
+    align-items: center;
+    width: 70vw;
+    height: 80vh;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    box-sizing: border-box;
+}
+
+.w-lf-top {
+    grid-area: 1 / 1 / 3 / 3;
+}
+
+.w-lf-bt {
+    grid-area: 3 / 1 / 5 / 3;
+}
+
+.w-rg-top {
+    grid-area: 1 / 3 / 3 / 5;
+    height: 95% !important;
+}
+
+.w-rg-bt {
+    grid-area: 3 / 3 / 5 / 5;
+}
+
+.card {
+    width: 30vw;
+    height: 25vh;
+    border-radius: 22px;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.card .title {
+    font-weight: bolder;
+}
+
+.card .input-wrapper {
+    align-items: center;
+    height: 70%;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.input-wrapper * {
+    margin: 10px;
+}
+
+input {
+    background-color: transparent;
+    border: 1px solid rgba(60, 60, 60, 0.26);
+    border-radius: 4px;
+    padding: 0 0 0 4px;
+    white-space: normal;
+    display: flex;
+    appearance: none;
+    box-sizing: border-box;
+    height: 3.7vh;
+    color: black;
+}
+
+input:disabled {
+    cursor: not-allowed;
+}
+
+input::placeholder {
+    color: black;
+}
+
+.lf-top {
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+.lf-bt {
+    grid-area: 2 / 1 / 3 / 2;
+}
+
+.rg-top {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+.rg-bt {
+    grid-area: 2 / 2 / 3 / 3;
 }
 </style>
