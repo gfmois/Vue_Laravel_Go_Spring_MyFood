@@ -61,7 +61,9 @@ export default {
             <Vue3Lottie :animation-data="json" :height="350" :width="600" v-show="loading" />
         </div>
 
-        <div class="card w-rg-bt">A</div>
+        <div class="card w-rg-bt">
+            
+        </div>
 
     </div>
 </template>
