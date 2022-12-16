@@ -17,6 +17,14 @@ export const useCreateReserve = (reserva) => {
     return { reservaID }
 }
 
+export const useCreateReserveAdmin = (reserva) => {
+    const reservaID = ref("");
+    reservaService.saveReservaAdmin(reserva)
+        .then((data) => reservaID.value = data.data);
+
+    return { reservaID }
+}
+
 // FIXME: Reserva Service make petition from client server, change it to admin server
 export const useGetReserves = () => {
     const reserves = ref([])

@@ -5,10 +5,16 @@ import router from './router'
 import { OhVueIcon, addIcons } from "oh-vue-icons";
 import * as VIcons from "oh-vue-icons/icons";
 import VueQrcode from '@chenfengyuan/vue-qrcode';
+
+// Toastr
+import 'vue-toast-notification/dist/theme-sugar.css';
+import {useToast} from 'vue-toast-notification';
+
+// Search with Select
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 
-//* Datepicker
+// Datepicker
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -16,6 +22,7 @@ const Vi = Object.values({ ...VIcons })
 addIcons(...Vi);
 
 const app = createApp(App)
+const $toast = useToast();
 
 app.use(router)
 app.use(store)

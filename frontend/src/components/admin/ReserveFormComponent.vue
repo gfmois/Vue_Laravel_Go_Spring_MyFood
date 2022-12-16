@@ -5,10 +5,14 @@ import { ref, computed, reactive } from "vue"
 import { useGetClients } from "../../composables/clientes/useClientes"
 import json from "../../assets/loading_calendar.json"
 import { Vue3Lottie } from 'vue3-lottie';
+import { useCreateReserveAdmin } from '../../composables/reservas/useReservas';
+import { useToast } from "vue-toast-notification"
 
 export default {
     setup() {
+        const $toastr = useToast();
         const loading = ref(true)
+        const dateCalendar = ref()
         const selectedClient = ref()
         const clients = reactive(useGetClients().clients)
         const comensales = ref()
@@ -21,9 +25,26 @@ export default {
             }
         })
 
+        const res = ref()
+
+        const submitReserve = () => {
+            let r_date = `${dateCalendar.value.getFullYear()}-${dateCalendar.value.getMonth()}-${dateCalendar.value.getDate()}`;
+            let data = ({
+                n_comensales: params.value.comensales,
+                tipo: params.value.servicio,
+                id_cliente: selectedClient.value.id_cliente,
+                fecha: r_date,
+                estado: "PENDIENTE"
+            });
+
+            res.value = reactive(useCreateReserveAdmin(data).reservaID)
+            console.log(res);
+            $toastr.success(res.value.msg)
+        }
+
         selectedClient.value = { id_cliente: "", telefono: "", nombre: "Cliente", email: "" }
 
-        return { params, comensales, servicio, loading, json, clients, selectedClient }
+        return { params, comensales, servicio, loading, json, clients, selectedClient, submitProduct: submitReserve, dateCalendar, res }
     },
     components: {
         CustomInputVue,
@@ -35,6 +56,7 @@ export default {
 
 <template>
     <div class="wrapper">
+        {{ res }}
         <div class="card w-lf-top">
             <div class="title">Información del Cliente</div>
             <div class="input-wrapper">
@@ -57,11 +79,20 @@ export default {
         </div>
 
         <div class="card w-rg-top">
-            <DatePicker @loading="loading = $event" v-show="!loading" :key="params" :params="params" />
+            <DatePicker v-model="dateCalendar" @loading="loading = $event" v-show="!loading" :key="params" :params="params" />
             <Vue3Lottie :animation-data="json" :height="350" :width="600" v-show="loading" />
         </div>
 
-        <div class="card w-rg-bt">A</div>
+        <div class="w-rg-bt">
+            <div class="add-container">
+                <div class="add-icon" @click="submitProduct()">
+                    <div class="card-info">
+                        <h3>Crear Producto</h3>
+                    </div>
+                    <v-icon name="md-addcircle" scale="2" />
+                </div>
+            </div>
+        </div>
 
     </div>
 </template>
@@ -81,6 +112,39 @@ export default {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     box-sizing: border-box;
+}
+
+.add-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-icon {
+    width: fit-content !important;
+    height: fit-content !important;
+    box-sizing: border-box;
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform .3s ease-out;
+}
+
+.add-icon * {
+    fill: #888888;
+}
+
+.add-icon:hover * {
+    fill: #00aae4;
+}
+
+.add-icon:hover {
+    transform: translate(0, -5px);
 }
 
 .w-lf-top {

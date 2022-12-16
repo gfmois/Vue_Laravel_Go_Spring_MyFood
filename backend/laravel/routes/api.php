@@ -29,6 +29,7 @@ Route::get('/public/{image}',[FileController::class, 'getImage']);
 Route::prefix("/reservas")->group(function() {
     Route::get("/", [ReservaController::class, 'getReserves']);
     Route::get("/{id_reserva}", [ReservaController::class, 'getReserva']);
+    Route::post("/", [ReservaController::class, 'createReserva']);
 });
 
 Route::prefix("/clients")->group(function() {
