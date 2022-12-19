@@ -30,13 +30,13 @@ class ProductoController extends Controller
             }
             $allProducts[$key]->c_categorias = $c_categories;
         }
-        
-
         return $allProducts;
-
-
     }
-    public function addProduct(StoreProductoRequest $request)
+    public function getProduct($id_producto)
+    {
+        return $this->producto::where("id_producto",$id_producto)->with("categorias","alergenos")->get()->first();
+    }
+    public function addProduct(Request $request)
     {
         $newProduct = new Producto($request->toArray());
         $newProduct->generateAttribute($request->nombre);
@@ -62,18 +62,24 @@ class ProductoController extends Controller
         }
          
     }
-    public function updateProduct($id_producto, StoreProductoRequest $request)
+    public function updateProduct($id_producto,Request $request)
     {
         $oldProduct = $this->producto::where('id_producto',$id_producto)->with("categorias","alergenos")->get()->first();
-        $result1 = count(Arr::flatten($oldProduct->categorias()->sync($request->categorias)));
-        $result2 = count(Arr::flatten($oldProduct->alergenos()->sync($request->alergenos)));
+        $result1 = count(Arr::flatten($oldProduct->categorias()->sync(explode(',',$request->categorias))));
+        $result2 = count(Arr::flatten($oldProduct->alergenos()->sync(explode(',',$request->alergenos))));
         $modProduct = new Producto($request->toArray());
         $modProduct->generateSlug($request->nombre);
-        $result = $this->producto::where('id_producto',$id_producto)->update($modProduct->toArray());
-        if ($result || $result1 || $result2) {
-            return "Producto modificado";
-        } else {
-            return "No se ha modificado el producto";
+        if($request->upload_image) {
+            $file_name = $oldProduct->slug.'_'.$request->upload_image->getClientOriginalName();
+            $request->upload_image->move("uploads",$file_name);
+            $modProduct->imagen = $file_name;
         }
+        $result = $this->producto::where('id_producto',$id_producto)->update($modProduct->toArray());
+        return $this->producto::where("id_producto",$id_producto)->with("categorias","alergenos")->get()->first();
+        // if ($result || $result1 || $result2) {
+        //     return "Producto modificado";
+        // } else {
+        //     return "No se ha modificado el producto";
+        // }
     }
 }

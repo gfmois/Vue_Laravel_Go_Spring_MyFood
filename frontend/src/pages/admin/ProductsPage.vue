@@ -1,13 +1,15 @@
 <script>
 import { RouterView } from 'vue-router'
+import { useStore } from 'vuex';
+import Constant from '../../Constant';
+import secret from '../../secret';
+export default {
+    setup() {
+        const store = useStore();
+        store.state.productos.productsList ? null : store.dispatch(Constant.ADMIN_GET_PRODUCTS)
+    }
+}
 </script>
-<!-- <v-icon name="gi-wheat" scale="2"/> Gluten
-<v-icon name="gi-sad-crab" scale="2"/> Crustáceos
-<v-icon name="gi-egg-clutch" scale="2"/> Huevos
-<v-icon name="fa-fish" scale="2"/> Pescado
-<v-icon name="gi-peanut" scale="2"/> Cacahuetes
-<v-icon name="gi-milk-carton" scale="2"/> Lácteos
-<v-icon name="gi-snail" scale="2"/> Moluscos -->
 <template>
     <div class="main-products">
         <div class="statistics">
@@ -60,7 +62,8 @@ import { RouterView } from 'vue-router'
 
 .statistic-card {
     box-sizing: border-box;
-    width: 20%;
+    min-width: 20%;
+    max-width: 50%;
     height: 70%;
     display: flex;
     padding: 30px;
@@ -99,4 +102,12 @@ import { RouterView } from 'vue-router'
     color: #888888;
 }
 
+@media (max-width: 900px) {
+    .statistic-card {
+        width: 49%;
+    }
+    .statistic-card:nth-child(2), .statistic-card:nth-child(3) {
+        display: none;
+    }
+}
 </style>

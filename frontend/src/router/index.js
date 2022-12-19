@@ -48,6 +48,10 @@ const router = createRouter({
             {
               path: 'nuevo_producto',
               component: () => import('../components/admin/ProductFormComponent.vue')
+            },
+            {
+              path: ":id_producto",
+              component: () => import('../components/admin/ProductFormComponent.vue')
             }
           ]
         },

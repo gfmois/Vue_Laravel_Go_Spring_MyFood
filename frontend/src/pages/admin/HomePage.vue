@@ -28,7 +28,7 @@ export default {
 </script>
 <template>
 <div class="admin-panel">
-    <input type="checkbox" id="show_menu" class="show-menu" checked> 
+    <input type="checkbox" id="show_menu" class="show-menu"> 
     <aside>
         <div class="logo-wrapper">
             <div class="logo" @click="$router.push('/')">

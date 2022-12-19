@@ -143,7 +143,7 @@ export default {
   <!-- Confirm Reserve -->
   <div class="confirm" v-if="!done && !mini">
     <div class="loader"></div>
-    <div class="container confirm">
+    <div class="confirm-container confirm">
       <label @click="createReserve()">
         <v-icon name="gi-knife-fork" animation="float" scale="2" />
         Confirmar Reserva
@@ -152,7 +152,7 @@ export default {
   </div>
 
   <!-- Download PDF with QR -->
-  <div :class="{ 'centered-div': mini }" class="container">
+  <div :class="{ 'centered-div': mini }" class="confirm-container">
     <vue-qrcode v-if="done && !inRoute" :value="url" :options="{ width: 300 }"></vue-qrcode>
     <p class="text-pdf" v-if="mini && inRoute">Si la descarga no ha iniciado automáticamente pulse en el botón de descargar PDF.</p>
     <label v-if="done || inRoute" @click="createPDF()">
@@ -214,7 +214,7 @@ export default {
   }
 }
 
-.container {
+.confirm-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -222,7 +222,7 @@ export default {
   cursor: pointer;
 }
 
-.container label {
+.confirm-container label {
   margin-top: 20px;
   cursor: pointer;
   padding: 10px;
@@ -233,7 +233,7 @@ export default {
   align-items: center;
 }
 
-.container.confirm {
+.confirm-container.confirm {
   margin-top: 65px;
 }
 </style>

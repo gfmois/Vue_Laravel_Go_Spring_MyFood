@@ -1,8 +1,20 @@
 <script>
+import { ref } from 'vue';
+import secret from '../secret';
 export default {
-    data() {
-        return { d_enter: false, empty: true, url: null }
-    },
+    props: {
+        urlImage: String
+    },  
+    setup(props) {
+        let d_enter=false
+        let empty=true
+        let url=ref(null)
+        if (props.urlImage) {
+            empty = false
+            url = `${secret.ADMIN_SERVER}/public/${props.urlImage}`
+        }
+        return { d_enter, empty, url }
+    },  
     methods: {
         onChange() {
             const file = this.$refs.file.files[0]
@@ -20,6 +32,7 @@ export default {
             this.onChange();
         }
     }
+
 }
 </script>
 <template>

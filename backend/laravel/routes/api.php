@@ -26,9 +26,10 @@ Route::get('/public/{image}',[FileController::class, 'getImage']);
 
 Route::prefix('productos')->group(function (){
     Route::get('/',[ProductoController::class, 'getProducts']);
+    Route::get('/{id_producto}',[ProductoController::class, 'getProduct']);
     Route::post('/',[ProductoController::class, 'addProduct']);
     Route::delete('/{id_producto}',[ProductoController::class, 'deleteProduct']);
-    Route::put('/{id_producto}',[ProductoController::class, 'updateProduct']);
+    Route::post('/{id_producto}',[ProductoController::class, 'updateProduct']);
 });
 
 Route::prefix('categorias')->group(function (){

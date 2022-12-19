@@ -4,10 +4,17 @@ import { onMounted, ref } from 'vue';
 export default {
     setup() {
         const qr_reader = ref(null)
+        const data = ref()
         const loadScanner = () => {
             const qrScanner = new QrScanner(
                 qr_reader.value,
-                result => console.log(result)
+                result => data.value = result,
+                {
+                    highlightScanRegion: true,
+                    highlightCodeOutline: true,
+                    maxScansPerSecond: 10
+                }
+
             )
 
             qrScanner.start();
@@ -17,14 +24,15 @@ export default {
             loadScanner()
         })
 
-        return { loadScanner, qr_reader }
+        return { loadScanner, qr_reader, data }
     }
 }
 
 </script>
 <template>
     <div class="video">
-        <video ref="qr_reader"></video>
+        {{data}}
+        <video ref="qr_reader" autoplay></video>
         <v-icon class="close-button" scale="3" name="io-close-circle" @click="$emit('open_close', false)"></v-icon>
     </div>
 </template>
@@ -37,10 +45,12 @@ export default {
     height: 100vh;
     z-index: 2;
 }
+
 video {
     width: 100vw;
     height: 100vh;
 }
+
 .close-button {
     position: absolute;
     z-index: 3;

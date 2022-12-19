@@ -1,23 +1,23 @@
 <script>
 import { computed,reactive } from '@vue/reactivity';
 import { useStore } from 'vuex';
-import Constant_Admin from '../../Constant_Admin';
+import Constant from '../../Constant';
+import secret from '../../secret';
 export default {
     setup() {
         const store = useStore();
         const state = reactive({
             productsList: computed(()=>store.state.productos.productsList)
         })
-        store.dispatch(Constant_Admin.GET_PRODUCTS)
-        return { state }
+        return { state, secret }
     }
 }
 </script>
 <template>
     <div class="products-list">
-            <div class="product-item" v-for="product in state.productsList">
+            <div class="product-item" v-for="product in state.productsList" @click="$router.push('/admin/productos/'+product.id_producto)">
                 <div class="product-image">
-                    <img :src="'http://localhost:8000/api/public/'+product.imagen">
+                    <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`">
                 </div>
                 <div class="product-info">
                     <div>

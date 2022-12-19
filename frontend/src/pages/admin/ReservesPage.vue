@@ -93,9 +93,17 @@ tbody {
 tr:nth-child(2n) {
     background-color: #f6f7f7;
 }
+@media (min-device-width: 768px){
+    .qr-reader {
+        display: none;
+    }
+}
 @media (max-width: 500px) {
     .main {
         border-radius: 0px;
+    }
+    .qr-reader {
+        top: 10px;
     }
     th:nth-child(3), td:nth-child(3){
         display: none;
