@@ -18,4 +18,8 @@ class Reserva extends Model {
         "n_comensales",
         "estado"
     ];
+
+    public function client() {
+        return $this->belongsTo(Cliente::class ,'id_cliente', 'id_cliente');
+    }
 }

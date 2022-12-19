@@ -24,7 +24,13 @@ export default {
   getReserves() {
     return Api(`${secret.ADMIN_SERVER}`).get(`/reservas`);
   },
+  getReserve(id_reserva) {
+    return Api(`${secret.ADMIN_SERVER}`).get(`/reservas/${id_reserva}`)
+  },
   saveReserva(reserva) {
     return Api(`${secret.CLIENT_SERVER}`).post("/reservas", reserva);
   },
+  saveReservaAdmin(reserva) {
+    return Api(`${secret.ADMIN_SERVER}`).post("/reservas", reserva);
+  }
 };

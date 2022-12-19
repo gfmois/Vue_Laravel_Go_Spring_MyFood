@@ -20,4 +20,8 @@ class Cliente extends Model {
         "created_at",
         "updated_at"
     ];
+
+    public function reserves() {
+        return $this->hasMany(Reserva::class, "id_cliente", "id_cliente");
+    }
 }

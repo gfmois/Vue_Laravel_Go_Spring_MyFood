@@ -15,7 +15,7 @@ export default {
   setup(props) {
     const currentRoute = useRoute();
     const done = ref(false);
-    const url = ref(`${secret.LOCALHOST}/reserve/`);
+    const url = ref(`https://192.168.1.89:5173/reserve/`);
     const mini = ref(false);
     const inRoute = ref(false)
 

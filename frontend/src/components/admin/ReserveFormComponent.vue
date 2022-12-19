@@ -2,15 +2,27 @@
 import CustomInputVue from '../CustomInput.vue';
 import DatePicker from "../DatePicker.vue"
 import { ref, computed, reactive } from "vue"
+import { useRoute } from "vue-router"
 import { useGetClients } from "../../composables/clientes/useClientes"
+import { useGetReserve } from "../../composables/reservas/useReservas";
 import json from "../../assets/loading_calendar.json"
 import { Vue3Lottie } from 'vue3-lottie';
+import { useCreateReserveAdmin } from '../../composables/reservas/useReservas';
+import { useToast } from "vue-toast-notification"
 
 export default {
     setup() {
+        const route = useRoute();
+        const $toastr = useToast();
+
+        const isDetails = ref(false);
+        const reserve = ref();
         const loading = ref(true)
-        const selectedClient = ref()
+        const res = ref(null)
+        const dateCalendar = ref()
         const clients = reactive(useGetClients().clients)
+        const selectedClient = ref()
+
         const comensales = ref()
         const servicio = ref()
         const params = computed(() => {
@@ -21,9 +33,34 @@ export default {
             }
         })
 
-        selectedClient.value = { id_cliente: "", telefono: "", nombre: "Cliente", email: "" }
+        const submitReserve = () => {
+            let r_date = `${dateCalendar.value.getFullYear()}-${dateCalendar.value.getMonth()}-${dateCalendar.value.getDate()}`;
+            let data = ({
+                n_comensales: params.value.comensales,
+                tipo: params.value.servicio,
+                id_cliente: selectedClient.value.id_cliente,
+                fecha: r_date,
+                estado: "PENDIENTE"
+            });
 
-        return { params, comensales, servicio, loading, json, clients, selectedClient }
+            res.value = reactive(useCreateReserveAdmin(data).reservaID)
+
+            if (res.value != null) {
+                $toastr.success("Reserva Creada Correctamente", {
+                    position: "top-right"
+                })
+            }
+            
+        }
+
+        selectedClient.value = { id_cliente: "", telefono: "", nombre: "Cliente", email: ""}
+
+        if (route.params.id) {
+            isDetails.value = true
+            reserve.value = reactive(useGetReserve(route.params.id).reserve);
+        }
+
+        return { params, comensales, servicio, loading, json, clients, selectedClient, submitProduct: submitReserve, dateCalendar, res, reserve, isDetails }
     },
     components: {
         CustomInputVue,
@@ -35,6 +72,7 @@ export default {
 
 <template>
     <div class="wrapper">
+        {{ reserve }}
         <div class="card w-lf-top">
             <div class="title">Información del Cliente</div>
             <div class="input-wrapper">
@@ -52,17 +90,26 @@ export default {
                 <v-select class="lf-top" placeholder="Servicio" v-model="servicio"
                     :options="['Almuerzo', 'Comida', 'Cena']"></v-select>
                 <input class="rg-top" type="number" min="1" max="50" v-model="comensales" placeholder="Comensales">
+                <input class="rg-bt" type="text" placeholder="Estado"> <!-- Change it for select -->
                 {{ params }}
             </div>
         </div>
 
         <div class="card w-rg-top">
-            <DatePicker @loading="loading = $event" v-show="!loading" :key="params" :params="params" />
+            <DatePicker v-model="dateCalendar" @loading="loading = $event" v-show="!loading" :key="params" :params="params" />
             <Vue3Lottie :animation-data="json" :height="350" :width="600" v-show="loading" />
         </div>
 
-        <div class="card w-rg-bt">
-            
+        <div class="w-rg-bt">
+            <div class="add-container">
+                <div class="add-icon" @click="submitProduct()">
+                    <div class="card-info">
+                        <h3 v-if="!isDetails">Crear Reserva</h3>
+                        <h3 v-if="isDetails">Actualizar</h3>
+                    </div>
+                    <v-icon name="md-addcircle" scale="2" />
+                </div>
+            </div>
         </div>
 
     </div>
@@ -83,6 +130,39 @@ export default {
     grid-column-gap: 0px;
     grid-row-gap: 0px;
     box-sizing: border-box;
+}
+
+.add-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-icon {
+    width: fit-content !important;
+    height: fit-content !important;
+    box-sizing: border-box;
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform .3s ease-out;
+}
+
+.add-icon * {
+    fill: #888888;
+}
+
+.add-icon:hover * {
+    fill: #00aae4;
+}
+
+.add-icon:hover {
+    transform: translate(0, -5px);
 }
 
 .w-lf-top {
