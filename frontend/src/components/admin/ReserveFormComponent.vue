@@ -1,8 +1,9 @@
 <script>
 import CustomInputVue from '../CustomInput.vue';
 import DatePicker from "../DatePicker.vue"
-import { ref, computed, reactive, watchEffect } from "vue"
+import { ref, computed, reactive, watch } from "vue"
 import { useRoute } from "vue-router"
+import retry from "retry"
 import { useGetClients } from "../../composables/clientes/useClientes"
 import { useGetReserve, useUpdateReserveAdmin, useCreateReserveAdmin } from "../../composables/reservas/useReservas";
 import json from "../../assets/loading_calendar.json"
@@ -13,13 +14,23 @@ import { useToast } from "vue-toast-notification"
 export default {
     setup() {
         const route = useRoute();
-        const $toastr = useToast();
+        const $toastr = useToast({
+            position: "top-right"
+        });
+        const operation = retry.operation({
+            retries: 5,
+            factor: 3,
+            minTimeout: 1 * 1000,
+            maxTimeout: 60 * 1000,
+            randomize: true,
+        });
 
         const isDetails = ref(route.params.id);
         const loading_datepicker = ref(true)
         const global_loading = ref(true)
         const dateCalendar = ref()
-        const res = ref("asdf")
+        const res = reactive({ value: "" })
+        const data = ref("")
         const clients = reactive(useGetClients().clients)
         const selectedClient = ref()
 
@@ -34,9 +45,8 @@ export default {
             }
         })
 
-        const data = ref()
-
         const submitReserve = () => {
+            //! FIXME: Add Date, not working
             data.value = ({
                 n_comensales: params.value.comensales,
                 tipo: params.value.servicio,
@@ -45,7 +55,7 @@ export default {
             });
 
             if (dateCalendar.value.constructor.name == "Date") {
-                data.fecha = `${dateCalendar.value.getFullYear()}-${dateCalendar.value.getMonth()}-${dateCalendar.value.getDate()}`;
+                data.value.fecha = `${dateCalendar.value.getFullYear()}-${dateCalendar.value.getMonth() + 1}-${dateCalendar.value.getDate()}`;
             }
 
             !isDetails
@@ -54,41 +64,45 @@ export default {
 
         }
 
+        watch(
+            res,
+            ({ value }, prevValue) => { 
+                if (value == 0 && typeof prevValue.value != "undefined") {
+                    $toastr.warning("Cambie algún valor para actualizar")
+                }
+
+                if (value == 1 && typeof prevValue.value != "undefined") {
+                    $toastr.success('Reserva Actualizada Correctamente')
+                }
+            }
+        )
+
         selectedClient.value = { id_cliente: "", telefono: "", nombre: "Cliente", email: "" }
 
         if (isDetails) {
-            const reserve = reactive(useGetReserve(route.params.id).reserve);
-            setTimeout(() => {
-                comensales.value = reserve.value.n_comensales
-                servicio.value = reserve.value.tipo
-                selectedClient.value = {
-                    id_cliente: reserve.value.client.id_cliente,
-                    telefono: reserve.value.client.telefono,
-                    nombre: reserve.value.client.nombre,
-                    email: reserve.value.client.email
+            operation.attempt(async (currentAttempt) => {
+                try {
+                    const reserve = reactive(useGetReserve(route.params.id).reserve);
+                    setTimeout(() => {
+                        comensales.value = reserve.value.n_comensales
+                        servicio.value = reserve.value.tipo
+                        selectedClient.value = {
+                            id_cliente: reserve.value.client.id_cliente,
+                            telefono: reserve.value.client.telefono,
+                            nombre: reserve.value.client.nombre,
+                            email: reserve.value.client.email
+                        }
+                        dateCalendar.value = new Date(reserve.value.fecha);
+                        estado.value = reserve.value.estado
+                        global_loading.value = false
+                    }, 2500)
+                } catch (e) {
+                    if (operation.retry(e)) { return; }
                 }
-                dateCalendar.value = reserve.value.fecha
-                estado.value = reserve.value.estado
-                global_loading.value = false
-            }, 2500)
+            })
         }
 
         return { params, comensales, servicio, loading_datepicker, json, clients, selectedClient, submitProduct: submitReserve, dateCalendar, isDetails, estado, loadingJson, global_loading, res, data }
-    },
-    watch: {
-        res(data) {
-            if (data.value.value == 1) {
-                $toastr.success(isDetails ? "Reserva Actualizada Correctamente" : "Reserva Creada Correctamente", {
-                    position: "top-right"
-                })
-            }
-
-            if (data.value.value == 0) {
-                $toastr.error(isDetails ? "Hubo un error al actualizar la reserva" : "Hubo un error al crear la reserva", {
-                    position: "top-right"
-                })
-            }
-        }
     },
     components: {
         CustomInputVue,
@@ -103,8 +117,7 @@ export default {
         <Vue3Lottie :animation-data="loadingJson" :height="350" :width="600" />
     </div>
     <div class="wrapper">
-        {{ res }}
-        {{ data }}
+        {{ data || "asdf" }}
         <div class="card w-lf-top">
             <div class="title">Información del Cliente</div>
             <div class="input-wrapper">
