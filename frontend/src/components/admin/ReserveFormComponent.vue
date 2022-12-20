@@ -1,13 +1,13 @@
 <script>
 import CustomInputVue from '../CustomInput.vue';
 import DatePicker from "../DatePicker.vue"
-import { ref, computed, reactive } from "vue"
+import { ref, computed, reactive, watchEffect } from "vue"
 import { useRoute } from "vue-router"
 import { useGetClients } from "../../composables/clientes/useClientes"
-import { useGetReserve } from "../../composables/reservas/useReservas";
+import { useGetReserve, useUpdateReserveAdmin, useCreateReserveAdmin } from "../../composables/reservas/useReservas";
 import json from "../../assets/loading_calendar.json"
+import loadingJson from "../../assets/loading-blob.json"
 import { Vue3Lottie } from 'vue3-lottie';
-import { useCreateReserveAdmin } from '../../composables/reservas/useReservas';
 import { useToast } from "vue-toast-notification"
 
 export default {
@@ -15,52 +15,80 @@ export default {
         const route = useRoute();
         const $toastr = useToast();
 
-        const isDetails = ref(false);
-        const reserve = ref();
-        const loading = ref(true)
-        const res = ref(null)
+        const isDetails = ref(route.params.id);
+        const loading_datepicker = ref(true)
+        const global_loading = ref(true)
         const dateCalendar = ref()
+        const res = ref("asdf")
         const clients = reactive(useGetClients().clients)
         const selectedClient = ref()
 
+        const estado = ref()
         const comensales = ref()
         const servicio = ref()
         const params = computed(() => {
-            loading.value = true
+            loading_datepicker.value = true
             return {
                 comensales: comensales.value,
                 servicio: servicio.value
             }
         })
 
+        const data = ref()
+
         const submitReserve = () => {
-            let r_date = `${dateCalendar.value.getFullYear()}-${dateCalendar.value.getMonth()}-${dateCalendar.value.getDate()}`;
-            let data = ({
+            data.value = ({
                 n_comensales: params.value.comensales,
                 tipo: params.value.servicio,
                 id_cliente: selectedClient.value.id_cliente,
-                fecha: r_date,
-                estado: "PENDIENTE"
+                estado: estado.value
             });
 
-            res.value = reactive(useCreateReserveAdmin(data).reservaID)
+            if (dateCalendar.value.constructor.name == "Date") {
+                data.fecha = `${dateCalendar.value.getFullYear()}-${dateCalendar.value.getMonth()}-${dateCalendar.value.getDate()}`;
+            }
 
-            if (res.value != null) {
-                $toastr.success("Reserva Creada Correctamente", {
+            !isDetails
+                ? res.value = reactive(useCreateReserveAdmin(data.value).reservaID)
+                : res.value = reactive(useUpdateReserveAdmin({ id_reserva: isDetails.value, ...data.value }).reservaID)
+
+        }
+
+        selectedClient.value = { id_cliente: "", telefono: "", nombre: "Cliente", email: "" }
+
+        if (isDetails) {
+            const reserve = reactive(useGetReserve(route.params.id).reserve);
+            setTimeout(() => {
+                comensales.value = reserve.value.n_comensales
+                servicio.value = reserve.value.tipo
+                selectedClient.value = {
+                    id_cliente: reserve.value.client.id_cliente,
+                    telefono: reserve.value.client.telefono,
+                    nombre: reserve.value.client.nombre,
+                    email: reserve.value.client.email
+                }
+                dateCalendar.value = reserve.value.fecha
+                estado.value = reserve.value.estado
+                global_loading.value = false
+            }, 2500)
+        }
+
+        return { params, comensales, servicio, loading_datepicker, json, clients, selectedClient, submitProduct: submitReserve, dateCalendar, isDetails, estado, loadingJson, global_loading, res, data }
+    },
+    watch: {
+        res(data) {
+            if (data.value.value == 1) {
+                $toastr.success(isDetails ? "Reserva Actualizada Correctamente" : "Reserva Creada Correctamente", {
                     position: "top-right"
                 })
             }
-            
+
+            if (data.value.value == 0) {
+                $toastr.error(isDetails ? "Hubo un error al actualizar la reserva" : "Hubo un error al crear la reserva", {
+                    position: "top-right"
+                })
+            }
         }
-
-        selectedClient.value = { id_cliente: "", telefono: "", nombre: "Cliente", email: ""}
-
-        if (route.params.id) {
-            isDetails.value = true
-            reserve.value = reactive(useGetReserve(route.params.id).reserve);
-        }
-
-        return { params, comensales, servicio, loading, json, clients, selectedClient, submitProduct: submitReserve, dateCalendar, res, reserve, isDetails }
     },
     components: {
         CustomInputVue,
@@ -71,13 +99,18 @@ export default {
 </script>
 
 <template>
+    <div class="loader" v-if="global_loading">
+        <Vue3Lottie :animation-data="loadingJson" :height="350" :width="600" />
+    </div>
     <div class="wrapper">
-        {{ reserve }}
+        {{ res }}
+        {{ data }}
         <div class="card w-lf-top">
             <div class="title">Información del Cliente</div>
             <div class="input-wrapper">
-                <v-select class="lf-top" placeholder="Cliente" v-model="selectedClient" label="nombre"
+                <v-select class="lf-top" v-if="!isDetails" placeholder="Cliente" v-model="selectedClient" label="nombre"
                     :options="clients"></v-select>
+                <input class="lf-top" v-if="isDetails" v-model="selectedClient.nombre" placeholder="Nombre" disabled>
                 <input class="lf-bt" v-model="selectedClient.telefono" placeholder="Teléfono" disabled>
                 <input class="rg-top" v-model="selectedClient.id_cliente" placeholder="ID" disabled>
                 <input class="rg-bt" v-model="selectedClient.email" placeholder="Email" disabled>
@@ -90,14 +123,15 @@ export default {
                 <v-select class="lf-top" placeholder="Servicio" v-model="servicio"
                     :options="['Almuerzo', 'Comida', 'Cena']"></v-select>
                 <input class="rg-top" type="number" min="1" max="50" v-model="comensales" placeholder="Comensales">
-                <input class="rg-bt" type="text" placeholder="Estado"> <!-- Change it for select -->
-                {{ params }}
+                <v-select class="rg-bt" placeholder="Estado" v-model="estado"
+                    :options="['DENEGADA', 'CONFIRMADA']"></v-select>
             </div>
         </div>
 
         <div class="card w-rg-top">
-            <DatePicker v-model="dateCalendar" @loading="loading = $event" v-show="!loading" :key="params" :params="params" />
-            <Vue3Lottie :animation-data="json" :height="350" :width="600" v-show="loading" />
+            <DatePicker v-model="dateCalendar" @loading="loading_datepicker = $event" v-show="!loading_datepicker"
+                :key="params" :params="params" />
+            <Vue3Lottie :animation-data="json" :height="350" :width="600" v-show="loading_datepicker" />
         </div>
 
         <div class="w-rg-bt">
@@ -107,7 +141,14 @@ export default {
                         <h3 v-if="!isDetails">Crear Reserva</h3>
                         <h3 v-if="isDetails">Actualizar</h3>
                     </div>
-                    <v-icon name="md-addcircle" scale="2" />
+                    <v-icon name="md-modeeditoutline" scale="2" v-if="isDetails" />
+                    <v-icon name="md-addcircle" scale="2" v-if="!isDetails" />
+                </div>
+                <div class="add-icon">
+                    <div class="card-info">
+                        <h3>Cancelar</h3>
+                    </div>
+                    <v-icon name="md-block" scale="2" />
                 </div>
             </div>
         </div>
@@ -119,6 +160,23 @@ export default {
 .lottie-animation-container {
     width: 100%;
 }
+
+.loader {
+    z-index: 2;
+    background-color: transparent;
+    backdrop-filter: blur(10px);
+    position: absolute;
+    width: 70vw;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader>* {
+    transform: scale(1.5);
+}
+
 .wrapper {
     justify-items: center;
     align-items: center;

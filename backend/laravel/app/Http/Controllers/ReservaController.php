@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Reserva\StoreReservaRequest;
-use App\Models\Cliente;
 use App\Models\Reserva;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
@@ -38,5 +37,11 @@ class ReservaController extends Controller {
         }
 
         return json_encode(array("msg" => "Hubo un error al crear la reserva"));
+    }
+
+    public function updateReserva(Request $request) {
+        return $this->reserva
+            ->where("id_reserva", $request->id_reserva)
+            ->update($request->toArray());
     }
 }

@@ -32,5 +32,8 @@ export default {
   },
   saveReservaAdmin(reserva) {
     return Api(`${secret.ADMIN_SERVER}`).post("/reservas", reserva);
+  },
+  updateReserveAdmin(reserva) {
+    return Api(`${secret.ADMIN_SERVER}`).post('/reservas/update', reserva);
   }
 };

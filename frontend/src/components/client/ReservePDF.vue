@@ -15,7 +15,7 @@ export default {
   setup(props) {
     const currentRoute = useRoute();
     const done = ref(false);
-    const url = ref(`https://192.168.1.89:5173/reserve/`);
+    const url = ref(`https://192.168.137.1:5173/reserve/`);
     const mini = ref(false);
     const inRoute = ref(false)
 
@@ -235,5 +235,14 @@ export default {
 
 .container.confirm {
   margin-top: 65px;
+}
+
+@media (max-width: 1200px) {
+  .loader {
+    display: none;
+  }
+  .confirm {
+    margin-top: 0px !important;
+  }
 }
 </style>

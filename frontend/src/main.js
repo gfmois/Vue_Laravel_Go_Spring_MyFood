@@ -8,7 +8,6 @@ import VueQrcode from '@chenfengyuan/vue-qrcode';
 
 // Toastr
 import 'vue-toast-notification/dist/theme-sugar.css';
-import {useToast} from 'vue-toast-notification';
 
 // Search with Select
 import vSelect from 'vue-select'
@@ -22,7 +21,6 @@ const Vi = Object.values({ ...VIcons })
 addIcons(...Vi);
 
 const app = createApp(App)
-const $toast = useToast();
 
 app.use(router)
 app.use(store)

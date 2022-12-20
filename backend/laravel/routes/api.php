@@ -31,6 +31,7 @@ Route::prefix("/reservas")->group(function() {
     Route::get("/", [ReservaController::class, 'getReserves']);
     Route::get("/{id_reserva}", [ReservaController::class, 'getReserva']);
     Route::post("/", [ReservaController::class, 'createReserva']);
+    Route::post("/update", [ReservaController::class, 'updateReserva']);
 });
 
 Route::prefix("/clients")->group(function() {
