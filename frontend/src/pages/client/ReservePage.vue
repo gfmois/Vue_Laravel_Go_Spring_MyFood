@@ -1,6 +1,8 @@
 <script>
 import { DatePicker, CustomInput } from "../../components";
 import { ReservePDF } from "../../components/client";
+import json from "../../assets/loading_dp.json"
+import { Vue3Lottie } from 'vue3-lottie';
 
 export default {
   data: () => ({
@@ -78,8 +80,12 @@ export default {
   components: {
     DatePicker,
     CustomInput,
-    ReservePDF
+    ReservePDF,
+    Vue3Lottie
   },
+  setup() {
+    return { json }
+  }
 };
 </script>
 
@@ -112,6 +118,7 @@ export default {
           <div class="lf-input">
             <div class="inputs">
               <CustomInput :step_collection="step_collection" />
+              <ReservePDF class="reserve-button" v-if="step_name == 'confirmation'" :reserve_info="steps.confirmation.children" />
             </div>
           </div>
           <div class="rg-img">
@@ -124,7 +131,7 @@ export default {
             <DatePicker :params="steps.contact.children" v-model="steps.date.value" />
           </div>
           <div class="rg-img">
-            <img src="../../assets/IMG/istockphoto-675913544-612x612.jpg" alt="" />
+            <Vue3Lottie :animation-data="json" :height="400" :width="400" />
           </div>
         </div>
       </div>
@@ -142,6 +149,11 @@ export default {
 </template>
 
 <style>
+.reserve-button, .inputs .confirm {
+  display: none;
+}
+
+
 .middle-input {
   display: flex;
   align-items: center;
@@ -193,6 +205,7 @@ export default {
   width: 50%;
   height: 100%;
   display: flex;
+  transition:  width 0.7s ease-in-out;
   justify-content: center;
   align-items: center;
 }
@@ -389,5 +402,27 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+@media (max-width: 1200px) {
+  .stepper-pane {
+    width: 100%;
+  }
+  .reserve-button, .inputs .confirm {
+    display: block;
+  }
+  .lf-input {
+    width: 100%;
+    transition:  width 0.7s ease-in-out;
+  }
+  .rg-img {
+    display: none;
+  }
+}
+@media (max-width: 500px ) {
+  .wrapper-stepper {
+    width: 100%;
+    padding: 0px;
+  }
 }
 </style>

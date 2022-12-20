@@ -5,9 +5,19 @@ import router from './router'
 import { OhVueIcon, addIcons } from "oh-vue-icons";
 import * as VIcons from "oh-vue-icons/icons";
 import VueQrcode from '@chenfengyuan/vue-qrcode';
+<<<<<<< HEAD
+import 'vue-toast-notification/dist/theme-sugar.css';
+=======
+>>>>>>> mois-dev
+
+// Toastr
 import 'vue-toast-notification/dist/theme-sugar.css';
 
-//* Datepicker
+// Search with Select
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+
+// Datepicker
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -21,6 +31,7 @@ app.use(store)
 
 app.component('v-icon', OhVueIcon)
 app.component('v-dpicker', Datepicker);
+app.component('v-select', vSelect)
 app.component(VueQrcode.name, VueQrcode);
 
 app.mount('#app')

@@ -1,14 +1,23 @@
 <script>
 import QrReaderComponentVue from '../../components/QrReaderComponent.vue';
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
+import { useGetReserves } from '../../composables/reservas/useReservas';
+import ListTableComponent from "../../components/ListTableComponent.vue"
+import { ReserveFormComponent } from "../../components/admin"
 
 export default {
-    components: {
-        QrReaderComponentVue
+    setup() {
+        const reserves = reactive(useGetReserves().reserves)
+        const clicked = ref(false);
+        const headOptions = ['Cliente', 'Fecha', 'Servicio', 'Nº Comensales', 'Estado'];
+
+        return { reserves, clicked, headOptions }
     },
-    data: () => ({
-        clicked: false  
-    }),
+    components: {
+        QrReaderComponentVue,
+        ListTableComponent,
+        ReserveFormComponent
+    },
 }
 </script>
 <template>
@@ -17,6 +26,7 @@ export default {
         <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
         <QrReaderComponentVue @open_close="clicked = $event" v-if="clicked" />
     </div>
+<<<<<<< HEAD
     <table>
         <thead>
             <tr>
@@ -37,6 +47,15 @@ export default {
             </tr>
         </tbody>
     </table>
+=======
+    <div class="qr-reader">
+        <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
+    </div>
+    <ListTableComponent v-if="!$route.params.id" :key="reserves" :route="'reservas'" :thead="headOptions" :tbody="reserves" />
+    <div v-if="$route.params.id">
+        <ReserveFormComponent />
+    </div>
+>>>>>>> mois-dev
 </div>
 </template>
 <style scoped>
@@ -65,6 +84,7 @@ export default {
     width: 100%;
     border-radius: 10px;
 }
+<<<<<<< HEAD
 table {
     width: 100%;
     position: relative;
@@ -109,5 +129,7 @@ tr:nth-child(2n) {
         display: none;
     }
 }
+=======
+>>>>>>> mois-dev
 
 </style>

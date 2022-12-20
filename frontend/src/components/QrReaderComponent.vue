@@ -1,39 +1,43 @@
 <script>
 import QrScanner from 'qr-scanner';
 import { onMounted, ref } from 'vue';
+
 export default {
     setup() {
         const qr_reader = ref(null)
         const data = ref()
+        const qrScanner = ref()
         const loadScanner = () => {
-            const qrScanner = new QrScanner(
+            qrScanner.value = new QrScanner(
                 qr_reader.value,
                 result => data.value = result,
                 {
                     highlightScanRegion: true,
                     highlightCodeOutline: true,
-                    maxScansPerSecond: 10
+                    maxScansPerSecond: 10,
                 }
-
             )
+            qrScanner.value.start()
+        }
 
-            qrScanner.start();
+        const closeCamera = () => {
+            qrScanner.value.stop()
         }
 
         onMounted(() => {
             loadScanner()
         })
 
-        return { loadScanner, qr_reader, data }
-    }
+        return { loadScanner, qr_reader, data, closeCamera }
+    },
 }
 
 </script>
 <template>
+    {{ data }}
     <div class="video">
-        {{data}}
-        <video ref="qr_reader" autoplay></video>
-        <v-icon class="close-button" scale="3" name="io-close-circle" @click="$emit('open_close', false)"></v-icon>
+        <video ref="qr_reader"></video>
+        <v-icon class="close-button" scale="3" name="io-close-circle" @click="$emit('open_close', false), closeCamera()"></v-icon>
     </div>
 </template>
 <style scoped>

@@ -47,7 +47,7 @@ class ProductoController extends Controller
         $newProduct->categorias()->attach(explode(',',$request->categorias));
         $newProduct->alergenos()->attach(explode(',',$request->alergenos));
         return $this->producto::where("id_producto",$newProduct->id_producto)->with("categorias","alergenos")->get()->first();
-        
+
     }
     public function deleteProduct($id_producto)
     {
@@ -60,7 +60,7 @@ class ProductoController extends Controller
         } else {
             return "No se ha podido borrar el producto";
         }
-         
+
     }
     public function updateProduct($id_producto,Request $request)
     {

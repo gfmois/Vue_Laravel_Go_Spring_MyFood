@@ -18,8 +18,9 @@ export default {
         return Api(`${secret.ADMIN_SERVER}`).delete("productos/"+id_product)
     },
     updateProduct(modProduct) {
-        return Api(`${secret.ADMIN_SERVER}`).post("productos/"+modProduct.get("id_producto"),modProduct, {headers:{
+        return Api(`${secret.ADMIN_SERVER}`).post("productos/"+modProduct.get("id_producto"),modProduct, 
+        { headers: {
             "Content-Type": "multipart/form-data",
         }})
-    }
+    },
 }

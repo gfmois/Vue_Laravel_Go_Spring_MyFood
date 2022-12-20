@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\AlergenoController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ReservaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +26,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/public/{image}',[FileController::class, 'getImage']);
+
+Route::prefix("/reservas")->group(function() {
+    Route::get("/", [ReservaController::class, 'getReserves']);
+    Route::get("/{id_reserva}", [ReservaController::class, 'getReserva']);
+    Route::post("/", [ReservaController::class, 'createReserva']);
+    Route::post("/update", [ReservaController::class, 'updateReserva']);
+});
+
+Route::prefix("/clients")->group(function() {
+    Route::get("/", [ClienteController::class, "getClientes"]);
+});
 
 Route::prefix('productos')->group(function (){
     Route::get('/',[ProductoController::class, 'getProducts']);

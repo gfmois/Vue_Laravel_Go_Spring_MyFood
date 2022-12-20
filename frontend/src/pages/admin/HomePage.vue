@@ -314,7 +314,10 @@ aside ul li:hover svg {
 .main-admin {
     box-sizing: border-box;
     padding: 20px;
+<<<<<<< HEAD
 
+=======
+>>>>>>> mois-dev
     height: 90vh;
 }
 .return {

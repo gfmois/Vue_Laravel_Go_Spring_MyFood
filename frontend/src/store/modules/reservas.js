@@ -7,6 +7,9 @@ export const reservas = {
     mutations: {
         [Constant.GET_RESERVES]: (state, payload) => {
             state.reserves = payload
+        },
+        [Constant.ADD_RESERVE]: (state, payload) => {
+            state.reserves.push(payload)
         }
     },
     actions: {
@@ -16,6 +19,13 @@ export const reservas = {
                     Constant.GET_RESERVES,
                     res.data.reservas
                 ))
+        },
+        [Constant.ADD_RESERVE]: (store, payload) => {
+            ReservasService.saveReservaAdmin(payload).then(({ data }) => {
+                store.commit(Constant.ADD_RESERVE, data)
+            }).catch(error=>{
+                console.log(error)
+            })
         }
     },
 }
