@@ -17,7 +17,7 @@
   }
 </script>
 <template>
-    <div class="main">
+    <div class="main-client">
         <div class="l-carousel">
             <carousel  :autoplay="3000" :wrap-around="true" :transition="1500">
               <slide v-for="image in images" :key="image">
@@ -41,7 +41,7 @@
     </div>
 </template>
 <style>
-    .main {
+    .main-client {
         padding: 10px;
         box-sizing: border-box;
         display: grid;

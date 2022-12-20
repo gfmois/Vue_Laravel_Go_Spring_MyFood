@@ -26,6 +26,9 @@ export default {
         <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
         <QrReaderComponentVue @open_close="clicked = $event" v-if="clicked" />
     </div>
+    <div class="qr-reader">
+        <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
+    </div>
     <ListTableComponent v-if="!$route.params.id" :key="reserves" :route="'reservas'" :thead="headOptions" :tbody="reserves" />
     <div v-if="$route.params.id">
         <ReserveFormComponent />

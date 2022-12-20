@@ -10,6 +10,7 @@ import json from "../../assets/loading_calendar.json"
 import loadingJson from "../../assets/loading-blob.json"
 import { Vue3Lottie } from 'vue3-lottie';
 import { useToast } from "vue-toast-notification"
+import ModalComponent from "../ModalComponent.vue"
 
 export default {
     setup() {
@@ -26,6 +27,7 @@ export default {
         });
 
         const isDetails = ref(route.params.id);
+        const showModal = ref(false)
         const loading_datepicker = ref(true)
         const global_loading = ref(true)
         const dateCalendar = ref()
@@ -46,7 +48,6 @@ export default {
         })
 
         const submitReserve = () => {
-            //! FIXME: Add Date, not working
             data.value = ({
                 n_comensales: params.value.comensales,
                 tipo: params.value.servicio,
@@ -61,12 +62,11 @@ export default {
             !isDetails
                 ? res.value = reactive(useCreateReserveAdmin(data.value).reservaID)
                 : res.value = reactive(useUpdateReserveAdmin({ id_reserva: isDetails.value, ...data.value }).reservaID)
-
         }
 
         watch(
             res,
-            ({ value }, prevValue) => { 
+            ({ value }, prevValue) => {
                 if (value == 0 && typeof prevValue.value != "undefined") {
                     $toastr.warning("Cambie algún valor para actualizar")
                 }
@@ -102,12 +102,13 @@ export default {
             })
         }
 
-        return { params, comensales, servicio, loading_datepicker, json, clients, selectedClient, submitProduct: submitReserve, dateCalendar, isDetails, estado, loadingJson, global_loading, res, data }
+        return { params, comensales, servicio, loading_datepicker, json, clients, selectedClient, submitProduct: submitReserve, dateCalendar, isDetails, estado, loadingJson, global_loading, res, data, showModal }
     },
     components: {
         CustomInputVue,
         DatePicker,
-        Vue3Lottie
+        Vue3Lottie,
+        ModalComponent
     }
 }
 </script>
@@ -117,7 +118,6 @@ export default {
         <Vue3Lottie :animation-data="loadingJson" :height="350" :width="600" />
     </div>
     <div class="wrapper">
-        {{ data || "asdf" }}
         <div class="card w-lf-top">
             <div class="title">Información del Cliente</div>
             <div class="input-wrapper">
@@ -157,7 +157,7 @@ export default {
                     <v-icon name="md-modeeditoutline" scale="2" v-if="isDetails" />
                     <v-icon name="md-addcircle" scale="2" v-if="!isDetails" />
                 </div>
-                <div class="add-icon">
+                <div class="add-icon" @click="showModal = true">
                     <div class="card-info">
                         <h3>Cancelar</h3>
                     </div>
@@ -165,6 +165,13 @@ export default {
                 </div>
             </div>
         </div>
+
+        <ModalComponent 
+            @close="showModal = false"
+            :show="showModal"
+            :route="'/admin/reservas'"
+            :header="'¿Volver a Reservas?'"
+            :body="'Si aceptas serás redireccionado a reservas, donde verás todas las reservas existentes hasta el momento.'" />
 
     </div>
 </template>
