@@ -59,6 +59,11 @@ const router = createRouter({
           name: "reservas",
           component: () => import("../pages/admin/ReservesPage.vue"),
           children: [
+            { 
+              path: "nueva_reserva",
+              name: "reserva",
+              component: () => import("../pages/admin/ReservesPage.vue")
+            },
             {
               path: ":id",
               name: "reservas",

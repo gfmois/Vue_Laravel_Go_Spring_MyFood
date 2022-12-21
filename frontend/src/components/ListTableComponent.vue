@@ -13,13 +13,17 @@ export default {
     },
     setup(props) {
         const tbody = ref(props.tbody)
-        const thead = ref(props.thead)
-        //! FIXME: Tarda un poco en quitar o poner la tabla 
-        const data = ref(props.tbody.length > 0)
-        const methods = Object.keys(props.tbody[0] || props.tbody)
-        const tableMethods = Object.keys(props.tbody[0] || props.tbody).splice(1)
+        const thead = ref(props.thead) 
+        const data = ref(typeof props.tbody != "undefined")
+        const methods = ref()
+        const tableMethods = ref()
 
-        return { tbody, thead, methods, tableMethods, route: props.route, json, data }
+        if (data.value) {
+            methods.value = Object.keys(props.tbody[0] || props.tbody)
+            tableMethods.value = Object.keys(props.tbody[0] || props.tbody).splice(1)
+        }
+
+        return { tbody, thead, route: props.route, json, data, methods, tableMethods }
     },
     components: {
         Vue3Lottie
@@ -38,7 +42,7 @@ export default {
                 <td v-for="m in tableMethods">{{ i[m] }}</td>
             </tr>
         </tbody>
-    </table>
+    </table> 
     <div class="no-data-container" v-if="!data">
         <Vue3Lottie :animationData="json" :height="400" :width="400" />
         <h1>Cargando {{ route }}</h1>

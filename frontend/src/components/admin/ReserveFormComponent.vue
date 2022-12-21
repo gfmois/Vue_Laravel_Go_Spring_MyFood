@@ -5,16 +5,19 @@ import { ref, computed, reactive, watch } from "vue"
 import { useRoute } from "vue-router"
 import retry from "retry"
 import { useGetClients } from "../../composables/clientes/useClientes"
-import { useGetReserve, useUpdateReserveAdmin, useCreateReserveAdmin } from "../../composables/reservas/useReservas";
+import { useGetReserve, useCreateReserveAdmin, useGetHolidays, useUpdateReserveAdmin } from "../../composables/reservas/useReservas";
 import json from "../../assets/loading_calendar.json"
 import loadingJson from "../../assets/loading-blob.json"
 import { Vue3Lottie } from 'vue3-lottie';
 import { useToast } from "vue-toast-notification"
 import ModalComponent from "../ModalComponent.vue"
+import { useStore } from 'vuex';
+import Constant from '../../Constant';
 
 export default {
     setup() {
         const route = useRoute();
+        const store = useStore()
         const $toastr = useToast({
             position: "top-right"
         });
@@ -48,6 +51,11 @@ export default {
         })
 
         const submitReserve = () => {
+            if (params.value.comensales > 50) {
+                $toastr.warning('Máximo de comensales permitido 50')
+                return;
+            }
+
             data.value = ({
                 n_comensales: params.value.comensales,
                 tipo: params.value.servicio,
@@ -59,14 +67,21 @@ export default {
                 data.value.fecha = `${dateCalendar.value.getFullYear()}-${dateCalendar.value.getMonth() + 1}-${dateCalendar.value.getDate()}`;
             }
 
-            !isDetails
-                ? res.value = reactive(useCreateReserveAdmin(data.value).reservaID)
-                : res.value = reactive(useUpdateReserveAdmin({ id_reserva: isDetails.value, ...data.value }).reservaID)
+            if (!isDetails.value) {
+                res.value = reactive(useCreateReserveAdmin(data.value).reservaID)
+            } else {
+                res.value = reactive(useUpdateReserveAdmin({ id_reserva: isDetails.value, ...data.value }).reservaID)
+                store.dispatch(`reservas/${Constant.UPDATE_RESERVE}`, { id_reserva: isDetails.value, ...data.value })
+            }
+
         }
 
         watch(
             res,
             ({ value }, prevValue) => {
+
+                console.log(value);
+
                 if (value == 0 && typeof prevValue.value != "undefined") {
                     $toastr.warning("Cambie algún valor para actualizar")
                 }
@@ -79,7 +94,7 @@ export default {
 
         selectedClient.value = { id_cliente: "", telefono: "", nombre: "Cliente", email: "" }
 
-        if (isDetails) {
+        if (isDetails.value) {
             operation.attempt(async (currentAttempt) => {
                 try {
                     const reserve = reactive(useGetReserve(route.params.id).reserve);
@@ -100,6 +115,8 @@ export default {
                     if (operation.retry(e)) { return; }
                 }
             })
+        } else {
+            global_loading.value = false
         }
 
         return { params, comensales, servicio, loading_datepicker, json, clients, selectedClient, submitProduct: submitReserve, dateCalendar, isDetails, estado, loadingJson, global_loading, res, data, showModal }
@@ -166,10 +183,7 @@ export default {
             </div>
         </div>
 
-        <ModalComponent 
-            @close="showModal = false"
-            :show="showModal"
-            :route="'/admin/reservas'"
+        <ModalComponent @close="showModal = false" :show="showModal" :route="'/admin/reservas'"
             :header="'¿Volver a Reservas?'"
             :body="'Si aceptas serás redireccionado a reservas, donde verás todas las reservas existentes hasta el momento.'" />
 
