@@ -2,7 +2,7 @@
 import { ref } from "vue"
 import { Vue3Lottie } from 'vue3-lottie'
 import 'vue3-lottie/dist/style.css'
-import json from "../assets/loading_food.json"
+import json from "../assets/json/loading_food.json"
 
 
 export default {

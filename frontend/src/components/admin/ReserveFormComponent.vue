@@ -11,8 +11,8 @@ import {
   useGetHolidays,
   useUpdateReserveAdmin,
 } from "../../composables/reservas/useReservas";
-import json from "../../assets/loading_calendar.json";
-import loadingJson from "../../assets/loading-blob.json";
+import json from "../../assets/json/loading_calendar.json";
+import loadingJson from "../../assets/json/loading-blob.json";
 import { Vue3Lottie } from "vue3-lottie";
 import { useToast } from "vue-toast-notification";
 import ModalComponent from "../ModalComponent.vue";
