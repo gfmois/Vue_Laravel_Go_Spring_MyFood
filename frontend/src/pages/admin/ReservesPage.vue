@@ -28,7 +28,6 @@ export default {
 }
 </script>
 <template>
-    {{ isInForm }}
 <div class="main">
     <div class="qr-reader">
         <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />

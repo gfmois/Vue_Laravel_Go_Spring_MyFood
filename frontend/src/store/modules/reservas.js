@@ -24,12 +24,14 @@ export const reservas = {
                     data
                 ))
         },
-        [Constant.ADD_RESERVE]: (store, payload) => {
-            ReservasService.saveReservaAdmin(payload).then(({ data }) => {
-                store.commit(Constant.ADD_RESERVE, data)
-            }).catch(error=>{
-                console.log(error)
-            })
+        [Constant.ADD_RESERVE]: async (store, payload) => {
+            try {
+                const { data } = await ReservasService.saveReservaAdmin(payload);
+                store.commit(Constant.ADD_RESERVE, data);
+                return 1;
+            } catch (error) {
+                console.log(error);
+            }
         },
         [Constant.UPDATE_RESERVE]: (store, payload) => {
             store.commit(Constant.UPDATE_RESERVE, payload)

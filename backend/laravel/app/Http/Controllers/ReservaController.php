@@ -30,13 +30,12 @@ class ReservaController extends Controller {
         }
 
         $t_reserva->id_reserva = substr($uuid, 0, 10);
-        $t_reserva->estado = "PENDIENTE";
 
         if ($this->reserva::create($t_reserva->toArray())) {
-            return "Reserva Creada Correctamente";
+            return $t_reserva;
         }
 
-        return json_encode(array("msg" => "Hubo un error al crear la reserva"));
+        return false;
     }
 
     public function updateReserva(Request $request) {
