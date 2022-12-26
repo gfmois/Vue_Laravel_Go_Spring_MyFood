@@ -19,7 +19,10 @@ class ReservaController extends Controller {
     }
 
     public function getReserva($id_reserva) {
-        return $this->reserva->with("client")->where("id_reserva", $id_reserva)->get()[0];
+        return $this->reserva
+            ->with("client")
+            ->where("id_reserva", $id_reserva)
+            ->get()[0];
     }
 
     public function createReserva(StoreReservaRequest $request) {

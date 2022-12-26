@@ -5,7 +5,7 @@ import { useRoute } from "vue-router";
 import reservasService from "../../services/client/ReservasService";
 import secret from "../../secret";
 import { useCreateReserve } from "../../composables/reservas/useReservas";
-import QrCode from "qrcode-svg";
+import QRCode from "qrcode";
 
 import("../../assets/fonts/dancing_script");
 
@@ -17,7 +17,7 @@ export default {
     const reserveID = ref();
     const currentRoute = useRoute();
     const done = ref(false);
-    const url = ref(`https://192.168.137.1:5173/reserve/`);
+    const url = ref(`${secret.LOCALHOST}/reserve/`);
     const mini = ref(false);
     const inRoute = ref(false);
 
@@ -69,6 +69,14 @@ export default {
       image.src = url;
     };
 
+    const qrToDataURL = async (text) => {
+      try {
+        return await QRCode.toDataURL(text);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     const createPDF = async () => {
       let fromUrl = false;
       let obj =
@@ -107,15 +115,10 @@ export default {
         doc.rect(20, 20, 170, 125, "F");
 
         // Qr
-        // let qrSvg = new QrCode({
-        //   content: `${secret.LOCALHOST}/admin/reservas/${reserveID.value}`,
-        //   padding: 4,
-        //   color: "#000000",
-        //   background: "#ffffff",
-        //   ecl: "M",
-        // }).svg();
-
-        doc.addSvgAsImage(new QrCode("hola").svg(), 200, 20, 256, 256)
+        const vl = qrToDataURL(`${secret.LOCALHOST}/admin/reservas/${currentRoute.params.id}`)
+        vl.then((d) => {
+          doc.addImage(d, "baseURL", 240, 45, 80, 80)
+        })
 
         // Title
         doc.setTextColor(0, 0, 0);
@@ -128,7 +131,7 @@ export default {
           doc.text(45, 70 + e * 10, obj[e].name);
         });
 
-        doc.save("reserva");
+        setTimeout(() => doc.save("reserva"), 1000)
       });
     };
 
