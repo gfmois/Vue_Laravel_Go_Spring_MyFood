@@ -7,31 +7,29 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Cliente extends Authenticatable implements JWTSubject {
+class Admin extends Authenticatable implements JWTSubject {
     use HasFactory, Notifiable;
-    protected $table = "clientes";
+
+    protected $table = "usuarios";
 
     public $timestamps = false;
     protected $fillable = [
-        "id_cliente",
-        "nombre",
+        "id_usuario",
+        "usuario",
         "email",
-        "telefono",
+        "cargo",
         "contraseña",
-        "avatar",
-        "created_at",
-        "updated_at"
+        "avatar"
     ];
 
     //? Not necessary?
     protected $maps = [
         "password" => "contraseña",
-        "name" => "nombre",
-        "phone" => "telefono"
+        "user" => "usuario",
     ];
 
     protected $hidden = [
-        "constraseña",
+        "contaseña",
         "remember_token"
     ];
 
@@ -41,9 +39,5 @@ class Cliente extends Authenticatable implements JWTSubject {
 
     public function getJWTCustomClaims() {
         return [];
-    }
-
-    public function reserves() {
-        return $this->hasMany(Reserva::class, "id_cliente", "id_cliente");
     }
 }

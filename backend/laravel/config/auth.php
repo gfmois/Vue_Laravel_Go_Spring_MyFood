@@ -1,5 +1,7 @@
 <?php
 
+use function PHPSTORM_META\map;
+
 return [
 
     /*
@@ -62,8 +64,14 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Admin::class,
+            'table' => "usuarios",
         ],
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Cliente::class,
+            'table' => "clientes"
+        ]
 
         // 'users' => [
         //     'driver' => 'database',

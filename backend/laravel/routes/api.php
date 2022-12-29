@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlergenoController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FileController;
@@ -25,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//! FIXME: Middleware isAuth
 Route::get('/public/{image}',[FileController::class, 'getImage']);
 
 Route::prefix("/reservas")->group(function() {
@@ -36,6 +38,11 @@ Route::prefix("/reservas")->group(function() {
 
 Route::prefix("/clients")->group(function() {
     Route::get("/", [ClienteController::class, "getClientes"]);
+});
+
+Route::prefix("/auth")->group(function() {
+    Route::post("/login", [AuthController::class, "login"]);
+    Route::post("/register", [AuthController::class, "register"]);
 });
 
 Route::prefix('productos')->group(function (){
