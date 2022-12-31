@@ -7,9 +7,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ReservaController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +20,7 @@ use Illuminate\Support\Facades\URL;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-//! FIXME: Middleware isAuth
-Route::get('/public/{image}',[FileController::class, 'getImage']);
+Route::get('/public/{image}', [FileController::class, 'getImage']);
 
 Route::prefix("/reservas")->group(function() {
     Route::get("/", [ReservaController::class, 'getReserves']);
@@ -36,7 +29,7 @@ Route::prefix("/reservas")->group(function() {
     Route::post("/update", [ReservaController::class, 'updateReserva']);
 });
 
-Route::prefix("/clients")->group(function() {
+Route::prefix("/clients")->middleware('jwt.verify')->group(function() {
     Route::get("/", [ClienteController::class, "getClientes"]);
 });
 
@@ -47,21 +40,31 @@ Route::prefix("/auth")->group(function() {
 
 Route::prefix('productos')->group(function (){
     Route::get('/',[ProductoController::class, 'getProducts']);
-    Route::post('/',[ProductoController::class, 'addProduct']);
-    Route::delete('/{id_producto}',[ProductoController::class, 'deleteProduct']);
-    Route::put('/{id_producto}',[ProductoController::class, 'updateProduct']);
+
+    Route::middleware('jwt.verify')->group(function() {
+        Route::post('/',[ProductoController::class, 'addProduct']);
+        Route::delete('/{id_producto}',[ProductoController::class, 'deleteProduct']);
+        Route::put('/{id_producto}',[ProductoController::class, 'updateProduct']);
+    });
+
 });
 
 Route::prefix('categorias')->group(function (){
     Route::get('/',[CategoriaController::class, 'getCategories']);
-    Route::post('/',[CategoriaController::class, 'addCategory']);
-    Route::delete('/{id_categoria}',[CategoriaController::class, 'deleteCategory']);
-    Route::put('/{id_categoria}',[CategoriaController::class, 'updateCategory']);
+
+    Route::middleware('jwt.verify')->group(function() {
+        Route::post('/',[CategoriaController::class, 'addCategory']);
+        Route::delete('/{id_categoria}',[CategoriaController::class, 'deleteCategory']);
+        Route::put('/{id_categoria}',[CategoriaController::class, 'updateCategory']);
+    });
 });
 
 Route::prefix('alergenos')->group(function (){
     Route::get('/',[AlergenoController::class, 'getAllergens']);
-    Route::post('/',[AlergenoController::class, 'addAllergen']);
-    Route::delete('/{id_alergeno}',[AlergenoController::class, 'deleteAllergen']);
-    Route::put('/{id_alergeno}',[AlergenoController::class, 'updateAllergen']);
+
+    Route::middleware('jwt.verify')->group(function() {
+        Route::post('/',[AlergenoController::class, 'addAllergen']);
+        Route::delete('/{id_alergeno}',[AlergenoController::class, 'deleteAllergen']);
+        Route::put('/{id_alergeno}',[AlergenoController::class, 'updateAllergen']);
+    });
 });

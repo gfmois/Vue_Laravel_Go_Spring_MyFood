@@ -22,16 +22,12 @@ class Admin extends Authenticatable implements JWTSubject {
         "avatar"
     ];
 
-    //? Not necessary?
-    protected $maps = [
-        "password" => "contraseña",
-        "user" => "usuario",
-    ];
-
     protected $hidden = [
         "contaseña",
         "remember_token"
     ];
+
+    protected $primaryKey = 'id_usuario';
 
     public function getJWTIdentifier() {
         return $this->getKey();
@@ -39,5 +35,9 @@ class Admin extends Authenticatable implements JWTSubject {
 
     public function getJWTCustomClaims() {
         return [];
+    }
+
+    public function getAuthPassword() {
+        return $this->contraseña;
     }
 }

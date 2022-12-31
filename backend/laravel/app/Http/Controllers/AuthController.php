@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Auth\StoreAuthLoginRequest;
 use App\Models\Admin;
-use App\Models\Cliente;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Http\Request;
+use App\Http\Requests\Auth\StoreLoginRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller {
     public function __construct() {
@@ -25,8 +22,6 @@ class AuthController extends Controller {
 
         $credentials = $data->only('email', 'password');
         $token = Auth::attempt($credentials);
-
-        return $token;
 
         if (!$token) {
             return response()->json([
@@ -87,10 +82,15 @@ class AuthController extends Controller {
         ]);
     }
 
-    public function getProfile() {
+    public function refresh()
+    {
         return response()->json([
-            "status" => "success",
-            "user" => Auth::user()
+            'status' => 'success',
+            'user' => Auth::user(),
+            'authorisation' => [
+                'token' => Auth::refresh(),
+                'type' => 'bearer',
+            ]
         ]);
     }
 }
