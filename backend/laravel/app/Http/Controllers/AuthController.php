@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Http\Request;
-use App\Http\Requests\Auth\StoreLoginRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller {
     public function __construct() {
-        // $this->middleware("auth:api", ["except" => ['login', 'register']]);
+        // $this->middleware('jwt.auth', ['except' => ['login', 'register']]);
     }
 
     public function login(Request $data) {
@@ -39,6 +44,10 @@ class AuthController extends Controller {
                 "type" => "Bearer"
             ]
         ]);
+    }
+
+    public function test() {
+        return Admin::all();
     }
 
     public function register(Request $data) {
@@ -74,6 +83,41 @@ class AuthController extends Controller {
         ]);
     }
 
+    public function isAdmin() {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'user not found'
+                ], 404);
+            }
+        } catch (TokenExpiredException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'token invalid'
+            ], 401);
+        } catch (TokenInvalidException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'token invalid'
+            ], 401);
+        } catch (JWTException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'token not found'
+            ], 401);
+        }
+
+        return response()->json([
+            'status' => "success",
+            "message" => [
+                "isAdmin" => "true",
+                "token" => (string)Auth::getToken(),
+                "user" => $user
+            ],
+        ]);
+    }
+
     public function logout() {
         Auth::logout();
         return response()->json([
@@ -82,11 +126,26 @@ class AuthController extends Controller {
         ]);
     }
 
+    public function me() {
+        $token = (string)JWTAuth::getToken();
+        return [
+            'meta' => [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'User fetched successfully!',
+            ],
+            'data' => [
+                'user' => JWTAuth::toUser($token),
+                'token' => $token,
+            ],
+        ];
+    }
+
     public function refresh()
     {
         return response()->json([
             'status' => 'success',
-            'user' => Auth::user(),
+            'user' => auth()->user(),
             'authorisation' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',

@@ -34,8 +34,15 @@ Route::prefix("/clients")->middleware('jwt.verify')->group(function() {
 });
 
 Route::prefix("/auth")->group(function() {
-    Route::post("/login", [AuthController::class, "login"]);
-    Route::post("/register", [AuthController::class, "register"]);
+    Route::post("/login", [AuthController::class, "login"])->name("login");
+    Route::post("/register", [AuthController::class, "register"])->name("register");
+    Route::get("/test", [AuthController::class, "test"])->name("test");
+
+    Route::middleware('jwt.verify')->group(function() {
+        Route::get("/isAdmin", [AuthController::class, "isAdmin"]);
+        Route::get('refresh', [AuthController::class, 'refresh']);
+        Route::get('/profile', [AuthController::class, 'me']);
+    });
 });
 
 Route::prefix('productos')->group(function (){
