@@ -27,20 +27,20 @@ class JwtMiddleware
                 return response()->json([
                     "status" => "error",
                     "message" => "invalid token"
-                ]);
+                ], 401);
             }
 
             if ($e instanceof TokenExpiredException) {
                 return response()->json([
                     "status" => "error",
                     "message" => "expired token"
-                ]);
+                ], 401);
             }
 
             return response()->json([
                 "status" => "error",
                 "message" => "token not found"
-            ]);
+            ], 401);
         }
 
         return $next($request);

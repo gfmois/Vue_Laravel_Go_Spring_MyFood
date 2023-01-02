@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import authGuard from "../services/guards/authGuard";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,8 @@ const router = createRouter({
     {
       path: "/admin",
       name: "admin",
+      beforeEnter: authGuard.authIsAdmin, 
+      meta: { requiredAuth: true },
       component: () => import("../pages/admin/HomePage.vue"),
       children: [
         {
@@ -79,5 +82,18 @@ const router = createRouter({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiredAuth)) {
+    if (localStorage.getItem('token') != null && localStorage.token) {
+      next()
+      return
+    }
+
+    next("/home")
+  } else {
+    next()
+  }
+})
 
 export default router;
