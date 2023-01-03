@@ -144,7 +144,7 @@ export default {
                 <div class="card-info">
                     <h3>Crear Producto</h3>
                 </div>
-                <v-icon name="md-addcircle" scale="2" />
+                 <v-icon name="md-addcircle" scale="2" />
             </div>
         </div>
         <div class="add-container" v-if="$route.params.id_producto">
@@ -152,13 +152,13 @@ export default {
                 <div class="card-info">
                     <h3>Guardar</h3>
                 </div>
-                <v-icon name="md-modeeditoutline" scale="2" />
+                 <v-icon name="md-modeeditoutline" scale="2" />
             </div>
             <div class="add-icon" @click="deleteProduct()">
                 <div class="card-info">
                     <h3>Borrar</h3>
                 </div>
-                <v-icon name="hi-solid-trash" scale="2" />
+                 <v-icon name="hi-solid-trash" scale="2" />
             </div>
         </div>
         <div class="product-tags">

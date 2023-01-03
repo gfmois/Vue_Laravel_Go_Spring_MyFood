@@ -145,7 +145,7 @@ export default {
     <div class="loader"></div>
     <div class="confirm-container confirm">
       <label @click="createReserve()">
-        <v-icon name="gi-knife-fork" animation="float" scale="2" />
+         <v-icon name="gi-knife-fork" animation="float" scale="2" />
         Confirmar Reserva
       </label>
     </div>
@@ -156,7 +156,7 @@ export default {
     <vue-qrcode v-if="done && !inRoute" :value="url" :options="{ width: 300 }"></vue-qrcode>
     <p class="text-pdf" v-if="mini && inRoute">Si la descarga no ha iniciado automáticamente pulse en el botón de descargar PDF.</p>
     <label v-if="done || inRoute" @click="createPDF()">
-      <v-icon name="hi-solid-document-download" animation="float" scale="2" />
+       <v-icon name="hi-solid-document-download" animation="float" scale="2" />
       Descargar PDF
     </label>
   </div>

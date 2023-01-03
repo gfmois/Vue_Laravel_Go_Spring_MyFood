@@ -33,7 +33,7 @@ export default {
     <div class="video">
         {{data}}
         <video ref="qr_reader" autoplay></video>
-        <v-icon class="close-button" scale="3" name="io-close-circle" @click="$emit('open_close', false)"></v-icon>
+         <v-icon class="close-button" scale="3" name="io-close-circle" @click="$emit('open_close', false)"></v-icon>
     </div>
 </template>
 <style scoped>

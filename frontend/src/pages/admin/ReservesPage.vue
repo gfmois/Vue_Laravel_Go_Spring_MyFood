@@ -14,7 +14,7 @@ export default {
 <template>
 <div class="main">
     <div class="qr-reader">
-        <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
+         <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
         <QrReaderComponentVue @open_close="clicked = $event" v-if="clicked" />
     </div>
     <table>
