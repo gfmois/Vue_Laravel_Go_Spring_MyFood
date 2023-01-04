@@ -168,11 +168,6 @@ export default {
   </div>
 
   <!-- Download PDF with QR -->
-<<<<<<< HEAD
-  <div :class="{ 'centered-div': mini }" class="confirm-container">
-    <vue-qrcode v-if="done && !inRoute" :value="url" :options="{ width: 300 }"></vue-qrcode>
-    <p class="text-pdf" v-if="mini && inRoute">Si la descarga no ha iniciado automáticamente pulse en el botón de descargar PDF.</p>
-=======
   <div :class="{ 'centered-div': mini }" class="container">
     <vue-qrcode
       v-if="done && !inRoute"
@@ -183,7 +178,6 @@ export default {
       Si la descarga no ha iniciado automáticamente pulse en el botón de
       descargar PDF.
     </p>
->>>>>>> mois-dev
     <label v-if="done || inRoute" @click="createPDF()">
        <v-icon name="hi-solid-document-download" animation="float" scale="2" />
       Descargar PDF
