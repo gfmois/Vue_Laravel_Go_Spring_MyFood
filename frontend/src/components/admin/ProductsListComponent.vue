@@ -1,53 +1,42 @@
 <script>
-import { computed, reactive } from "@vue/reactivity";
-import { useStore } from "vuex";
-import { useDeleteProduct } from "../../composables/productos/useProducts"
-import Constant_Admin from "../../Constant_Admin";
-import secret from "../../secret";
-
+import { computed,reactive } from '@vue/reactivity';
+import { useStore } from 'vuex';
+import secret from '../../secret';
 export default {
   setup() {
     const store = useStore();
     const state = reactive({
       productsList: computed(() => store.state.productos.productsList),
     });
-    
-    store.dispatch(Constant_Admin.GET_PRODUCTS);
-
     return { state, secret };
   },
 };
 </script>
 <template>
-  <div class="products-list">
-    <div class="product-item" v-for="product in state.productsList">
-      <div class="product-image">
-        <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`" />
-
-      </div>
-      <div class="product-info">
-        <div>
-          <p>Nombre</p>
-          <h3>{{ product.nombre }}</h3>
+    <div class="products-list">
+            <div class="product-item" v-for="product in state.productsList" @click="$router.push('/admin/productos/'+product.id_producto)">
+                <div class="product-image">
+                    <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`">
+                </div>
+                <div class="product-info">
+                    <div>
+                        <p>Nombre</p>
+                        <h3>{{product.nombre}}</h3>
+                    </div>
+                    <div>
+                        <p>Precio</p>
+                        <h3>{{product.precio}}€</h3>
+                    </div>
+                    <div>
+                        <p>Categorias</p>
+                        <h3>{{product.c_categorias.join(", ")}}</h3>
+                    </div>
+                    <div class="tags">
+                         <v-icon :name="alergeno.imagen.split('|')[0]" scale="2" v-for="alergeno in product.alergenos" /> 
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-          <p>Precio</p>
-          <h3>{{ product.precio }}€</h3>
-        </div>
-        <div>
-          <p>Categorias</p>
-          <h3>{{ product.c_categorias.join(", ") }}</h3>
-        </div>
-        <div class="tags">
-          <v-icon
-            :name="alergeno.imagen.split('|')[0]"
-            scale="2"
-            v-for="alergeno in product.alergenos"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 <style scoped>
 .products-list {

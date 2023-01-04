@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
+    "@vueform/multiselect": "^2.5.8",
+    "@vueform/slider": "^2.1.6",
     "@vuepic/vue-datepicker": "^3.5.3",
     "axios": "^1.2.0",
     "esbuild": "^0.16.4",

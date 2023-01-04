@@ -30,11 +30,9 @@ export default {
 <template>
 <div class="main">
     <div class="qr-reader">
-        <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
+         <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
         <QrReaderComponentVue @open_close="clicked = $event" v-if="clicked" />
     </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
     <table>
         <thead>
             <tr>
@@ -55,19 +53,16 @@ export default {
             </tr>
         </tbody>
     </table>
-=======
     <div class="qr-reader">
         <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
-=======
     <div class="add-reserve">
         <v-icon name="io-add-outline" scale="2" @click="$router.push('reservas/nueva_reserva')" />
->>>>>>> mois-dev
     </div>
     <ListTableComponent v-if="!isInForm" :key="reserves" :route="'reservas'" :thead="headOptions" :tbody="reserves" />
     <div v-if="isInForm">
         <ReserveFormComponent />
     </div>
->>>>>>> mois-dev
+</div>
 </div>
 </template>
 <style scoped>
@@ -112,52 +107,5 @@ export default {
     width: 100%;
     border-radius: 10px;
 }
-<<<<<<< HEAD
-table {
-    width: 100%;
-    position: relative;
-    border-radius: 20px;
-    text-align: center;
-}
-* {
-    border-collapse: collapse;
-    box-sizing: border-box;
-}
-th,td {
-    padding: 15px;
-    font-size: 1.2rem;
-}
-th {
-    top: 0;
-    position: sticky;
-    background-color: #362e4a;
-    padding: 10px;
-    color: white;
-}
-
-tbody {
-    overflow-y: scroll;
-}
-tr:nth-child(2n) {
-    background-color: #f6f7f7;
-}
-@media (min-device-width: 768px){
-    .qr-reader {
-        display: none;
-    }
-}
-@media (max-width: 500px) {
-    .main {
-        border-radius: 0px;
-    }
-    .qr-reader {
-        top: 10px;
-    }
-    th:nth-child(3), td:nth-child(3){
-        display: none;
-    }
-}
-=======
->>>>>>> mois-dev
 
 </style>

@@ -40,12 +40,12 @@ export default {
         </div>
         <ul>
             <li v-for="route in routes" :class="{active: route.path === $route.name}" @click="$router.replace({path: '/admin/'+route.path })">
-                <v-icon :name="route.icon" fill="white" :scale="route.scale"/>
+                 <v-icon :name="route.icon" fill="white" :scale="route.scale"/>
                 <p>{{route.name}}</p>
             </li>
         </ul>
         <div class="return" @click="$router.push('/')">
-            <v-icon name="md-exittoapp-twotone" fill="white" scale="2"/>
+             <v-icon name="md-exittoapp-twotone" fill="white" scale="2"/>
             <p>Volver</p>
         </div>
     </aside>    
@@ -314,10 +314,6 @@ aside ul li:hover svg {
 .main-admin {
     box-sizing: border-box;
     padding: 20px;
-<<<<<<< HEAD
-
-=======
->>>>>>> mois-dev
     height: 90vh;
 }
 .return {

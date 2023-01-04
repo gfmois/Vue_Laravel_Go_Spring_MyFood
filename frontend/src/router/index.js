@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import("../pages/client/ReservePage.vue"),
     },
     {
+      path: '/pedidos',
+      name: 'pedidos',
+      component: () => import('../pages/client/OrderPage.vue')
+    },
+    {
       path: "/reserve/:id",
       name: "pdfReserve",
       component: () => import("../components/client/ReservePDF.vue"),
