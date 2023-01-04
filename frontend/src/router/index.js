@@ -77,6 +77,11 @@ const router = createRouter({
       ],
     },
     {
+      path: "/auth",
+      name: "auth",
+      component: () => import("../pages/client/AuthFormPage.vue")
+    },
+    {
       path: "/:pathMatch(.*)*",
       component: () => import("../pages/PageNotFound.vue"),
     },

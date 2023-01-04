@@ -13,7 +13,6 @@ export default (URL) => {
     axiosInstance.interceptors.response.use(
         (response) => response,
         (e) => {
-            console.log(e);
             if (e.response.status == "401") {
                 localStorage.removeItem('token')
                 localStorage.removeItem('user')
