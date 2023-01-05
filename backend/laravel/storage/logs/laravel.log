@@ -1143,3 +1143,33 @@
 #29 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('...')
 #30 {main}
 "} 
+[2023-01-05 08:36:43] local.ERROR: syntax error, unexpected token "<<" {"exception":"[object] (ParseError(code: 0): syntax error, unexpected token \"<<\" at C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\routes\\api.php:50)
+[stacktrace]
+#0 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(432): Illuminate\\Routing\\RouteFileRegistrar->register()
+#1 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(386): Illuminate\\Routing\\Router->loadRoutes()
+#2 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\RouteRegistrar.php(166): Illuminate\\Routing\\Router->group()
+#3 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\app\\Providers\\RouteServiceProvider.php(34): Illuminate\\Routing\\RouteRegistrar->group()
+#4 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): App\\Providers\\RouteServiceProvider->App\\Providers\\{closure}()
+#5 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#6 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(81): Illuminate\\Container\\Util::unwrapIfClosure()
+#7 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#8 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(651): Illuminate\\Container\\BoundMethod::call()
+#9 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider.php(120): Illuminate\\Container\\Container->call()
+#10 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider.php(45): Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider->loadRoutes()
+#11 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider->Illuminate\\Foundation\\Support\\Providers\\{closure}()
+#12 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#13 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(81): Illuminate\\Container\\Util::unwrapIfClosure()
+#14 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(37): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#15 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(651): Illuminate\\Container\\BoundMethod::call()
+#16 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\ServiceProvider.php(119): Illuminate\\Container\\Container->call()
+#17 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(936): Illuminate\\Support\\ServiceProvider->callBootedCallbacks()
+#18 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(914): Illuminate\\Foundation\\Application->bootProvider()
+#19 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}()
+#20 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(915): array_walk()
+#21 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#22 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(242): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap()
+#23 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(383): Illuminate\\Foundation\\Application->bootstrapWith()
+#24 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(153): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#25 C:\\Users\\Moises\\Desktop\\Proyectos\\Vue_Laravel_Go_Spring_MyFood\\backend\\laravel\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#26 {main}
+"} 

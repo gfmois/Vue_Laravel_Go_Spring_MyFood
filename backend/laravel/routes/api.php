@@ -47,12 +47,7 @@ Route::prefix("/auth")->group(function() {
 
 Route::prefix('productos')->group(function (){
     Route::get('/',[ProductoController::class, 'getProducts']);
-<<<<<<< HEAD
-    Route::get('/{id_producto}',[ProductoController::class, 'getProduct']);
-    Route::post('/',[ProductoController::class, 'addProduct']);
-    Route::delete('/{id_producto}',[ProductoController::class, 'deleteProduct']);
-    Route::post('/{id_producto}',[ProductoController::class, 'updateProduct']);
-=======
+
 
     Route::middleware('jwt.verify')->group(function() {
         Route::post('/',[ProductoController::class, 'addProduct']);
@@ -60,7 +55,6 @@ Route::prefix('productos')->group(function (){
         Route::put('/{id_producto}',[ProductoController::class, 'updateProduct']);
     });
 
->>>>>>> mois-dev
 });
 
 Route::prefix('categorias')->group(function (){
