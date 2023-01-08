@@ -1,7 +1,11 @@
 <script>
+import { ref } from "vue"
+
 export default {
 	setup() {
-		
+		const register = ref(true)
+
+		return { register }
 	}
 }
 </script>
@@ -15,13 +19,20 @@ export default {
                     <h2>by MyFood</h2>
                 </div>
 				<div class="back-cover">
-					<h1>Registrarse</h1>
-					<p class="slogan">¿Todavía no tienes una cuenta? <br>Registrate hoy mismo y empieza a disfrutar de la buena comida.</p>
-					<button ref="btn">Crear una cuenta ahora</button>
+					<div class="register" v-if="register">
+						<h1>Registrarse</h1>
+						<p class="slogan">¿Todavía no tienes una cuenta? <br>Registrate hoy mismo y empieza a disfrutar de la buena comida.</p>
+						<button @click="register = false">Crear una cuenta ahora</button>
+					</div>
+					<div class="login" v-if="!register">
+						<h1>Iniciar Sesión</h1>
+						<p class="slogan">¿Ya tienes cuenta? Entra y pide algo bueno.</p>
+						<button @click="register = true">Iniciar Sesión</button>
+					</div>
 				</div>
             </div>
             <div class="book-content">
-                
+                <div class="cn-login"></div>
             </div>
         </div>
     </main>
@@ -158,19 +169,19 @@ p {
 	transform: rotateY(180deg) scale(0.9);
 }
 
-.book:hover > .book-cover > .back-cover {
+.book:hover > .book-cover > .back-cover > div {
 	transform: rotateY(-180deg) scale(0.7);
 }
 
-.book:hover > .book-cover > .init {
+.book:hover > .book-cover > .init{
 	display: none;
 }
 
-.back-cover {
+.back-cover > div {
 	display: none;
 }
 
-.book:hover > .book-cover > .back-cover {
+.book:hover > .book-cover > .back-cover > div {
 	display: flex;
 	justify-content: start;
 	flex-direction: column;
@@ -194,7 +205,7 @@ button {
 	background: transparent;
 	-webkit-animation: jello-horizontal 0.9s both;
 	animation: jello-horizontal 0.9s both;
-	border: 2px solid #016DD9;
+	border: 2px solid #b11509;
 	outline: none;
 	color: #ffffff;
 	cursor: pointer;
@@ -204,7 +215,7 @@ button {
    }
    
    button:hover {
-	background: #016DD9;
+	background: #b11509;
 	color: #ffffff;
 	animation: squeeze3124 0.9s both;
    }
