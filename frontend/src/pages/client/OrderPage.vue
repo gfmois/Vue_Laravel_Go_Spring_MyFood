@@ -25,10 +25,6 @@ watch(store_products, () => {
     })
 })
 
-const submitCart = () => {
-    console.log(cart.value);
-}
-
 const filters = reactive([
     {
         db_name: "categorias",
@@ -122,7 +118,7 @@ const deleteFilters = () => {
                 <ProductsList :key="products" :products="cart" :isCart="true"></ProductsList>
             </div>
             <div class="footer content">
-                <button @click="submitCart()">Ir al Carrito</button>
+                <button @click="$router.push('/carrito')">Ir al Carrito</button>
             </div>
         </div>
         
