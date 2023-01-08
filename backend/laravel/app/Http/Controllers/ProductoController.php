@@ -3,13 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Producto\StoreProductoRequest;
-use App\Http\Resources\Producto\ProductoCollection;
-use App\Http\Resources\Producto\ProductoResource;
 use App\Models\Producto;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class ProductoController extends Controller
 {

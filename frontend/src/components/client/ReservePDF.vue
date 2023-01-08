@@ -5,6 +5,7 @@ import { useRoute } from "vue-router";
 import reservasService from "../../services/client/ReservasService";
 import secret from "../../secret";
 import { useCreateReserve } from "../../composables/reservas/useReservas";
+import QRCode from "qrcode";
 
 import("../../assets/fonts/dancing_script");
 
@@ -13,11 +14,12 @@ export default {
     reserve_info: [],
   },
   setup(props) {
+    const reserveID = ref();
     const currentRoute = useRoute();
     const done = ref(false);
-    const url = ref(`https://192.168.137.1:5173/reserve/`);
+    const url = ref(`${secret.LOCALHOST}/reserve/`);
     const mini = ref(false);
-    const inRoute = ref(false)
+    const inRoute = ref(false);
 
     const doc = new jsPDF({
       orientation: "l",
@@ -37,7 +39,7 @@ export default {
       f_obj[obj_mapped[1].key] = obj_mapped[1].value;
       f_obj[obj_mapped[2].key] = obj_mapped[2].value;
 
-      const reserveID = ref(useCreateReserve(f_obj))
+      reserveID.value = useCreateReserve(f_obj);
 
       watchEffect(() => {
         url.value += `${reserveID.value.reservaID}`;
@@ -65,6 +67,14 @@ export default {
       };
 
       image.src = url;
+    };
+
+    const qrToDataURL = async (text) => {
+      try {
+        return await QRCode.toDataURL(text);
+      } catch (err) {
+        console.error(err);
+      }
     };
 
     const createPDF = async () => {
@@ -104,6 +114,12 @@ export default {
         doc.setFillColor(255, 255, 255);
         doc.rect(20, 20, 170, 125, "F");
 
+        // Qr
+        const vl = qrToDataURL(`${secret.LOCALHOST}/admin/reservas/${currentRoute.params.id}`)
+        vl.then((d) => {
+          doc.addImage(d, "baseURL", 240, 45, 80, 80)
+        })
+
         // Title
         doc.setTextColor(0, 0, 0);
         doc.setFont("dancing", "italic");
@@ -115,13 +131,13 @@ export default {
           doc.text(45, 70 + e * 10, obj[e].name);
         });
 
-        doc.save("reserva");
+        setTimeout(() => doc.save("reserva"), 1000)
       });
     };
 
     onMounted(() => {
       if (Object.keys(currentRoute.params).includes("id")) {
-        mini.value = true
+        mini.value = true;
         inRoute.value = true;
         createPDF();
       }
@@ -133,7 +149,7 @@ export default {
       url,
       mini,
       createReserve,
-      inRoute
+      inRoute,
     };
   },
 };
@@ -152,9 +168,16 @@ export default {
   </div>
 
   <!-- Download PDF with QR -->
-  <div :class="{ 'centered-div': mini }" class="confirm-container">
-    <vue-qrcode v-if="done && !inRoute" :value="url" :options="{ width: 300 }"></vue-qrcode>
-    <p class="text-pdf" v-if="mini && inRoute">Si la descarga no ha iniciado automáticamente pulse en el botón de descargar PDF.</p>
+  <div :class="{ 'centered-div': mini }" class="container">
+    <vue-qrcode
+      v-if="done && !inRoute"
+      :value="url"
+      :options="{ width: 300 }"
+    ></vue-qrcode>
+    <p class="text-pdf" v-if="mini && inRoute">
+      Si la descarga no ha iniciado automáticamente pulse en el botón de
+      descargar PDF.
+    </p>
     <label v-if="done || inRoute" @click="createPDF()">
        <v-icon name="hi-solid-document-download" animation="float" scale="2" />
       Descargar PDF

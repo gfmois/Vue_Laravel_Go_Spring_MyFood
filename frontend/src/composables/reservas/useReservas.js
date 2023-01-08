@@ -1,6 +1,5 @@
 import { ref } from "vue";
 import reservaService from "../../services/client/ReservasService";
-import { reservas } from "../../store/modules/reservas";
 
 export const useGetHolidays = (params) => {
   const holidays = ref([]);
