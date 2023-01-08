@@ -46,7 +46,6 @@ export const useGetReserve = (id_reserva) => {
   return { reserve };
 };
 
-// FIXME: Reserva Service make petition from client server, change it to admin server
 export const useGetReserves = () => {
   const reserves = ref([]);
   reservaService.getReserves().then((data) => (reserves.value = data.data));

@@ -10,9 +10,9 @@ export default {
             next()
         }).catch((e) => {
             console.log(e);
-            store.state.authUser.isAdmin = false
+            store.clientes.authUser.isAdmin = false
             console.log('Error');
-            next("/")
+            next("/auth")
         })
     },
     noAuth(to, from, next) {
