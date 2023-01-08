@@ -47,6 +47,7 @@ export default {
     </div>
 </div>
 <div v-if="isCart" class="products-cart-list">
+    <p class="no-cart-products" v-if="!products.length > 0">No tienes productos todavia</p>
     <div class="product-cart-item" v-for="product in products" v-show="product.cantidad > 0">
         <div class="product-cart-image">
             <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`">
@@ -170,6 +171,7 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     width: 65%;
+    font-weight: 900;
 }
 .product-cart-info .description {
     font-size: 1.2rem;
@@ -191,5 +193,12 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: orange;
+    font-weight: 900;
+}
+.no-cart-products {
+    color: black;
+    font-size: 1.3rem;
+    font-weight: 900;
 }
 </style>
