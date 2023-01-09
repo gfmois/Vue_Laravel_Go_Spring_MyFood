@@ -12,7 +12,9 @@ export const useDeleteProduct = (id_product) => {
 export const useGetProducts = () => {
     const products = ref()
     productService.getProducts()
-        .then(({ data }) => data.value = data)
+        .then(({ data }) => {
+            products.value = data
+        })
 
     return { products }
 }

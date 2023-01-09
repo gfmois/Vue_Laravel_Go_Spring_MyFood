@@ -9,6 +9,7 @@ import {
     CategoryScale,
     LinearScale,
     PointElement,
+    ArcElement
 } from "chart.js"
 import { Bar, Line, Doughnut } from "vue-chartjs"
 import { reactive, computed } from "vue"
@@ -18,7 +19,7 @@ export default {
         data: Array
     },
     setup(props) {
-        ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement)
+        ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement, ArcElement)
         const options = { responsive: true }
         const type = props.type
         const data = reactive(props.data)

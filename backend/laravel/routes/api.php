@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ReservaController;
 use Illuminate\Support\Facades\Route;
@@ -53,7 +54,10 @@ Route::prefix('productos')->group(function (){
         Route::delete('/{id_producto}',[ProductoController::class, 'deleteProduct']);
         Route::put('/{id_producto}',[ProductoController::class, 'updateProduct']);
     });
+});
 
+Route::prefix("pedidos")->group(function() {
+    Route::get("/", [PedidoController::class, "getPedidos"]);
 });
 
 Route::prefix('categorias')->group(function (){
