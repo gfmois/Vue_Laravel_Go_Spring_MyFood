@@ -62,6 +62,7 @@ Route::prefix("pedidos")->group(function() {
 
 Route::prefix('categorias')->group(function (){
     Route::get('/',[CategoriaController::class, 'getCategories']);
+    Route::get("/properties", [CategoriaController::class, 'getCategoryProperties']);
 
     Route::middleware('jwt.verify')->group(function() {
         Route::post('/',[CategoriaController::class, 'addCategory']);
@@ -72,6 +73,7 @@ Route::prefix('categorias')->group(function (){
 
 Route::prefix('alergenos')->group(function (){
     Route::get('/',[AlergenoController::class, 'getAllergens']);
+    Route::get("/properties", [AlergenoController::class, "getAllergensProperties"]);
 
     Route::middleware('jwt.verify')->group(function() {
         Route::post('/',[AlergenoController::class, 'addAllergen']);

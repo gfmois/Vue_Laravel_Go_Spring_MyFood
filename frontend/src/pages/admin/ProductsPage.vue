@@ -1,5 +1,45 @@
 <script>
 import { RouterView } from 'vue-router'
+import CustomModal from "../../components/CustomModal.vue"
+import { ref, reactive, watch } from 'vue'
+import { useGetCategories } from '../../composables/categorias/useCategorias'
+import { useGetAllergens, useGetAllergensProperties } from '../../composables/alergenos/useAlergenos'
+
+export default {
+    components: {
+        CustomModal
+    },
+    setup() {
+        const showModalCategories = ref(false)
+        const showModalAllergens = ref(false)
+
+        const categories = reactive(useGetCategories().categories)
+        const allergens = reactive({ 
+            from_db: useGetAllergens().allergens, 
+            properties: useGetAllergensProperties().properties,
+            data: [], 
+        })
+
+        watch(
+            () => allergens.from_db,
+            (v, pv) => {
+                allergens.from_db.map((e) => {
+                    let icn = e.imagen.split("|")
+
+                    e.icono = icn[0]
+                    e.color = icn[1]
+                    e.slug = e.nombre.replaceAll(" ", "_").toLowerCase()
+                    delete e.imagen
+
+                    allergens.data.push(e)
+                })
+            }
+        )
+
+
+        return { showModalCategories, showModalAllergens, categories, allergens }
+    }
+}
 </script>
 <!-- <v-icon name="gi-wheat" scale="2"/> Gluten
 <v-icon name="gi-sad-crab" scale="2"/> Crustáceos
@@ -18,16 +58,16 @@ import { RouterView } from 'vue-router'
                 </div>
                 <v-icon name="bi-box2-fill" scale="3" />
             </div>
-            <div class="statistic-card">
+            <div class="statistic-card" @click="showModalCategories = true">
                 <div class="card-info">
-                    <h1>5</h1>
+                    <h1>{{ categories.length }}</h1>
                     <h3>Categorias</h3>
                 </div>
                 <v-icon name="md-category" scale="3" />
             </div>
-            <div class="statistic-card">
+            <div class="statistic-card" @click="showModalAllergens = true">
                 <div class="card-info">
-                    <h1>4</h1>
+                    <h1>{{ allergens.data.length }}</h1>
                     <h3>Productos alergenos</h3>
                 </div>
                 <v-icon name="md-block" scale="3" />
@@ -39,7 +79,10 @@ import { RouterView } from 'vue-router'
                 <v-icon name="md-addcircle" scale="3" />
             </div>
         </div>
-        <RouterView/>
+        <CustomModal :key="showModalCategories" :where="'Categorias'" :data="categories" @close="showModalCategories = $event" :show="showModalCategories" />
+        <CustomModal :key="showModalAllergens" :properties="allergens.properties" :where="'Alergenos'" :data="allergens.data" @close="showModalAllergens = $event" :show="showModalAllergens" />
+        <!-- <RouterView/> -->
+        <!-- FIXME: Add loading spinner -->
     </div>
 </template>
 <style scoped>

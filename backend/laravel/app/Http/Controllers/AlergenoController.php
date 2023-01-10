@@ -6,6 +6,9 @@ use App\Http\Requests\Alergeno\StoreAlergenoRequest;
 use App\Http\Requests\UpdateAlergenoRequest;
 use App\Http\Resources\Alergeno\AlergenoResource;
 use App\Models\Alergeno;
+use Illuminate\Console\View\Components\Alert;
+use Illuminate\Support\Facades\DB;
+use ReflectionClass;
 
 class AlergenoController extends Controller
 {
@@ -47,5 +50,9 @@ class AlergenoController extends Controller
             return "No se ha podido modificar el alergeno";
         }
     }
-    
+
+    public function getAllergensProperties() {
+        return DB::select(DB::raw("SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'categorias'"));
+    }
+
 }

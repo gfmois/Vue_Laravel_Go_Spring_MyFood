@@ -58,7 +58,7 @@ export default {
                             reservesData.value[0][m.month()].push(m.format("DD/MM/yyyy"));
                         }
 
-                    } else { // FIXME: Solo los del año pasado
+                    } else {
                         if (!reservesData.value[1][m.month()].includes(m.format("DD/MM/yyyy"))) {
                             reservesData.value[1][m.month()].push(m.format("DD/MM/yyyy"));
                         }

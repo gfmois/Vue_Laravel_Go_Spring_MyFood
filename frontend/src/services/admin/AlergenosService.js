@@ -5,4 +5,7 @@ export default {
     getAllergens(){
         return Api(`${secret.ADMIN_SERVER}`).get("alergenos")
     },
+    getProperties() {
+        return Api(`${secret.ADMIN_SERVER}`).get("alergenos/properties")
+    }
 }

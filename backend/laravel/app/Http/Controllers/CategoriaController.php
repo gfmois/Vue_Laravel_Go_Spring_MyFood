@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Categoria\StoreCategoriaRequest;
 use App\Http\Resources\Categoria\CategoriaResource;
 use App\Models\Categoria;
+use ReflectionClass;
 
 class CategoriaController extends Controller
 {
@@ -46,5 +47,10 @@ class CategoriaController extends Controller
         } else {
             return "No se ha podido modificar la categoria";
         }
+    }
+
+    public function getCategoryProperties() {
+        $ref = new ReflectionClass("\\App\\Models\\Categoria");
+        return $ref->getProperty("fillable")->getDefaultValue();
     }
 }

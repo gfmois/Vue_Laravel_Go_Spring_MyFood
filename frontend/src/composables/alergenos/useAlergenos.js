@@ -4,12 +4,12 @@ export const useGetAllergens = () => {
     let allergens = ref([])
     AlergenosService.getAllergens()
     .then(res => {
-        console.log(res);
+        allergens.value = res.data
     })
     .catch(error => {
         console.log(error);
     })
-    return { allergens}
+    return { allergens }
 }
 
 export const useGetAllergensInput = () => {
@@ -29,4 +29,14 @@ export const useGetAllergensInput = () => {
         console.log(error);
     })
     return { allergens}
+}
+
+export const useGetAllergensProperties = () => {
+    let properties = ref([])
+    AlergenosService.getProperties()
+        .then(({ data }) => {
+            properties.value = data
+        })
+
+    return { properties }
 }
