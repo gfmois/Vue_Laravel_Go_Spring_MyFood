@@ -1,4 +1,5 @@
 <script>
+import { watch } from 'vue';
 import { RouterView } from 'vue-router'
 import { useStore } from 'vuex';
 import Constant from '../../Constant';
@@ -6,6 +7,8 @@ export default {
     setup() {
         const store = useStore();
         store.state.productos.productsList ? null : store.dispatch(Constant.ADMIN_GET_PRODUCTS)
+        
+        // return { products: store.state.productos.productsList }
     }
 }
 </script>
@@ -17,27 +20,27 @@ export default {
                     <h1>20</h1>
                     <h3>Productos</h3>
                 </div>
-                 <v-icon name="bi-box2-fill" scale="3" />
+                 <p>Icon</p><v-icon name="bi-box2-fill" scale="3" />
             </div>
             <div class="statistic-card">
                 <div class="card-info">
                     <h1>5</h1>
                     <h3>Categorias</h3>
                 </div>
-                 <v-icon name="md-category" scale="3" />
+                 <p>Icon</p><v-icon name="md-category" scale="3" />
             </div>
             <div class="statistic-card">
                 <div class="card-info">
                     <h1>4</h1>
                     <h3>Productos alergenos</h3>
                 </div>
-                 <v-icon name="md-block" scale="3" />
+                 <p>Icon</p><v-icon name="md-block" scale="3" />
             </div>
             <div class="statistic-card" @click="$router.replace('/admin/productos/nuevo_producto')"> 
                 <div class="card-info">
                     <h3>Crear Producto</h3>
                 </div>
-                 <v-icon name="md-addcircle" scale="3" />
+                 <p>Icon</p><v-icon name="md-addcircle" scale="3" />
             </div>
         </div>
         <RouterView/>

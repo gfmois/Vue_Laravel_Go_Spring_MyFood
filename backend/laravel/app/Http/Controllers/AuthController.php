@@ -16,13 +16,13 @@ use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller {
     public function __construct() {
-        // $this->middleware('jwt.auth', ['except' => ['login', 'register']]);
+        $this->middleware('jwt.auth', ['except' => ['login', 'register']]);
     }
 
     public function login(Request $data) {
         $data->validate([
             'email' => 'required|string|email',
-            "password" => 'required|string'
+            'password' => 'required|string'
         ]);
 
         $credentials = $data->only('email', 'password');
@@ -52,9 +52,9 @@ class AuthController extends Controller {
 
     public function register(Request $data) {
         $data->validate([
-            "email" => 'required|string|email|unique:usuarios',
+            "email" => 'required|string|email',
             "password" => 'required|string|min:6',
-            "username" => 'required|string|unique:usuarios,usuario',
+            "username" => 'required|string',
         ]);
 
         $uuid = "";
@@ -64,9 +64,9 @@ class AuthController extends Controller {
 
         $user = Admin::create([
             "id_usuario" => substr($uuid, 0, 10),
+            "nombre" => $data->username,
             "email" => $data->email,
             "contraseña" => Hash::make($data->password),
-            "usuario" => $data->username,
             "cargo" => "Administrador",
             "avatar" => "https://api.multiavatar.com/" . $data->username . ".png"
         ]);

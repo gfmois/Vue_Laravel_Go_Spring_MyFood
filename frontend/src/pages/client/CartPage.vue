@@ -96,7 +96,9 @@ const nextStep = () =>{
 }
 
 const submitOrder = () => {
-    useAddOrders(cartProducts.value).response ? toast.success("Pedido realizado correctamente") : toast.error("Algo ha ido mal")
+    watch(useAddOrders(cartProducts.value).response, (response) => {
+        response == false ? toast.error("Algo ha ido mal") : toast.success("Pedido realizado correctamente")
+    })
 }
 
 </script>

@@ -16,7 +16,7 @@ export default {
     <div class="products-list">
             <div class="product-item" v-for="product in state.productsList" @click="$router.push('/admin/productos/'+product.id_producto)">
                 <div class="product-image">
-                    <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`">
+                  <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`">
                 </div>
                 <div class="product-info">
                     <div>
@@ -32,7 +32,7 @@ export default {
                         <h3>{{product.c_categorias.join(", ")}}</h3>
                     </div>
                     <div class="tags">
-                         <v-icon :name="alergeno.imagen.split('|')[0]" scale="2" v-for="alergeno in product.alergenos" /> 
+                         <p>Icon</p><v-icon :name="alergeno.imagen.split('|')[0]" scale="2" v-for="alergeno in product.alergenos" /> 
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import ClientesService from "../../services/admin/ClientesService";
+import ClientesService from "../../services/admin/ClientesService.js";
 
 export const useGetClients = () => {
   const clients = ref([]);

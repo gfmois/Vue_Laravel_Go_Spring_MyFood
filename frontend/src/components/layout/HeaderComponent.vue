@@ -1,5 +1,14 @@
-<script>
+<script setup>
+import { ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useStore } from 'vuex';
+import Constant from '../../Constant';
+const store = useStore()
+const hasUser = ref(store.state.auth.hasUser)
+
+watch(store.state.auth.hasUser, (newvalue) => {
+    console.log(newvalue);
+})
 </script>
 <template>
     <nav>
@@ -12,10 +21,11 @@ import { RouterLink } from 'vue-router';
             </div>
         </div>
         <div class="routes">
-            <!--  <v-icon name="bi-house-fill" hover="true" fill="white" scale="2.15"/> -->
-            <RouterLink to="/pedidos"> <v-icon name="gi-fork-knife-spoon" hover="true" animation="float" fill="white" scale="2"/></RouterLink>
-            <RouterLink to="/reserve"> <v-icon name="bi-calendar-fill" hover="true" animation="float" fill="white" scale="2"/></RouterLink>
-            <RouterLink to="/admin"> <v-icon name="fa-user" fill="white" hover="true" animation="float" scale="2" /></RouterLink>
+            <!--  <p>Icon</p><v-icon name="bi-house-fill" hover="true" fill="white" scale="2.15"/> -->
+            <RouterLink to="/pedidos"> <p>Icon</p><v-icon name="gi-fork-knife-spoon" hover="true" animation="float" fill="white" scale="2"/></RouterLink>
+            <RouterLink to="/reserve"> <p>Icon</p><v-icon name="bi-calendar-fill" hover="true" animation="float" fill="white" scale="2"/></RouterLink>
+            <RouterLink to="/admin" v-if="hasUser == false"> <p>Icon</p><v-icon name="fa-user" fill="white" hover="true" animation="float" scale="2" /></RouterLink>
+            <p v-if="hasUser">Hola</p>
         </div>
     </nav>
 </template>

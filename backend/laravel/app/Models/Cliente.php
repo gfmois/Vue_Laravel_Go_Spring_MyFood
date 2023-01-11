@@ -31,7 +31,7 @@ class Cliente extends Authenticatable implements JWTSubject {
     ];
 
     protected $hidden = [
-        "constraseña",
+        "contraseña",
         "remember_token"
     ];
 

@@ -37,7 +37,7 @@ export default {
     {{ data }}
     <div class="video">
         <video ref="qr_reader"></video>
-        <v-icon class="close-button" scale="3" name="io-close-circle" @click="$emit('open_close', false), closeCamera()"></v-icon>
+        <p>Icon</p><v-icon class="close-button" scale="3" name="io-close-circle" @click="$emit('open_close', false), closeCamera()"></v-icon>
     </div>
 </template>
 <style scoped>

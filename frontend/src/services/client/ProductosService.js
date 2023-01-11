@@ -11,5 +11,9 @@ export default {
         return Api(`${secret.CLIENT_SERVER}`).get("productos/filtro",{
             params:filters
         })
+    },
+    getProductDetails(id_product) {
+        return Api(`${secret.CLIENT_SERVER}`).get(`productos/${id_product}`)
     }
+
 }

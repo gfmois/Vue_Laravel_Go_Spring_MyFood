@@ -6,7 +6,6 @@ import ListTableComponent from "../../components/ListTableComponent.vue"
 import { ReserveFormComponent } from "../../components/admin"
 import Constant from '../../Constant';
 import { useRoute } from 'vue-router';
-
 export default {
     setup() {
         const store = useStore()
@@ -17,7 +16,6 @@ export default {
         const reserves = reactive(computed(() => store.state.reservas.reserves))
         const clicked = ref(false);
         const headOptions = ['Cliente', 'Fecha', 'Servicio', 'Nº Comensales', 'Estado'];
-
         return { reserves, clicked, headOptions, isInForm }
     },
     components: {
@@ -30,31 +28,9 @@ export default {
 <template>
 <div class="main">
     <div class="qr-reader">
-         <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
+        <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
         <QrReaderComponentVue @open_close="clicked = $event" v-if="clicked" />
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Cliente</th>
-                <th>Fecha</th>
-                <th>Nº Comensales</th>
-                <th>Servicio</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="i in 5">
-                <td>Hola</td>
-                <td>Hola</td>
-                <td>Hola</td>
-                <td>Hola</td>
-                <td>Hola</td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="qr-reader">
-        <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
     <div class="add-reserve">
         <v-icon name="io-add-outline" scale="2" @click="$router.push('reservas/nueva_reserva')" />
     </div>
@@ -63,12 +39,11 @@ export default {
         <ReserveFormComponent />
     </div>
 </div>
-</div>
 </template>
 <style scoped>
 .qr-reader {
     position: absolute;
-    top: 20px;
+    top: 10px;
     box-sizing: border-box;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     width: 60px;
@@ -80,7 +55,6 @@ export default {
     align-items: center;
     cursor: pointer;
 }
-
 .add-reserve {
     position: absolute;
     top: 10px;
@@ -107,5 +81,4 @@ export default {
     width: 100%;
     border-radius: 10px;
 }
-
 </style>

@@ -9,10 +9,6 @@ export default {
     ADMIN_DELETE_PRODUCT: "deleteProduct",
     ADMIN_UPDATE_PRODUCT: "updateProduct",
     UPDATE_RESERVE: "updateReserve",
-
-    // Clients
-    LOGIN_CLIENT: "loginClient",
-    CLIENT_REMOVE: "clientRemove",
     
     // PRODUCTOS
     GET_PRODUCTS: "getProducts",
@@ -26,5 +22,10 @@ export default {
     ADMIN_GET_PRODUCTS: "getAdminProducts",
     ADMIN_ADD_PRODUCT: "addAdminProduct",
     ADMIN_DELETE_PRODUCT: "deleteAdminProduct",
-    ADMIN_UPDATE_PRODUCT: "updateAdminProduct"
+    ADMIN_UPDATE_PRODUCT: "updateAdminProduct",
+
+    //AUTH
+    CHECK_IS_ADMIN: "checkIsAdmin",
+    CHECK_HAS_USER: "checkHasUser",
+    CHANGE_HAS_USER: "changeHasUser"
 }

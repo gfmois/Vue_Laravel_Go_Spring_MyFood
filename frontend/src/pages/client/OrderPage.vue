@@ -103,7 +103,7 @@ const deleteFilters = () => {
 <template>
     <div class="main-order">
         <div class="filters">
-            <v-icon class="delete-filters" name="hi-solid-trash" scale="1.2" fill="orange" @click="deleteFilters()"/>
+            <p>Icon</p><v-icon class="delete-filters" name="hi-solid-trash" scale="1.2" fill="orange" @click="deleteFilters()"/>
             <Filters :key="filters" :filters="filters"></Filters>
         </div>
         <div class="products">         
@@ -112,7 +112,7 @@ const deleteFilters = () => {
         </div>
         <div class="cart">
             <div class="header">
-                 <v-icon name="fa-shopping-cart" scale="2" fill="orange"></v-icon>
+                 <p>Icon</p><v-icon name="fa-shopping-cart" scale="2" fill="orange"></v-icon>
             </div>
             <div class="body content">
                 <ProductsList :key="products" :products="cart" :isCart="true"></ProductsList>
@@ -211,5 +211,17 @@ const deleteFilters = () => {
         font-size: 2rem;
         font-weight: 700;
 
+    }
+    @media(max-width: 1000px) {
+        .filters {
+            display: none;
+        }
+        .products {
+            width: 100%;
+        }
+        .cart:hover {
+            width: 90vw;
+            height: 60vh;
+        }
     }
 </style>

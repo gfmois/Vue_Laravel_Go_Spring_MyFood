@@ -25,3 +25,15 @@ export const useGetFilteredProducts = (filters) => {
     })
     return { products }
 }
+
+export const useGetProductDetails = (id_product) => {
+    let product = ref()
+    ProductosService.getProductDetails(id_product)
+    .then(res => {
+        product.value = res.data.producto
+    })
+    .catch(error => {
+        product.value = false
+    })
+    return { product }
+}
