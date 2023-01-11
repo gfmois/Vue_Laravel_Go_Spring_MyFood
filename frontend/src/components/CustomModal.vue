@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 export default {
     props: {
@@ -21,12 +21,27 @@ export default {
         const whereName = ref(props.where)
         const properties = ref(props.properties)
         const inputs = ref(false)
+        const DATA_TYPE_KEYS = {
+            "varchar": "string",
+            "int": "number"
+        }
 
         elements.value.map((e) => {
             e.icono = e.icono != 'icono' 
                 ? e.icono 
                 : 'md-hideimage-outlined'  
         })
+
+        if (typeof properties.value != "undefined") {
+            console.log(properties.value);
+            properties.value.map((e, i) => {
+                console.log(e);
+                console.log(DATA_TYPE_KEYS[e.DATA_TYPE], e.DATA_TYPE);
+                properties.value[i].DATA_TYPE = DATA_TYPE_KEYS[e.DATA_TYPE]
+            })
+        }
+
+        console.log(properties.value);
 
         function closeModal() {
             show.value = !show.value
@@ -55,8 +70,7 @@ export default {
 
                 <div class="inputs" v-if="inputs">
                     <div class="input" v-for="property in properties">
-                        <h1>{{ property.COLUMN_NAME }}</h1>
-                        <h3>{{ property.DATA_TYPE }}</h3>
+                        
                     </div>
                 </div>
 
