@@ -2,7 +2,7 @@
 import { RouterView } from 'vue-router'
 import CustomModal from "../../components/CustomModal.vue"
 import { ref, reactive, watch } from 'vue'
-import { useGetCategories } from '../../composables/categorias/useCategorias'
+import { useGetCategories, useGetCategoryProperties } from '../../composables/categorias/useCategorias'
 import { useGetAllergens, useGetAllergensProperties } from '../../composables/alergenos/useAlergenos'
 
 export default {
@@ -13,12 +13,17 @@ export default {
         const showModalCategories = ref(false)
         const showModalAllergens = ref(false)
 
-        const categories = reactive(useGetCategories().categories)
+        const categories = reactive({ from_db: useGetCategories().categories, properties: useGetCategoryProperties().properties })
         const allergens = reactive({ 
             from_db: useGetAllergens().allergens, 
             properties: useGetAllergensProperties().properties,
             data: [], 
         })
+
+        const DATA_TYPE_KEYS = {
+            varchar: "text",
+            int: "number"
+        }
 
         watch(
             () => allergens.from_db,
@@ -36,6 +41,27 @@ export default {
             }
         )
 
+        watch(
+            () => allergens.properties,
+            (v, pv) => {
+                v.map((p) => {
+                    p.DATA_TYPE = DATA_TYPE_KEYS[p.DATA_TYPE];
+                })
+
+                allergens.properties = v
+            }
+        )
+
+        watch(
+            () => categories.properties,
+            (v, pv) => {
+                v.map((p) => {
+                    p.DATA_TYPE = DATA_TYPE_KEYS[p.DATA_TYPE];
+                })
+
+                categories.properties = v
+            }
+        )
 
         return { showModalCategories, showModalAllergens, categories, allergens }
     }
@@ -60,7 +86,7 @@ export default {
             </div>
             <div class="statistic-card" @click="showModalCategories = true">
                 <div class="card-info">
-                    <h1>{{ categories.length }}</h1>
+                    <h1>{{ categories.from_db.length }}</h1>
                     <h3>Categorias</h3>
                 </div>
                 <v-icon name="md-category" scale="3" />
@@ -79,8 +105,8 @@ export default {
                 <v-icon name="md-addcircle" scale="3" />
             </div>
         </div>
-        <CustomModal :key="showModalCategories" :where="'Categorias'" :data="categories" @close="showModalCategories = $event" :show="showModalCategories" />
-        <CustomModal :key="showModalAllergens" :properties="allergens.properties" :where="'Alergenos'" :data="allergens.data" @close="showModalAllergens = $event" :show="showModalAllergens" />
+        <CustomModal v-if="showModalCategories" :key="showModalCategories" :where="'Categorias'" :properties="categories.properties" :data="categories.from_db" @close="showModalCategories = $event" :show="showModalCategories" />
+        <CustomModal v-if="showModalAllergens" :key="showModalAllergens" :properties="allergens.properties" :where="'Alergenos'" :data="allergens.data" @close="showModalAllergens = $event" :show="showModalAllergens" />
         <!-- <RouterView/> -->
         <!-- FIXME: Add loading spinner -->
     </div>

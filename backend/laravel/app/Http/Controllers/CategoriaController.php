@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Categoria\StoreCategoriaRequest;
 use App\Http\Resources\Categoria\CategoriaResource;
 use App\Models\Categoria;
+use Illuminate\Support\Facades\DB;
 use ReflectionClass;
 
 class CategoriaController extends Controller
@@ -22,9 +23,12 @@ class CategoriaController extends Controller
     public function addCategory(StoreCategoriaRequest $request)
     {
         $newCategory = new Categoria($request->toArray());
-        $newCategory->generateAttribute($request->nombre);
-        $this->categoria::create($newCategory->toArray());
-        return new CategoriaResource($newCategory);
+        $newCategory->generateAttribute($request->nombre, $request->id_categoria);
+        if ($this->categoria::create($newCategory->toArray()) != null) {
+            return new CategoriaResource($newCategory);
+        }
+
+        return false;
     }
     public function deleteCategory($id_categoria)
     {
@@ -50,7 +54,6 @@ class CategoriaController extends Controller
     }
 
     public function getCategoryProperties() {
-        $ref = new ReflectionClass("\\App\\Models\\Categoria");
-        return $ref->getProperty("fillable")->getDefaultValue();
+        return DB::select(DB::raw("SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'categorias'"));
     }
 }

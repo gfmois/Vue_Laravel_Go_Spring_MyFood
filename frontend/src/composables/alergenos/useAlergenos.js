@@ -40,3 +40,16 @@ export const useGetAllergensProperties = () => {
 
     return { properties }
 }
+
+export const useAddAlergenos = (allergen) => {
+    let result = ref([])
+    AlergenosService.addAllergen(allergen)
+        .then(({ data }) => {
+            result.value = data
+        })
+        .catch((data) => {
+            result.value = false
+        })
+
+    return { result }
+}

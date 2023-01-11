@@ -7,5 +7,8 @@ export default {
     },
     getProperties() {
         return Api(`${secret.ADMIN_SERVER}`).get("alergenos/properties")
+    },
+    addAllergen(allergen) {
+        return Api(`${secret.ADMIN_SERVER}`).post("alergenos", allergen)
     }
 }

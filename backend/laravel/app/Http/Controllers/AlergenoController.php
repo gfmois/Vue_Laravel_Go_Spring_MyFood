@@ -25,9 +25,12 @@ class AlergenoController extends Controller
     public function addAllergen(StoreAlergenoRequest $request)
     {
         $newAllergen = new Alergeno($request->toArray());
-        $newAllergen->generateAttribute($request->nombre);
-        $this->alergeno::create($newAllergen->toArray());
-        return new AlergenoResource($newAllergen);
+        $newAllergen->generateAttribute($request->id_alergeno);
+        if ($this->alergeno::create($newAllergen->toArray()) != null) {
+            return new AlergenoResource($newAllergen);
+        }
+
+        return false;
     }
     public function deleteAllergen($id_alergeno)
     {
@@ -52,7 +55,7 @@ class AlergenoController extends Controller
     }
 
     public function getAllergensProperties() {
-        return DB::select(DB::raw("SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'categorias'"));
+        return DB::select(DB::raw("SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'alergenos'"));
     }
 
 }

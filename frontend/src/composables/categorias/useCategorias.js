@@ -29,3 +29,26 @@ export const useGetCategoriesInput = () => {
     })
     return { categories }
 }
+
+export const useGetCategoryProperties = () => {
+    let properties = ref([])
+    CategoriasService.getProperties()
+        .then(({ data }) => {
+            properties.value = data
+        })
+
+    return { properties }
+}
+
+export const useAddCategorias = (category) => {
+    let result = ref([])
+    CategoriasService.addCategory(category)
+        .then((data) => {
+            result.value = data.data
+        })
+        .catch((err) => {
+            result.value = false
+        })
+
+    return { result }
+}
