@@ -10,5 +10,8 @@ export default {
     },
     addAllergen(allergen) {
         return Api(`${secret.ADMIN_SERVER}`).post("alergenos", allergen)
+    },
+    updateAllergen(allergen) {
+        return Api(`${secret.ADMIN_SERVER}`).put(`alergenos/${allergen.id_alergeno}`, allergen)
     }
 }

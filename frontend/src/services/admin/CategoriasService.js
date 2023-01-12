@@ -10,5 +10,8 @@ export default {
     },
     addCategory(category) {
         return Api(`${secret.ADMIN_SERVER}`).post("categorias", category)
+    },
+    updateCategory(category) {
+        return Api(`${secret.ADMIN_SERVER}`).put(`categorias/${category.id_categoria}`, category)
     }
 }

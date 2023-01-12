@@ -2,8 +2,8 @@
 import { ref, reactive, watch } from 'vue';
 import CustomInput from "../components/CustomInput.vue"
 import { v1 } from "uuid"
-import { useAddAlergenos } from "../composables/alergenos/useAlergenos"
-import { useAddCategorias } from "../composables/categorias/useCategorias"
+import { useAddAlergenos, useUpdateAlergenos } from "../composables/alergenos/useAlergenos"
+import { useAddCategorias, useUpdateCategorias } from "../composables/categorias/useCategorias"
 import { useToast } from "vue-toast-notification";
 
 export default {
@@ -20,7 +20,7 @@ export default {
             required: true
         },
     },
-    setup(props) {
+    setup(props, { emit }) {
         const $toastr = useToast({
             position: "top-right",
         });
@@ -32,6 +32,7 @@ export default {
         const toggleButtons = ref(false)
         const inputs = ref([])
         const item = ref({})
+        const isDetails = ref(false);
 
         elements.value.map((e) => {
             e.icono = (() => {
@@ -43,10 +44,6 @@ export default {
 
                 return "md-hideimage-outlined"
             })()
-        })
-
-        inputs.value.map((e) => {
-            item.value[e.name] = e.value
         })
 
         properties.value.map((e) => {
@@ -66,10 +63,47 @@ export default {
         }
 
         function enableUpdate(element) {
-            console.log(element);
+            isDetails.value = true;
+            inputs.value.forEach((e) => { item.value[e.name] = e.value })
+
             inputs.value.map((e) => {
-                // NOTE: Tienen los mismos nombres
+                e.value = element[e.name]
+                return e
             })
+
+            watch(
+                () => inputs.value,
+                (v, pv) => {
+                    Object.keys(item.value).forEach((l) => {
+                        let input = inputs.value[inputs.value.findIndex(e => e.name == l)].value
+                        item.value[l] = input
+                    })
+                },
+                { deep: true }
+            )
+        }
+
+        function updateItem() {
+            const result = reactive(eval(`useUpdate${whereName.value}`)(item.value).result)
+
+            watch(
+                () => result.value,
+                (v, pv) => {
+                    if (v != false && v.status != "error") {
+                        emit("updatedItem", item.value)
+                        $toastr.success(v.msg)
+                    } else {
+                        console.log(v);
+                        $toastr.error(v.msg)
+                    }
+                }
+            )
+        }
+
+        function toogleInputs() {
+            isDetails.value = false;
+            toggleButtons.value = !toggleButtons.value;
+            showInputs.value = !showInputs.value;
         }
 
 
@@ -79,17 +113,20 @@ export default {
         }
 
         function createItem() {
+            inputs.value.map((e) => {
+                item.value[e.name] = e.value
+            })
+
             const result = reactive(eval(`useAdd${whereName.value}`)(item.value))
-            
+
             watch(
                 () => result.result,
                 (v, pv) => {
-                    console.log(v);
                     if (v != false) {
                         $toastr.success(`${whereName.value.slice(0, -1)} se ha creado correctamente.`)
                         elements.value.push({
-                            nombre: item.value.nombre, 
-                            slug: String(item.value.nombre).replace(" ", "_").toLowerCase(), 
+                            nombre: item.value.nombre,
+                            slug: String(item.value.nombre).replace(" ", "_").toLowerCase(),
                             icono: String(item.value.icono).includes("-") ? item.value.icono : "md-hideimage-outlined"
                         })
                     } else {
@@ -99,7 +136,22 @@ export default {
             )
         }
 
-        return { closeModal, show, elements, whereName, properties, showInputs, inputs, closeDetails, toggleButtons, createItem, enableUpdate }
+        return {
+            closeModal,
+            show,
+            elements,
+            whereName,
+            properties,
+            showInputs,
+            inputs,
+            closeDetails,
+            toggleButtons,
+            createItem,
+            enableUpdate,
+            toogleInputs,
+            updateItem,
+            isDetails
+        }
     },
     components: {
         CustomInput
@@ -112,9 +164,10 @@ export default {
     <div v-if="show" class="main-modal">
         <div class="wrapper">
             <div class="list">
-                <div class="card" v-for="element in elements" v-if="!showInputs" @click="enableUpdate(element)">
+                <div class="card" v-for="element in elements" v-if="!showInputs"
+                    @click="toogleInputs(), enableUpdate(element)">
                     <div class="icon">
-                        <v-icon :name="element.icono " scale="2" :fill="element.color || '#7F8F93'" />
+                        <v-icon :name="element.icono" scale="2" :fill="element.color || '#7F8F93'" />
                     </div>
                     <div class="info">
                         <div class="title">Nombre: {{ element.nombre }}</div>
@@ -136,13 +189,13 @@ export default {
 
             </div>
             <div class="buttons">
-                <div class="statistic-card" v-if="!showInputs" @click="showInputs = true, toggleButtons = true">
+                <div class="statistic-card" v-if="!showInputs" @click="toogleInputs()">
                     <div class="card-info">
                         <h2>Añadir {{ whereName }}</h2>
                     </div>
                     <v-icon name="md-add" scale="3" />
                 </div>
-                <div class="statistic-card" v-if="toggleButtons" @click="createItem()">
+                <div class="statistic-card" v-if="toggleButtons" @click="isDetails ? updateItem() : createItem()">
                     <div class="card-info">
                         <h2>Aceptar</h2>
                     </div>
@@ -217,7 +270,9 @@ export default {
     overflow-y: scroll;
 }
 
-.list::-webkit-scrollbar { display: none; }
+.list::-webkit-scrollbar {
+    display: none;
+}
 
 .card {
     border-radius: 22px;

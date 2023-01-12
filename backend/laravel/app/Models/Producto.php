@@ -19,7 +19,7 @@ class Producto extends Model
         'slug',
         'nombre',
         'precio',
-        'imagen'
+        'icono'
     ];
 
     public function categorias()
@@ -42,7 +42,7 @@ class Producto extends Model
         $this->attributes['slug'] = Str::slug($name);
     }
 
-    
 
-    
+
+
 }

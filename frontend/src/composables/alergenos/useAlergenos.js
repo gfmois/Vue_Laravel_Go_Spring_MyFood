@@ -20,8 +20,8 @@ export const useGetAllergensInput = () => {
         allergens.value.map(a => {
             a.name = a.nombre,
             a.active = false,
-            a.icon = a.imagen.split("|")[0],
-            a.color = a.imagen.split("|")[1],
+            a.icon = a.icono.split("|")[0],
+            a.color = a.icono.split("|")[1],
             a.value = a.id_alergeno
         })
     })
@@ -48,6 +48,19 @@ export const useAddAlergenos = (allergen) => {
             result.value = data
         })
         .catch((data) => {
+            result.value = false
+        })
+
+    return { result }
+}
+
+export const useUpdateAlergenos = (allergen) => {
+    let result = ref([])
+    AlergenosService.updateAllergen(allergen)
+        .then(({ data }) => {
+            result.value = data
+        })
+        .catch(( data ) => {
             result.value = false
         })
 

@@ -18,7 +18,7 @@ class Alergeno extends Model
     protected $fillable = [
         'id_alergeno',
         'nombre',
-        'imagen'
+        'icono'
     ];
 
     public function productos()

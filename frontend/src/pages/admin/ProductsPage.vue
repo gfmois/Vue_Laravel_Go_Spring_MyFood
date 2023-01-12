@@ -13,11 +13,13 @@ export default {
         const showModalCategories = ref(false)
         const showModalAllergens = ref(false)
 
+        const uItem = ref({})
+
         const categories = reactive({ from_db: useGetCategories().categories, properties: useGetCategoryProperties().properties })
-        const allergens = reactive({ 
-            from_db: useGetAllergens().allergens, 
+        const allergens = reactive({
+            from_db: useGetAllergens().allergens,
             properties: useGetAllergensProperties().properties,
-            data: [], 
+            data: [],
         })
 
         const DATA_TYPE_KEYS = {
@@ -27,14 +29,13 @@ export default {
 
         watch(
             () => allergens.from_db,
-            (v, pv) => {
+            () => {
                 allergens.from_db.map((e) => {
-                    let icn = e.imagen.split("|")
-
+                    let icn = e.icono.split("|")
+                
                     e.icono = icn[0]
                     e.color = icn[1]
                     e.slug = e.nombre.replaceAll(" ", "_").toLowerCase()
-                    delete e.imagen
 
                     allergens.data.push(e)
                 })
@@ -42,8 +43,39 @@ export default {
         )
 
         watch(
+            () => uItem.value,
+            (v, _) => {
+                if (Object.keys(v).findIndex(e => e.includes("alergeno")) != -1) {
+                    allergens.data[allergens.data.findIndex(e => e.id_alergeno == v.id_alergeno)] = Object.keys(v).map((e) => {
+                        if (e == "icono") {
+                            let icon = String(v[e]).split("|")
+                            v.icono = icon[0]
+                            v.color = icon[1]
+                            delete v.icono
+                        }
+
+                        return v
+                    }).slice(-1)[0]
+                }
+
+                if (Object.keys(v).findIndex(e => e.includes("categoria")) != -1) {
+                    categories.from_db[categories.from_db.findIndex(e => e.id_categoria == v.id_categoria)] = Object.keys(v).map((e) => {
+                        if (e == "icono") {
+                            let icon = String(v[e]).split("|")
+                            v.icono = icon[0]
+                            v.color = icon[1]
+                            delete v.icono
+                        }
+
+                        return v
+                    }).slice(-1)[0];
+                }
+            }
+        )
+
+        watch(
             () => allergens.properties,
-            (v, pv) => {
+            (v, _) => {
                 v.map((p) => {
                     p.DATA_TYPE = DATA_TYPE_KEYS[p.DATA_TYPE];
                 })
@@ -54,7 +86,7 @@ export default {
 
         watch(
             () => categories.properties,
-            (v, pv) => {
+            (v, _) => {
                 v.map((p) => {
                     p.DATA_TYPE = DATA_TYPE_KEYS[p.DATA_TYPE];
                 })
@@ -63,7 +95,7 @@ export default {
             }
         )
 
-        return { showModalCategories, showModalAllergens, categories, allergens }
+        return { showModalCategories, showModalAllergens, categories, allergens, uItem }
     }
 }
 </script>
@@ -98,15 +130,19 @@ export default {
                 </div>
                 <v-icon name="md-block" scale="3" />
             </div>
-            <div class="statistic-card" @click="$router.replace('/admin/productos/nuevo_producto')"> 
+            <div class="statistic-card" @click="$router.replace('/admin/productos/nuevo_producto')">
                 <div class="card-info">
                     <h3>Crear Producto</h3>
                 </div>
                 <v-icon name="md-addcircle" scale="3" />
             </div>
         </div>
-        <CustomModal v-if="showModalCategories" :key="showModalCategories" :where="'Categorias'" :properties="categories.properties" :data="categories.from_db" @close="showModalCategories = $event" :show="showModalCategories" />
-        <CustomModal v-if="showModalAllergens" :key="showModalAllergens" :properties="allergens.properties" :where="'Alergenos'" :data="allergens.data" @close="showModalAllergens = $event" :show="showModalAllergens" />
+        <CustomModal v-if="showModalCategories" @updatedItem="uItem = $event" :key="showModalCategories"
+            :properties="categories.properties" :where="'Categorias'" :data="categories.from_db"
+            @close="showModalCategories = $event" :show="showModalCategories" />
+        <CustomModal v-if="showModalAllergens" @updatedItem="uItem = $event" :key="showModalAllergens"
+            :properties="allergens.properties" :where="'Alergenos'" :data="allergens.data"
+            @close="showModalAllergens = $event" :show="showModalAllergens" />
         <!-- <RouterView/> -->
         <!-- FIXME: Add loading spinner -->
     </div>
@@ -145,7 +181,7 @@ export default {
     transform: translate(0, -5px);
 }
 
-.statistic-card:hover *{
+.statistic-card:hover * {
     fill: #00aae4;
 }
 
@@ -167,5 +203,4 @@ export default {
 .card-info h3 {
     color: #888888;
 }
-
 </style>
