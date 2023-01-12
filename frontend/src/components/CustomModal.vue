@@ -204,7 +204,7 @@ export default {
                     </div>
                     <div class="info">
                         <div class="title">Nombre: {{ element.nombre }}</div>
-                        <div class="slug">Slug: {{ element.slug }}</div>
+                        <div class="slug">ID: {{ element[`id_${whereName.toLowerCase().slice(0, -1)}`] }}</div>
                     </div>
                 </div>
 

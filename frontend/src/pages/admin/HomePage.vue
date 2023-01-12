@@ -20,6 +20,10 @@ export default {
                 scale: "2",
                 name: "Reservas",
                 path: "reservas"
+            },
+            {
+                icon: "fa-user",
+                scale: "2",   
             }
         ]
         return {routes}
