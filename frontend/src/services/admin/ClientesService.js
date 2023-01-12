@@ -13,6 +13,18 @@ export default {
     },
     checkAdmin() {
         return Api(`${secret.ADMIN_SERVER}`).get('/auth/isAdmin');
+    },
+    addCliente(cliente) {
+        return Api(`${secret.ADMIN_SERVER}`).post("/clients", cliente);
+    },
+    deleteClient(cliente) {
+        return Api(`${secret.ADMIN_SERVER}`).delete("/clients", cliente)
+    },
+    updateCliente(cliente) {
+        return Api(`${secret.ADMIN_SERVER}`).put("/clients", cliente);
+    },
+    getProperties() {
+        return Api(`${secret.ADMIN_SERVER}`).get("/clients/properties")
     }
 
 }

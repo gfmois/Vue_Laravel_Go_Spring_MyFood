@@ -8,6 +8,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ReservaController;
+use App\Models\Cliente;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,14 +31,20 @@ Route::prefix("/reservas")->group(function() {
     Route::post("/update", [ReservaController::class, 'updateReserva']);
 });
 
-Route::prefix("/clients")->middleware('jwt.verify')->group(function() {
-    Route::get("/", [ClienteController::class, "getClientes"]);
+Route::prefix("/clients")->group(function() {
+    Route::middleware('jwt.verify')->group(function() {
+        Route::get("/", [ClienteController::class, "getClientes"]);
+        Route::post("/", [ClienteController::class, "addClient"]);
+        Route::put("/", [ClienteController::class, "updateClient"]);
+        Route::delete("/", [ClienteController::class, "deleteClient"]);
+    });
+
+    Route::get("/properties", [ClienteController::class, 'getClientProperties']);
 });
 
 Route::prefix("/auth")->group(function() {
     Route::post("/login", [AuthController::class, "login"])->name("login");
     Route::post("/register", [AuthController::class, "register"])->name("register");
-    Route::get("/test", [AuthController::class, "test"])->name("test");
 
     Route::middleware('jwt.verify')->group(function() {
         Route::get("/isAdmin", [AuthController::class, "isAdmin"]);

@@ -4,7 +4,7 @@ import DatePicker from "../DatePicker.vue";
 import { ref, computed, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 import retry from "retry";
-import { useGetClients } from "../../composables/clientes/useClientes";
+import { useGetClientes } from "../../composables/clientes/useClientes";
 import {
   useGetReserve,
   useCreateReserveAdmin,
@@ -41,7 +41,7 @@ export default {
     const dateCalendar = ref();
     const res = reactive({ value: undefined });
     const data = ref("");
-    const clients = reactive(useGetClients().clients);
+    const clients = reactive(useGetClientes().clients);
     const selectedClient = ref();
 
     const estado = ref();

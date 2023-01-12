@@ -4,6 +4,8 @@ import CustomInput from "../components/CustomInput.vue"
 import { v1 } from "uuid"
 import { useAddAlergenos, useUpdateAlergenos } from "../composables/alergenos/useAlergenos"
 import { useAddCategorias, useUpdateCategorias } from "../composables/categorias/useCategorias"
+import {  useAddClientes, useUpdateClientes, useDeleteClientes } from "../composables/clientes/useClientes"
+
 import { useToast } from "vue-toast-notification";
 
 export default {
@@ -141,6 +143,7 @@ export default {
         function closeDetails() {
             showInputs.value = false;
             toggleButtons.value = false;
+            isDetails.value = false;
         }
 
         function createItem() {
@@ -200,7 +203,8 @@ export default {
                 <div class="card" v-for="element in elements" v-if="!showInputs"
                     @click="toogleInputs(), enableUpdate(element)">
                     <div class="icon">
-                        <v-icon :name="element.icono" scale="2" :fill="element.color || '#7F8F93'" />
+                        <v-icon v-if="element.avatar == '' || !element.avatar" :name="element.icono" scale="2" :fill="element.color || '#7F8F93'" />
+                        <img class="avatar" v-if="element.avatar" :src="element.avatar">
                     </div>
                     <div class="info">
                         <div class="title">Nombre: {{ element.nombre }}</div>
@@ -336,6 +340,11 @@ export default {
     align-items: center;
     justify-content: center;
     border-radius: 22px;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
 }
 
 .card .info {

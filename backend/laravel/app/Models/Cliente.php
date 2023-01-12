@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Ramsey\Uuid\Uuid;
 
 class Cliente extends Authenticatable implements JWTSubject {
     use HasFactory, Notifiable;
@@ -21,13 +22,6 @@ class Cliente extends Authenticatable implements JWTSubject {
         "avatar",
         "created_at",
         "updated_at"
-    ];
-
-    //? Not necessary?
-    protected $maps = [
-        "password" => "contraseña",
-        "name" => "nombre",
-        "phone" => "telefono"
     ];
 
     protected $hidden = [

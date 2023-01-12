@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string("telefono");
             $table->string("contraseña");
             $table->string("avatar");
-            $table->timestamps();
 
             $table->primary("id_cliente");
         });
