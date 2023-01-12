@@ -55,6 +55,7 @@ export default {
             })()
         })
 
+        // Crea los inputs a partir de las propiedades de la tabla de BD
         properties.value.map((e) => {
             inputs.value.push({
                 name: e.COLUMN_NAME,
@@ -74,10 +75,9 @@ export default {
         function enableUpdate(element) {
             isDetails.value = true;
 
-            //? Do something? 
+            // Crea el item que se enviará para hacer el update.
             inputs.value.forEach((e) => {                
                 item.value[e.name] = e.value
-                console.log(item.value[e.name]);
              })
 
             inputs.value.map((e) => {        
@@ -91,6 +91,7 @@ export default {
                 () => inputs.value,
                 (v, pv) => {
                     Object.keys(item.value).forEach((l) => {
+                        // FIXME: Al añadir un nuevo elemento el id en los details no sale hasta que recargas
                         let input = inputs.value[inputs.value.findIndex(e => e.name == l)].value
                         item.value[l] = input
                     })
@@ -99,8 +100,17 @@ export default {
             )
         }
 
+        function enableNew() {
+            inputs.value.map((e) => {
+                if (String(e.name).includes("id")) {
+                    e.value = String(v1()).replace("-", "").slice(0, 10)
+                } else {
+                    e.value = ""
+                }
+            })
+        }
+
         function updateItem() {
-            console.log(item.value);
             const result = reactive(eval(`useUpdate${whereName.value}`)(item.value).result)
 
             watch(
@@ -114,6 +124,11 @@ export default {
                     }
                 }
             )
+        }
+
+        function deleteItem() {
+            // TODO
+            const result = reactive(eval(`useDelete${whereName.value}`)(item.value).result)
         }
 
         function toogleInputs() {
@@ -165,6 +180,7 @@ export default {
             toggleButtons,
             createItem,
             enableUpdate,
+            enableNew,
             toogleInputs,
             updateItem,
             isDetails
@@ -206,7 +222,7 @@ export default {
 
             </div>
             <div class="buttons">
-                <div class="statistic-card" v-if="!showInputs" @click="toogleInputs()">
+                <div class="statistic-card" v-if="!showInputs" @click="toogleInputs(), enableNew()">
                     <div class="card-info">
                         <h2>Añadir {{ whereName }}</h2>
                     </div>
@@ -214,9 +230,15 @@ export default {
                 </div>
                 <div class="statistic-card" v-if="toggleButtons" @click="isDetails ? updateItem() : createItem()">
                     <div class="card-info">
-                        <h2>Aceptar</h2>
+                        <h2>Guardar</h2>
                     </div>
                     <v-icon name="ri-save-3-fill" scale="3" />
+                </div>
+                <div class="statistic-card" v-if="isDetails" @click="() => {}">
+                    <div class="card-info">
+                        <h2>Eliminar</h2>
+                    </div>
+                    <v-icon name="fa-trash-alt" scale="3" />
                 </div>
                 <div class="statistic-card" v-if="toggleButtons" @click="closeDetails()">
                     <div class="card-info">

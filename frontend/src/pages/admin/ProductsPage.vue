@@ -19,7 +19,6 @@ export default {
         const allergens = reactive({
             from_db: useGetAllergens().allergens,
             properties: useGetAllergensProperties().properties,
-            data: [],
         })
 
         const DATA_TYPE_KEYS = {
