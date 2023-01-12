@@ -11,7 +11,7 @@ class AlergenoResource extends JsonResource
     {
         return [
             'nombre' => $this->nombre,
-            'imagen' => $this->imagen
+            'icono' => $this->icono
         ];
     }
 }

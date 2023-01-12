@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("slug");
             $table->string("nombre");
             $table->decimal("precio");
-            $table->string("imagen");
+            $table->string("icono");
 
             $table->primary("id_producto");
         });

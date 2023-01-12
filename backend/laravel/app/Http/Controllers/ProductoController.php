@@ -36,7 +36,7 @@ class ProductoController extends Controller
         $newProduct->generateAttribute($request->nombre);
         $file_name = $newProduct->slug.'_'.$request->upload_image->getClientOriginalName();
         $request->upload_image->move("uploads",$file_name);
-        $newProduct->imagen = $file_name;
+        $newProduct->icono = $file_name;
         $this->producto::create($newProduct->toArray());
         $newProduct->categorias()->attach(explode(',',$request->categorias));
         $newProduct->alergenos()->attach(explode(',',$request->alergenos));

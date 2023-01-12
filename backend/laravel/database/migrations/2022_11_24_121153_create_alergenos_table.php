@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('alergenos', function (Blueprint $table) {
             $table->string('id_alergeno');
             $table->string('nombre');
-            $table->string('imagen');
+            $table->string('icono');
 
             $table->primary('id_alergeno');
         });

@@ -43,14 +43,21 @@ class AlergenoController extends Controller
             return "No se ha podido borrar el alergeno";
         }
     }
-    public function updateAllergen($id_alergeno,StoreAlergenoRequest $request)
+    public function updateAllergen($id_alergeno, StoreAlergenoRequest $request)
     {
         $modAllergen = new Alergeno($request->toArray());
-        $result = $this->alergeno::where("id_alergeno",$id_alergeno)->update($modAllergen->toArray());
+        $result = $this->alergeno::where("id_alergeno", $id_alergeno)->update($modAllergen->toArray());
+
         if ($result) {
-            return "Alergeno modificado";
+            return [
+                "msg" => "Alergeno Modificado",
+                "status" => "success"
+            ];
         } else {
-            return "No se ha podido modificar el alergeno";
+            return [
+                "msg" => "No se ha podido modificar el alergeno",
+                "status" => "error"
+            ];
         }
     }
 

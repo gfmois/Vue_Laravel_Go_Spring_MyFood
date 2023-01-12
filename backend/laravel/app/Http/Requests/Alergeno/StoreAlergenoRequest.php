@@ -14,7 +14,7 @@ class StoreAlergenoRequest extends FormRequest
     {
         return [
             "nombre" => ["required"],
-            "imagen" => ["required"]
+            "icono" => ["required"]
         ];
     }
 }

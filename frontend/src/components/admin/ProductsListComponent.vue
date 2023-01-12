@@ -40,7 +40,7 @@ export default {
         </div>
         <div class="tags">
           <v-icon
-            :name="alergeno.imagen.split('|')[0]"
+            :name="alergeno.icono.split('|')[0]"
             scale="2"
             v-for="alergeno in product.alergenos"
           />
