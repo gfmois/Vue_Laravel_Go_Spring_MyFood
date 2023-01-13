@@ -1,5 +1,5 @@
 <script>
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { RouterView } from 'vue-router'
 import { useGetClientes, useGetClientProperties } from "../../composables/clientes/useClientes"
 import CustomModal from '../../components/CustomModal.vue'
@@ -9,6 +9,7 @@ export default {
         const clients = reactive({ fromDB: useGetClientes().clients, properties: useGetClientProperties().properties })
         const showUsersModal = ref(false)
         const uItem = ref({})
+        const dItem = ref({})
 
         let routes = [
             {
@@ -38,7 +39,24 @@ export default {
                 isRoute: false
             }
         ]
-        return { routes, clients, showUsersModal, uItem }
+
+        watch(
+            () => dItem.value,
+            (v, pv) => {
+                // Elimina el usuario del array de usuarios para que no aparezva en el listado.
+                clients.fromDB.splice(clients.fromDB.findIndex(e => e.id_cliente == v.id_cliente), 1)
+            },
+            { deep: true }
+        )
+
+        watch(
+            () => uItem.value,
+            (v, pv) => {
+                clients.fromDB[clients.fromDB.findIndex((e) => e.id_cliente == v.id_cliente)] = v
+            }
+        )
+
+        return { routes, clients, showUsersModal, uItem, dItem }
     },
     components: {
         CustomModal
@@ -83,7 +101,7 @@ export default {
             <div class="main-admin">
                 <CustomModal v-if="showUsersModal" @updatedItem="uItem = $event" :key="showUsersModal"
                     :properties="clients.properties" :where="'Clientes'" :data="clients.fromDB"
-                    @close="showUsersModal = $event" :show="showUsersModal" />
+                    @close="showUsersModal = $event" @deletedItem="dItem = $event" :show="showUsersModal" />
                 <RouterView />
             </div>
         </main>

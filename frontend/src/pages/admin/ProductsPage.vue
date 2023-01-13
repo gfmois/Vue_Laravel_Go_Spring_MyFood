@@ -125,7 +125,7 @@ export default {
         <CustomModal v-if="showModalAllergens" @updatedItem="uItem = $event" :key="showModalAllergens"
             :properties="allergens.properties" :where="'Alergenos'" :data="allergens.from_db"
             @close="showModalAllergens = $event" :show="showModalAllergens" />
-        <RouterView/>
+        <!-- <RouterView/> -->
         <!-- FIXME: Add loading spinner -->
     </div>
 </template>

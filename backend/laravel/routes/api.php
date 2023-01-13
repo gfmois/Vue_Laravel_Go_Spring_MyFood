@@ -8,7 +8,6 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ReservaController;
-use App\Models\Cliente;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,7 +35,7 @@ Route::prefix("/clients")->group(function() {
         Route::get("/", [ClienteController::class, "getClientes"]);
         Route::post("/", [ClienteController::class, "addClient"]);
         Route::put("/", [ClienteController::class, "updateClient"]);
-        Route::delete("/", [ClienteController::class, "deleteClient"]);
+        Route::post("/delete", [ClienteController::class, "deleteClient"]);
     });
 
     Route::get("/properties", [ClienteController::class, 'getClientProperties']);

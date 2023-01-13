@@ -4,7 +4,7 @@ import CustomInput from "../components/CustomInput.vue"
 import { v1 } from "uuid"
 import { useAddAlergenos, useUpdateAlergenos } from "../composables/alergenos/useAlergenos"
 import { useAddCategorias, useUpdateCategorias } from "../composables/categorias/useCategorias"
-import {  useAddClientes, useUpdateClientes, useDeleteClientes } from "../composables/clientes/useClientes"
+import { useAddClientes, useUpdateClientes, useDeleteClientes } from "../composables/clientes/useClientes"
 
 import { useToast } from "vue-toast-notification";
 
@@ -78,14 +78,15 @@ export default {
             isDetails.value = true;
 
             // Crea el item que se enviará para hacer el update.
-            inputs.value.forEach((e) => {                
-                item.value[e.name] = e.value
-             })
-
-            inputs.value.map((e) => {        
+            inputs.value.forEach((e) => {
+                // Rellena los campos de los inputs con los valores del elemento seleccionado
                 e.value = e.name == "icono"
                     ? `${element[e.name]}|${element.color}`
                     : element[e.name]
+
+                // Crea el objeto de los inputs
+                item.value[e.name] = e.value
+
                 return e
             })
 
@@ -129,8 +130,21 @@ export default {
         }
 
         function deleteItem() {
-            // TODO
             const result = reactive(eval(`useDelete${whereName.value}`)(item.value).result)
+
+            watch(
+                () => result.value,
+                (v, pv) => {
+                    console.log(v);
+                    if (v.status != "error") {
+                        emit("deletedItem", item.value)
+                        $toastr.success(`${whereName.value.slice(0, -1)} se ha eliminado correctamente.`)
+                    } else {
+                        $toastr.error(`Hubo un error al eliminar ${whereName.value.slice(0, -1)}, intentelo de nuevo.`)
+                    }
+                }
+            )
+
         }
 
         function toogleInputs() {
@@ -158,12 +172,17 @@ export default {
                 (v, pv) => {
                     if (v != false) {
                         $toastr.success(`${whereName.value.slice(0, -1)} se ha creado correctamente.`)
-                        elements.value.push({
-                            nombre: item.value.nombre,
-                            slug: String(item.value.nombre).replace(" ", "_").toLowerCase(),
-                            icono: String(item.value.icono).includes("-") ? item.value.icono : "md-hideimage-outlined",
-                            color: item.value.color
-                        })
+
+                        if (item.value.hasOwnProperty("icono")) {
+                            elements.value.push({
+                                nombre: item.value.nombre,
+                                slug: String(item.value.nombre).replace(" ", "_").toLowerCase(),
+                                icono: String(item.value.icono).includes("-") ? item.value.icono : "md-hideimage-outlined",
+                                color: item.value.color
+                            })
+                        } else {
+                            elements.value.push(item.value)
+                        }
                     } else {
                         $toastr.error(`Hubo un error al crear ${whereName.value.slice(0, -1)}, intentelo de nuevo.`)
                     }
@@ -186,6 +205,7 @@ export default {
             enableNew,
             toogleInputs,
             updateItem,
+            deleteItem,
             isDetails
         }
     },
@@ -203,7 +223,8 @@ export default {
                 <div class="card" v-for="element in elements" v-if="!showInputs"
                     @click="toogleInputs(), enableUpdate(element)">
                     <div class="icon">
-                        <v-icon v-if="element.avatar == '' || !element.avatar" :name="element.icono" scale="2" :fill="element.color || '#7F8F93'" />
+                        <v-icon v-if="element.avatar == '' || !element.avatar" :name="element.icono" scale="2"
+                            :fill="element.color || '#7F8F93'" />
                         <img class="avatar" v-if="element.avatar" :src="element.avatar">
                     </div>
                     <div class="info">
@@ -238,7 +259,7 @@ export default {
                     </div>
                     <v-icon name="ri-save-3-fill" scale="3" />
                 </div>
-                <div class="statistic-card" v-if="isDetails" @click="() => {}">
+                <div class="statistic-card" v-if="isDetails" @click="deleteItem()">
                     <div class="card-info">
                         <h2>Eliminar</h2>
                     </div>

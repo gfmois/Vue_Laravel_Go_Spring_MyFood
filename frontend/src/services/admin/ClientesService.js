@@ -15,16 +15,16 @@ export default {
         return Api(`${secret.ADMIN_SERVER}`).get('/auth/isAdmin');
     },
     addCliente(cliente) {
-        return Api(`${secret.ADMIN_SERVER}`).post("/clients", cliente);
+        return Api(`${secret.ADMIN_SERVER}`).post("clients", cliente);
     },
     deleteClient(cliente) {
-        return Api(`${secret.ADMIN_SERVER}`).delete("/clients", cliente)
+        return Api(`${secret.ADMIN_SERVER}`).post("clients/delete", cliente)
     },
     updateCliente(cliente) {
-        return Api(`${secret.ADMIN_SERVER}`).put("/clients", cliente);
+        return Api(`${secret.ADMIN_SERVER}`).put("clients", cliente);
     },
     getProperties() {
-        return Api(`${secret.ADMIN_SERVER}`).get("/clients/properties")
+        return Api(`${secret.ADMIN_SERVER}`).get("clients/properties")
     }
 
 }

@@ -7,7 +7,9 @@ use App\Http\Requests\Cliente\StoreClienteRequest;
 use App\Http\Requests\Cliente\StoreClientRequest;
 use App\Http\Resources\Cliente\ClientResource;
 use App\Models\Cliente;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class ClienteController extends Controller
 {
@@ -24,6 +26,7 @@ class ClienteController extends Controller
 
     public function addClient(StoreClienteRequest $request) {
         $newClient = new Cliente($request->toArray());
+        $newClient->contraseña = Hash::make($newClient->contraseña);
         if ($this->cliente::create($newClient->toArray()) != null) {
             return new ClientResource($newClient);
         }
@@ -31,7 +34,7 @@ class ClienteController extends Controller
         return false;
     }
 
-    public function deleteClient(StoreClientDeleteRequest $request) {
+    public function deleteClient(Request $request) {
         $result = $this->cliente::where("id_cliente", $request->id_cliente)->delete();
         if ($result) {
             return [
@@ -48,6 +51,11 @@ class ClienteController extends Controller
 
     public function updateClient(StoreClienteRequest $request) {
         $modClient = new Cliente($request->toArray());
+
+        if ($modClient->contraseña != $this->cliente::where("id_cliente", $modClient->id_cliente)->get("contraseña")->first()->contraseña) {
+            $modClient->contraseña = Hash::make($modClient->contraseña);
+        }
+
         $result = $this->cliente::where("id_cliente", $request->id_cliente)->update($modClient->toArray());
 
         if ($result) {

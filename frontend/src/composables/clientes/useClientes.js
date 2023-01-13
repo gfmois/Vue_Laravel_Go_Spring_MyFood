@@ -35,7 +35,10 @@ export const useDeleteClientes = (client) => {
   ClientesService
     .deleteClient(client)
       .then(({ data }) => result.value = data)
-      .catch((e) => result.value = false)
+      .catch((e) => {
+        console.log(e);
+        result.value = false
+      })
   
   return { result }
 }
