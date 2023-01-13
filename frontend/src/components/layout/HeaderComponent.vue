@@ -58,7 +58,7 @@ watch(isAdmin,() => {
     <nav>
         <div class="logo-wrapper">
             <div class="logo">
-                <img src="../../assets/MyFood.png">
+                <img src="../../assets/MyFood.png" @click="$router.replace('/')">
             </div>
             <div class="app-name">
                 <RouterLink to="/"><h1>MyFood</h1></RouterLink>
@@ -180,7 +180,11 @@ watch(isAdmin,() => {
         /* background-color: red; */
     }
 
-
+    @media (max-width: 750px) {
+    .app-name {
+        display: none;
+    }
+    }
 
 
 </style>

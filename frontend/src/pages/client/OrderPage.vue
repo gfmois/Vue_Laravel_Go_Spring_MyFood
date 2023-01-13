@@ -118,6 +118,14 @@ const deleteFilters = () => {
              <v-icon class="delete-filters" name="hi-solid-trash" scale="1.2" fill="orange" @click="deleteFilters()"/>
             <Filters :key="filters" :filters="filters"></Filters>
         </div>
+        <div class="modal-filters">
+            <v-icon name="hi-adjustments" scale="2" fill="orange"/>
+            <div class="content">
+                <v-icon class="delete-filters" name="hi-solid-trash" scale="1.2" fill="orange" @click="deleteFilters()"/>
+               <Filters :key="filters" :filters="filters"></Filters>
+            </div>
+
+        </div>
         <div class="products">         
             <p v-if="noFindFilters" class="no-find-filters">No se encuantran productos con esos filtros</p>  
             <ProductsList :key="products" :products="products"></ProductsList>
@@ -146,12 +154,56 @@ const deleteFilters = () => {
         box-sizing: border-box;
         display: flex;
         padding-top: 20px;
+        position: relative;
     }
     .filters {
         position: relative;
         width: 20%;
     }
     .filters .delete-filters {
+        position: absolute;
+        right: 10px;
+        cursor: pointer;
+        z-index: 2;
+    }
+    .modal-filters {
+        box-sizing: border-box;
+        position: fixed;
+        background-color: white;
+        border-radius: 30px;
+        padding: 10px;
+        height: 60px;
+        width: 60px;
+        left: 20px;
+        bottom: 20px;
+        box-sizing: border-box;
+        cursor: pointer;
+        transition: all .5s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        overflow: hidden;
+        z-index: 5;
+
+    }
+
+    .modal-filters:hover {
+        transition: all .5s ease-in-out;
+        width: 85vw;
+        height: 60vh;
+    }
+    .modal-filters .content {
+        display: none;
+        padding-bottom: 60px;
+        padding: 20px;
+        width: 80%;
+    }
+
+    .modal-filters:hover .content {
+        display: block;
+    }
+    .modal-filters .delete-filters {
         position: absolute;
         right: 10px;
         cursor: pointer;
@@ -232,8 +284,10 @@ const deleteFilters = () => {
         font-weight: 700;
 
     }
-    .pagination {
-
+    @media (min-width: 1000px) {
+        .modal-filters {
+            display: none;
+        }
     }
     @media(max-width: 1000px) {
         .filters {

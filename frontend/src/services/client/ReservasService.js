@@ -3,8 +3,6 @@ import secret from "../../secret";
 
 export default {
   getHolidays(params_info) {
-    console.log(params_info);
-
     let params = Array.isArray(params_info)
       ? Object.fromEntries(
           Object.keys(params_info).map((e) => [
