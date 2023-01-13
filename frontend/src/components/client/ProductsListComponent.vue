@@ -34,12 +34,14 @@ export default {
             <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`">
         </div>
         <div class="product-info" :class="{active: product.cantidad>0}">
-            <h2 @click="$router.push('/productos/'+product.id_producto)">{{ product.nombre }}</h2>
+            <h2 @click="$router.push('/productos/'+product.slug)">{{ product.nombre }}</h2>
             <h2 class="price">{{ product.precio }}€</h2>
             <div class="product-details">
-                <p @click="lessOne(product)">-</p><v-icon name="io-remove-circle" scale="2" fill="orange" @click="lessOne(product)"></v-icon>
+                <!-- <p @click="lessOne(product)">-</p> -->
+                <v-icon name="io-remove-circle" scale="2" fill="orange" @click="lessOne(product)"></v-icon>
                 <p>{{ product.cantidad }}</p>
-                <p @click="addOne(product)">+</p><v-icon name="io-add-circle-sharp" scale="2" fill="orange" @click="addOne(product)"></v-icon>
+                <!-- <p @click="addOne(product)">+</p> -->
+                <v-icon name="io-add-circle-sharp" scale="2" fill="orange" @click="addOne(product)"></v-icon>
             </div>
         </div>
 
@@ -57,9 +59,11 @@ export default {
                 <p>{{product.precio}}€</p>
             </div>
             <div class="amount">
-                <p @click="lessOne(product)">-</p><v-icon name="io-remove-circle" scale="2" fill="orange" @click="lessOne(product)"></v-icon>
+                <!-- <p @click="lessOne(product)">-</p> -->
+                <v-icon name="io-remove-circle" scale="2" fill="orange" @click="lessOne(product)"></v-icon>
                 <p>{{ product.cantidad }}</p>
-                <p @click="addOne(product)">+</p><v-icon name="io-add-circle-sharp" scale="2" fill="orange" @click="addOne(product)"></v-icon>
+                <!-- <p @click="addOne(product)">+</p> -->
+                <v-icon name="io-add-circle-sharp" scale="2" fill="orange" @click="addOne(product)"></v-icon>
             </div>
         </div>
         <div class="product-cart-total">
@@ -73,7 +77,6 @@ export default {
 <style scoped>
 .products-list {
     box-sizing: border-box;
-    height: 100%;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -110,7 +113,7 @@ export default {
 .product-info h2 {
     max-width: 90%;
     height: 45px;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 .product-details {
     width: 100%;
@@ -181,7 +184,7 @@ export default {
 .product-cart-info .amount {
     display: flex;
     width: 20%;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     justify-content: space-evenly;
     align-items: center;
     color: black;
@@ -189,7 +192,7 @@ export default {
 
 .product-cart-total {
     width: 15%;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     display: flex;
     justify-content: center;
     align-items: center;

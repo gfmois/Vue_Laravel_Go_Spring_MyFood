@@ -18,6 +18,7 @@ export const useAuthLogin = (login_info) => {
             .then(res => {
                 if (res.data.status == "success") {
                     cookies.set("token_user",res.data.authorization.token)
+                    store.dispatch(Constant.CHECK_IS_ADMIN)
                 }
             })
         }

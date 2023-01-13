@@ -265,14 +265,14 @@ export default {
             <h3 v-if="!isDetails">Crear Reserva</h3>
             <h3 v-if="isDetails">Actualizar</h3>
           </div>
-          <p>Icon</p><v-icon name="md-modeeditoutline" scale="2" v-if="isDetails" />
-          <p>Icon</p><v-icon name="md-addcircle" scale="2" v-if="!isDetails" />
+           <v-icon name="md-modeeditoutline" scale="2" v-if="isDetails" />
+           <v-icon name="md-addcircle" scale="2" v-if="!isDetails" />
         </div>
         <div class="add-icon" @click="showModal = true">
           <div class="card-info">
             <h3>Cancelar</h3>
           </div>
-          <p>Icon</p><v-icon name="md-block" scale="2" />
+           <v-icon name="md-block" scale="2" />
         </div>
       </div>
     </div>

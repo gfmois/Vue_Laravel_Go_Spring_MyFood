@@ -18,7 +18,7 @@ export const useGetFilteredProducts = (filters) => {
     ProductosService.getFilteredProducts(filters)
     .then(res => {
         res.data.productos.map(e => e["cantidad"] = 0)
-        products.value = res.data.productos
+        products.value = res.data
     })
     .catch(error => {
         console.log(error);
@@ -26,9 +26,9 @@ export const useGetFilteredProducts = (filters) => {
     return { products }
 }
 
-export const useGetProductDetails = (id_product) => {
+export const useGetProductDetails = (slug_product) => {
     let product = ref()
-    ProductosService.getProductDetails(id_product)
+    ProductosService.getProductDetails(slug_product)
     .then(res => {
         product.value = res.data.producto
     })
@@ -36,4 +36,13 @@ export const useGetProductDetails = (id_product) => {
         product.value = false
     })
     return { product }
+}
+
+
+export const useSearchProducts = (product) => {
+    let products = ref()
+    ProductosService.searchProducts(product)
+    .then(res => products.value = res.data)
+    .catch(error => products.value = false)
+    return { products }
 }

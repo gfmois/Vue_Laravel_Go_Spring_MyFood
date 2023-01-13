@@ -2,13 +2,15 @@ import store from "../../store"
 import AuthService from "../admin/AuthService";
 import { useCookies } from "vue3-cookies";
 import Constant from "../../Constant";
+import { watch, computed } from "vue";
 const { cookies } = useCookies()
 export default {
     authIsAdmin(to, from, next) {
         
         store.dispatch(Constant.CHECK_IS_ADMIN)
-        store.state.auth.isAdmin ? next() : next("/auth")
-        if (store.state.auth.isAdmin) {
+        let isAdmin = computed(() => store.state.auth.isAdmin)
+        isAdmin ? next() : next("/auth")
+        if (isAdmin.value) {
             let check_token = setInterval(()=>{
                 if (store.state.auth.isAdmin) {
                     store.dispatch(Constant.CHECK_IS_ADMIN)

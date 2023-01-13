@@ -32,7 +32,7 @@ export default {
                         <h3>{{product.c_categorias.join(", ")}}</h3>
                     </div>
                     <div class="tags">
-                         <p>Icon</p><v-icon :name="alergeno.imagen.split('|')[0]" scale="2" v-for="alergeno in product.alergenos" /> 
+                          <v-icon :name="alergeno.imagen.split('|')[0]" scale="2" v-for="alergeno in product.alergenos" /> 
                     </div>
                 </div>
             </div>

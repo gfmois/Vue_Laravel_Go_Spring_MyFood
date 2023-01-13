@@ -40,6 +40,9 @@ export default {
 <style src="@vueform/slider/themes/default.css"/>
 <style src="@vueform/multiselect/themes/default.css"/>
 <style>
+.main-filters {
+    box-sizing: border-box;
+}
 .multi-select {
     --ms-tag-bg: orange;
     --ms-tag-color: white;

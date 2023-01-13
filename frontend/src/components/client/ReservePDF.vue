@@ -161,7 +161,7 @@ export default {
     <div class="loader"></div>
     <div class="confirm-container confirm">
       <label @click="createReserve()">
-         <p>Icon</p><v-icon name="gi-knife-fork" animation="float" scale="2" />
+          <v-icon name="gi-knife-fork" animation="float" scale="2" />
         Confirmar Reserva
       </label>
     </div>
@@ -179,7 +179,7 @@ export default {
       descargar PDF.
     </p>
     <label v-if="done || inRoute" @click="createPDF()">
-       <p>Icon</p><v-icon name="hi-solid-document-download" animation="float" scale="2" />
+        <v-icon name="hi-solid-document-download" animation="float" scale="2" />
       Descargar PDF
     </label>
   </div>

@@ -2,10 +2,13 @@
 import { useStore } from 'vuex';
 import Constant from '../../Constant';
 import { computed,reactive,watch, ref } from 'vue';
-import { ProductsList, Filters } from '../../components/client'
+import { ProductsList, Filters, Pagination } from '../../components/client'
 import { useGetCategories, useGetCategoriesFilter } from '../../composables/categorias/useCategorias';
 import { useGetFilteredProducts } from '../../composables/productos/useProductos'
+
 const store = useStore()
+const pagination = ref(1)
+const n_pages = ref()
 store.dispatch(Constant.GET_PRODUCTS)
 const store_products = computed(()=>store.state.productos.productsListClient)
 const products = ref([])
@@ -57,17 +60,25 @@ const filters = reactive([
 watch(filters, () => {
     let submitFilters = {}
     filters.map(f => submitFilters[f.db_name] = f.value.toString())
+    submitFilters["paginacion"] = pagination.value
+    applyFilters(submitFilters);
+})
+
+watch(pagination, () => {
+    let submitFilters = {}
+    filters.map(f => submitFilters[f.db_name] = f.value.toString())
+    submitFilters["paginacion"] = pagination.value
     applyFilters(submitFilters);
 })
 
 const applyFilters = (newFilters) => {
-    
-    let newProducts = useGetFilteredProducts(newFilters).products
-    watch(newProducts,() => {
-        if (newProducts.value.length > 0) {
+    let ProductsPages = useGetFilteredProducts(newFilters).products
+    watch(ProductsPages,(newProducts) => {
+        if (newProducts.productos.length > 0) {
+            n_pages.value = newProducts.pages
             noFindFilters.value = false
             products.value.splice(0)
-            newProducts.value.map(p => {
+            newProducts.productos.map(p => {
                 cart.value.map(c => {
                     c.id_producto == p.id_producto ? p.cantidad = c.cantidad : null
                 })
@@ -76,7 +87,8 @@ const applyFilters = (newFilters) => {
         } else {
             
             (newFilters.categorias == "" && newFilters.orden == "" && newFilters.rango=="0,30") ? noFindFilters.value = false : noFindFilters.value = true 
-            
+            n_pages.value = 1
+            pagination.value = 1
             products.value.splice(0)
             store_products.value.map(sp => {
               products.value.push(sp)
@@ -103,16 +115,19 @@ const deleteFilters = () => {
 <template>
     <div class="main-order">
         <div class="filters">
-            <p>Icon</p><v-icon class="delete-filters" name="hi-solid-trash" scale="1.2" fill="orange" @click="deleteFilters()"/>
+             <v-icon class="delete-filters" name="hi-solid-trash" scale="1.2" fill="orange" @click="deleteFilters()"/>
             <Filters :key="filters" :filters="filters"></Filters>
         </div>
         <div class="products">         
             <p v-if="noFindFilters" class="no-find-filters">No se encuantran productos con esos filtros</p>  
             <ProductsList :key="products" :products="products"></ProductsList>
+            <div class="pagination">
+                <Pagination :n_pages="n_pages" :actual_page="pagination" @change_page="pagination = $event"/>
+            </div>
         </div>
         <div class="cart">
             <div class="header">
-                 <p>Icon</p><v-icon name="fa-shopping-cart" scale="2" fill="orange"></v-icon>
+                  <v-icon name="fa-shopping-cart" scale="2" fill="orange"></v-icon>
             </div>
             <div class="body content">
                 <ProductsList :key="products" :products="cart" :isCart="true"></ProductsList>
@@ -126,6 +141,7 @@ const deleteFilters = () => {
 </template>
 <style scoped>
     .main-order {
+        min-height: 83vh;
         height: 100%;
         box-sizing: border-box;
         display: flex;
@@ -143,6 +159,10 @@ const deleteFilters = () => {
     }
     .products {
         width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
     }
     .cart {
         all: unset;
@@ -210,6 +230,9 @@ const deleteFilters = () => {
         box-sizing: border-box;
         font-size: 2rem;
         font-weight: 700;
+
+    }
+    .pagination {
 
     }
     @media(max-width: 1000px) {
