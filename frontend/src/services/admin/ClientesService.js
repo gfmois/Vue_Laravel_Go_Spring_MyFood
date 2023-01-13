@@ -17,8 +17,8 @@ export default {
     addCliente(cliente) {
         return Api(`${secret.ADMIN_SERVER}`).post("clients", cliente);
     },
-    deleteClient(cliente) {
-        return Api(`${secret.ADMIN_SERVER}`).post("clients/delete", cliente)
+    deleteClient(id_cliente) {
+        return Api(`${secret.ADMIN_SERVER}`).delete(`clients/${id_cliente}`)
     },
     updateCliente(cliente) {
         return Api(`${secret.ADMIN_SERVER}`).put("clients", cliente);

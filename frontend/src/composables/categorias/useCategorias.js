@@ -64,3 +64,12 @@ export const useUpdateCategorias = (category) => {
 
   return { result };
 };
+
+export const useDeleteCategorias = (id_categpory) => {
+  let result = ref([])
+  CategoriasService.deleteCategory(id_categpory)
+    .then(({ data }) => result.value = data)
+    .catch((e) => result.value = false)
+
+  return { result }
+}

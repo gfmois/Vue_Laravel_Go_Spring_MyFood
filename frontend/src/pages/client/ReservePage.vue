@@ -92,12 +92,15 @@ export default {
         )
         .flat()
         .map((l) => {
+
+          if (l.value == this.steps.date.value) {
+            let options = {year: 'numeric', month: '2-digit', day: '2-digit' };
+            l.value = new Date(l.value).toLocaleDateString("es-ES", options)
+          }
+
           return {
             ...l,
-            value:
-              l.value == this.steps.date.value
-                ? new Date(l.value).toLocaleDateString()
-                : l.value,
+            value: l.value
           };
         });
 
@@ -114,7 +117,6 @@ export default {
 </script>
 
 <template>
-  {{ isValid }}
   <div class="wrapper-stepper">
     <div class="stepper">
       <div class="stepper-progress">

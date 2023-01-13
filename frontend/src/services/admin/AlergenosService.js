@@ -13,5 +13,8 @@ export default {
     },
     updateAllergen(allergen) {
         return Api(`${secret.ADMIN_SERVER}`).put(`alergenos/${allergen.id_alergeno}`, allergen)
+    },
+    deleteAllergen(id_alergeno) {
+        return Api(`${secret.ADMIN_SERVER}`).delete(`alergenos/${id_alergeno}`)
     }
 }

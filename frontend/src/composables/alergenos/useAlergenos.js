@@ -66,3 +66,12 @@ export const useUpdateAlergenos = (allergen) => {
 
     return { result }
 }
+
+export const useDeleteAlergenos = (id_alergeno) => {
+    let result = ref([])
+    AlergenosService.deleteAllergen(id_alergeno)
+        .then(({ data }) => result.value = data)
+        .catch((e) => result.value = false)
+
+    return { result }
+}

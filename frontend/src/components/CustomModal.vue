@@ -2,8 +2,8 @@
 import { ref, reactive, watch } from 'vue';
 import CustomInput from "../components/CustomInput.vue"
 import { v1 } from "uuid"
-import { useAddAlergenos, useUpdateAlergenos } from "../composables/alergenos/useAlergenos"
-import { useAddCategorias, useUpdateCategorias } from "../composables/categorias/useCategorias"
+import { useAddAlergenos, useUpdateAlergenos, useDeleteAlergenos } from "../composables/alergenos/useAlergenos"
+import { useAddCategorias, useUpdateCategorias, useDeleteCategorias } from "../composables/categorias/useCategorias"
 import { useAddClientes, useUpdateClientes, useDeleteClientes } from "../composables/clientes/useClientes"
 
 import { useToast } from "vue-toast-notification";
@@ -35,6 +35,7 @@ export default {
         const inputs = ref([])
         const item = ref({})
         const isDetails = ref(false);
+        const currentIdKey = ref(`id_${whereName.value.slice(0, -1).toLowerCase()}`)
 
         elements.value.map((e) => {
             e.slug = e.nombre.replaceAll(" ", "_").toLowerCase()
@@ -130,12 +131,11 @@ export default {
         }
 
         function deleteItem() {
-            const result = reactive(eval(`useDelete${whereName.value}`)(item.value).result)
+            const result = reactive(eval(`useDelete${whereName.value}`)(item.value[currentIdKey.value]).result)
 
             watch(
                 () => result.value,
                 (v, pv) => {
-                    console.log(v);
                     if (v.status != "error") {
                         emit("deletedItem", item.value)
                         $toastr.success(`${whereName.value.slice(0, -1)} se ha eliminado correctamente.`)
@@ -174,12 +174,16 @@ export default {
                         $toastr.success(`${whereName.value.slice(0, -1)} se ha creado correctamente.`)
 
                         if (item.value.hasOwnProperty("icono")) {
-                            elements.value.push({
+                            let iconSplited = item.value.icono.split("|")
+                            let elementToPush = {
                                 nombre: item.value.nombre,
                                 slug: String(item.value.nombre).replace(" ", "_").toLowerCase(),
-                                icono: String(item.value.icono).includes("-") ? item.value.icono : "md-hideimage-outlined",
-                                color: item.value.color
-                            })
+                                icono: String(item.value.icono).includes("-") ? iconSplited[0] : "md-hideimage-outlined",
+                                color: iconSplited[1]
+                            }
+                            elementToPush[currentIdKey.value] = item.value[currentIdKey.value]
+
+                            elements.value.push(elementToPush)
                         } else {
                             elements.value.push(item.value)
                         }

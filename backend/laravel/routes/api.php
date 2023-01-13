@@ -35,7 +35,7 @@ Route::prefix("/clients")->group(function() {
         Route::get("/", [ClienteController::class, "getClientes"]);
         Route::post("/", [ClienteController::class, "addClient"]);
         Route::put("/", [ClienteController::class, "updateClient"]);
-        Route::post("/delete", [ClienteController::class, "deleteClient"]);
+        Route::delete("/{id_cliente}", [ClienteController::class, "deleteClient"]);
     });
 
     Route::get("/properties", [ClienteController::class, 'getClientProperties']);

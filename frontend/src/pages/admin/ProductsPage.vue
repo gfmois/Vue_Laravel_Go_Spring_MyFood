@@ -14,6 +14,7 @@ export default {
         const showModalAllergens = ref(false)
 
         const uItem = ref({})
+        const dItem = ref({})
 
         const categories = reactive({ from_db: useGetCategories().categories, properties: useGetCategoryProperties().properties })
         const allergens = reactive({
@@ -56,6 +57,23 @@ export default {
         )
 
         watch(
+            () => dItem.value,
+            (v, _) => {
+                if (Object.keys(v).findIndex(e => e.includes("alergeno")) != -1) {
+                    allergens.from_db
+                        .splice(allergens.from_db
+                            .findIndex(e => e.id_alergeno == v.id_alergeno), 1)
+                }
+
+                if (Object.keys(v).findIndex(e => e.includes("categoria")) != -1) {
+                    categories.from_db
+                        .splice(categories.from_db
+                            .findIndex(e => e.id_categoria == v.id_categoria), 1)
+                }
+            }
+        )
+
+        watch(
             () => allergens.properties,
             (v, _) => {
                 v.map((p) => {
@@ -77,7 +95,7 @@ export default {
             }
         )
 
-        return { showModalCategories, showModalAllergens, categories, allergens, uItem }
+        return { showModalCategories, showModalAllergens, categories, allergens, uItem, dItem }
     }
 }
 </script>
@@ -120,13 +138,12 @@ export default {
             </div>
         </div>
         <CustomModal v-if="showModalCategories" @updatedItem="uItem = $event" :key="showModalCategories"
-            :properties="categories.properties" :where="'Categorias'" :data="categories.from_db"
-            @close="showModalCategories = $event" :show="showModalCategories" />
+            :properties="categories.properties" @deletedItem="dItem = $event" :where="'Categorias'"
+            :data="categories.from_db" @close="showModalCategories = $event" :show="showModalCategories" />
         <CustomModal v-if="showModalAllergens" @updatedItem="uItem = $event" :key="showModalAllergens"
-            :properties="allergens.properties" :where="'Alergenos'" :data="allergens.from_db"
-            @close="showModalAllergens = $event" :show="showModalAllergens" />
-        <!-- <RouterView/> -->
-        <!-- FIXME: Add loading spinner -->
+            :properties="allergens.properties" @deletedItem="dItem = $event" :where="'Alergenos'"
+            :data="allergens.from_db" @close="showModalAllergens = $event" :show="showModalAllergens" />
+        <RouterView/>
     </div>
 </template>
 <style scoped>

@@ -34,9 +34,10 @@ class ClienteController extends Controller
         return false;
     }
 
-    public function deleteClient(Request $request) {
-        $result = $this->cliente::where("id_cliente", $request->id_cliente)->delete();
-        if ($result) {
+    public function deleteClient($id_cliente) {
+        $result = $this->cliente::where("id_cliente", $id_cliente)->delete();
+
+        if ($result == 1) {
             return [
                 "status" => "success",
                 "msg" => "Cliente borrado"

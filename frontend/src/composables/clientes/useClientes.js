@@ -30,10 +30,10 @@ export const useUpdateClientes = (client) => {
   return { result }
 }
 
-export const useDeleteClientes = (client) => {
+export const useDeleteClientes = (id_cliente) => {
   const result = ref([])
   ClientesService
-    .deleteClient(client)
+    .deleteClient(id_cliente)
       .then(({ data }) => result.value = data)
       .catch((e) => {
         console.log(e);
