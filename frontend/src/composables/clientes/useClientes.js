@@ -1,9 +1,10 @@
 import { ref } from "vue";
-import ClientesService from "../../services/admin/ClientesService";
+import AdminClientesService from "../../services/admin/ClientesService.js";
+import ClientService from "../../services/client/ClientService.js";
 
 export const useGetClientes = () => {
   const clients = ref([]);
-  ClientesService
+  AdminClientesService
     .getClientes()
         .then((data) => (clients.value = data.data));
 
@@ -12,7 +13,7 @@ export const useGetClientes = () => {
 
 export const useAddClientes = (client) => {
   const result = ref([])
-  ClientesService
+  AdminClientesService
     .addCliente(client)
       .then(({ data }) => result.value = data)
       .catch((e) => result.value = false)
@@ -22,7 +23,7 @@ export const useAddClientes = (client) => {
 
 export const useUpdateClientes = (client) => {
   const result = ref([])
-  ClientesService
+  AdminClientesService
     .updateCliente(client)
       .then(({ data }) => result.value = data)
       .catch((e) => result.value = false)
@@ -32,7 +33,7 @@ export const useUpdateClientes = (client) => {
 
 export const useDeleteClientes = (id_cliente) => {
   const result = ref([])
-  ClientesService
+  AdminClientesService
     .deleteClient(id_cliente)
       .then(({ data }) => result.value = data)
       .catch((e) => {
@@ -45,10 +46,21 @@ export const useDeleteClientes = (id_cliente) => {
 
 export const useGetClientProperties = () => {
   const properties = ref([])
-  ClientesService
+  AdminClientesService
     .getProperties()
       .then(({ data }) => properties.value = data)
       .catch((e) => properties.value = false)
 
   return { properties }
+}
+export const useGetUserProfile = () => {
+  const client = ref()
+  ClientService.getProfile()
+  .then(data => {
+    client.value = data.data
+  })
+  .catch(error => client.value = false)
+
+  return { client }
+
 }

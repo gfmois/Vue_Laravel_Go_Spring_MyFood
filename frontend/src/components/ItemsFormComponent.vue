@@ -9,7 +9,7 @@ export default {
     <div class="container">
         <div v-for="item in items" :style="{ 'background-color': item.color }"
             :class="{ active: item.active }" @click="item.active = !item.active">
-             <v-icon :name="item.icon" scale="2" fill="white" />
+              <v-icon :name="item.icon" scale="2" fill="white" />
             <p>{{ item.name }}</p>
         </div>
     </div>

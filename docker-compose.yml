@@ -20,7 +20,7 @@ services:
     restart: always
     container_name: myadmin_container
     # volumes:
-    #   - ./configuration/themes:/var/www/html/themes
+      # - ./configuration/themes_phpmyadmin:/var/www/html/themes
     ports:
       - 81:80
     environment:

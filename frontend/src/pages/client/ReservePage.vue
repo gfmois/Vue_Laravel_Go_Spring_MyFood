@@ -92,10 +92,9 @@ export default {
         )
         .flat()
         .map((l) => {
-
-          if (l.value == this.steps.date.value) {
-            let options = {year: 'numeric', month: '2-digit', day: '2-digit' };
-            l.value = new Date(l.value).toLocaleDateString("es-ES", options)
+          if(l.value == this.steps.date.value) {
+            let options = {year: 'numeric', month: '2-digit', day: '2-digit'}
+            l.value = new Date(l.value).toLocaleDateString('es-ES',options)
           }
 
           return {

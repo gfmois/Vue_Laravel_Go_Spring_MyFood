@@ -2,6 +2,8 @@
     export default {
         props: {
             step_collection: Object,
+            scale2: Boolean,
+            fill: String
         },
         data() {
             return this.step_collection
@@ -31,7 +33,8 @@
     v-for="(input, input_index) in step_collection.children"
     :key="input.name"
     v-if="step_collection.children"
-  >
+    :class="{'scale2':scale2}"
+    >
     <input v-if="!input.tag"
       :placeholder="input.name"
       :min="input.min ? input.min : null"
@@ -61,6 +64,12 @@
 </template>
 
 <style scoped>
+input {
+  color: v-bind('fill') !important;
+}
+.scale2, .scale2 input, .scale2 label {
+  font-size: 2rem;
+}
   select {
     background-color: rgba(211, 207, 207, 0.507);
     border: none;

@@ -16,7 +16,7 @@ export default {
         const store = useStore()
         const toast = useToast()
         const product = reactive(route.params.id_producto
-            ? useGetProduct(route.params.id_producto).product
+            ? useGetProduct(route.params.slug).product
             : { nombre: "", precio: 0, imagen: "", upload_image: "" })
         let category_input = reactive({
             name: "Categoria",
@@ -144,7 +144,7 @@ export default {
                 <div class="card-info">
                     <h3>Crear Producto</h3>
                 </div>
-                 <v-icon name="md-addcircle" scale="2" />
+                  <v-icon name="md-addcircle" scale="2" />
             </div>
         </div>
         <div class="add-container" v-if="$route.params.id_producto">
@@ -152,13 +152,13 @@ export default {
                 <div class="card-info">
                     <h3>Guardar</h3>
                 </div>
-                 <v-icon name="md-modeeditoutline" scale="2" />
+                  <v-icon name="md-modeeditoutline" scale="2" />
             </div>
             <div class="add-icon" @click="deleteProduct()">
                 <div class="card-info">
                     <h3>Borrar</h3>
                 </div>
-                 <v-icon name="hi-solid-trash" scale="2" />
+                  <v-icon name="hi-solid-trash" scale="2" />
             </div>
         </div>
         <div class="product-tags">

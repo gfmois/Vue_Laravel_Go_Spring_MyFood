@@ -8,6 +8,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ReservaController;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,11 +55,12 @@ Route::prefix("/auth")->group(function() {
 
 Route::prefix('productos')->group(function (){
     Route::get('/',[ProductoController::class, 'getProducts']);
+    Route::get('/{id_producto}', [ProductoController::class, 'getProduct']);
 
     Route::middleware('jwt.verify')->group(function() {
         Route::post('/',[ProductoController::class, 'addProduct']);
         Route::delete('/{id_producto}',[ProductoController::class, 'deleteProduct']);
-        Route::put('/{id_producto}',[ProductoController::class, 'updateProduct']);
+        Route::post('/{id_producto}',[ProductoController::class, 'updateProduct']);
     });
 });
 

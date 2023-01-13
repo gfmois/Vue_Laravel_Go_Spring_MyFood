@@ -1,11 +1,18 @@
 <script>
 import { RouterView } from 'vue-router'
+import { useStore } from 'vuex';
 import {Header, Footer} from './components/layout'
+import Constant from './Constant';
 
 export default {
+  setup() {
+    const store = useStore()
+    store.dispatch(Constant.CHECK_HAS_USER)
+    store.dispatch(Constant.CHECK_IS_ADMIN)
+  },
   components: {
       Header,
-    Footer
+      Footer
   }
 }
 </script>

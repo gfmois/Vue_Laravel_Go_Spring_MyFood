@@ -18,10 +18,31 @@ export const useGetFilteredProducts = (filters) => {
     ProductosService.getFilteredProducts(filters)
     .then(res => {
         res.data.productos.map(e => e["cantidad"] = 0)
-        products.value = res.data.productos
+        products.value = res.data
     })
     .catch(error => {
         console.log(error);
     })
+    return { products }
+}
+
+export const useGetProductDetails = (slug_product) => {
+    let product = ref()
+    ProductosService.getProductDetails(slug_product)
+    .then(res => {
+        product.value = res.data.producto
+    })
+    .catch(error => {
+        product.value = false
+    })
+    return { product }
+}
+
+
+export const useSearchProducts = (product) => {
+    let products = ref()
+    ProductosService.searchProducts(product)
+    .then(res => products.value = res.data)
+    .catch(error => products.value = false)
     return { products }
 }

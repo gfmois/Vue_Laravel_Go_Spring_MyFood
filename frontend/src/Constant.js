@@ -1,9 +1,7 @@
 export default {
     // RESERVAS
     GET_RESERVES: "getReserves",
-    ADD_RESERVE: "addReserve",
-    // ADMIN
-    UPDATE_RESERVE: "updateReserve",
+    ADD_RESERVE: "addReserve",    
 
     // Clients
     LOGIN_CLIENT: "loginClient",
@@ -21,5 +19,13 @@ export default {
     ADMIN_GET_PRODUCTS: "getAdminProducts",
     ADMIN_ADD_PRODUCT: "addAdminProduct",
     ADMIN_DELETE_PRODUCT: "deleteAdminProduct",
-    ADMIN_UPDATE_PRODUCT: "updateAdminProduct"
+    ADMIN_UPDATE_PRODUCT: "updateAdminProduct",
+
+    // RESERVES
+    UPDATE_RESERVE: "updateReserve",
+
+    //AUTH
+    CHECK_IS_ADMIN: "checkIsAdmin",
+    CHECK_HAS_USER: "checkHasUser",
+    CHANGE_HAS_USER: "changeHasUser"
 }

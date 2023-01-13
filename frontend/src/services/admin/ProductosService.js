@@ -7,9 +7,7 @@ export default {
         return Api(`${secret.ADMIN_SERVER}`).get("productos")
     },
     addProduct(newProduct){
-        return Api(`${secret.ADMIN_SERVER}`).post("productos",newProduct, {headers:{
-            "Content-Type": "multipart/form-data",
-        }})
+        return Api(`${secret.ADMIN_SERVER}`).post("productos",newProduct)
     },
     getProduct(id_product) {
         return Api(`${secret.ADMIN_SERVER}`).get("productos/"+id_product)
@@ -18,9 +16,6 @@ export default {
         return Api(`${secret.ADMIN_SERVER}`).delete("productos/"+id_product)
     },
     updateProduct(modProduct) {
-        return Api(`${secret.ADMIN_SERVER}`).post("productos/"+modProduct.get("id_producto"),modProduct, 
-        { headers: {
-            "Content-Type": "multipart/form-data",
-        }})
+        return Api(`${secret.ADMIN_SERVER}`).post("productos/"+modProduct.get("id_producto"),modProduct)
     },
 }

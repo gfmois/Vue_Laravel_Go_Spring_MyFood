@@ -39,7 +39,7 @@ export default {
     <div class="upload-container" @dragover="d_enter = true" @dragleave="d_enter = false" :class="{dragenter: d_enter}" @drop="drop">
         <input type="file" ref="file" id="file" @change="onChange" />
         <label for="file" class="upload-file" :class="{ d_none: !empty }" >
-             <v-icon name="fa-file-upload" scale="7"/>
+              <v-icon name="fa-file-upload" scale="7"/>
             <label><strong>Elige un archivo</strong><span class="box__dragndrop"> o sueltalo aquí</span>.</label>
         </label>
         <div :class="{ d_none: empty }" @click="focusInput">

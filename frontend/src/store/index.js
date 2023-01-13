@@ -2,14 +2,14 @@ import Vuex from "vuex"
 
 import { reservas } from "./modules/reservas"
 import { productos } from "./modules/productos"
-import { clientes } from "./modules/clientes"
+import { auth } from "./modules/auth"
 import { carrito } from "./modules/carrito"
 
 export default Vuex.createStore({
     modules: {
+        auth,
         reservas,
         productos,
-        clientes,
         carrito
     }
 })

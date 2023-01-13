@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import authGuard from "../services/guards/authGuard";
+import authGuard from "../services/guards/AuthGuard";
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies()
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +18,7 @@ const router = createRouter({
     {
       path: "/reserve",
       name: "reserve",
+      meta: { requiredAuth: true},
       component: () => import("../pages/client/ReservePage.vue"),
     },
     {
@@ -24,8 +27,15 @@ const router = createRouter({
       component: () => import('../pages/client/OrderPage.vue')
     },
     {
+      path: '/productos/:id_producto',
+      name: 'producto_details',
+      component: () =>  import('../pages/client/ProductDetailsPage.vue')
+
+    },
+    {
       path: "/carrito",
       name: "carrito",
+      meta: { requiredAuth: true },
       component: () => import("../pages/client/CartPage.vue")
     },
     {
@@ -103,12 +113,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiredAuth)) {
-    if (localStorage.getItem('token') != null && localStorage.token) {
+    if (cookies.get('token_client') != null && cookies.get('token_client')) {
       next()
       return
     }
 
-    next("/home")
+    next("/auth")
   } else {
     next()
   }

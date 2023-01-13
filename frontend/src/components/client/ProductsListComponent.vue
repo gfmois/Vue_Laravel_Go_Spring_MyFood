@@ -29,16 +29,18 @@ export default {
 </script>
 <template>
 <div class="products-list" v-if="!isCart">
-    <div class="product-item" v-for="product in products" :key="product.id_product">
-        <div class="product-image">
+    <div class="product-item" v-for="product in products" :key="product.id_producto">
+        <div class="product-image" >
             <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`">
         </div>
         <div class="product-info" :class="{active: product.cantidad>0}">
-            <h3>{{ product.nombre }}</h3>
-            <h3 class="price">{{ product.precio }}€</h3>
+            <h2 @click="$router.push('/productos/'+product.slug)">{{ product.nombre }}</h2>
+            <h2 class="price">{{ product.precio }}€</h2>
             <div class="product-details">
+                <!-- <p @click="lessOne(product)">-</p> -->
                 <v-icon name="io-remove-circle" scale="2" fill="orange" @click="lessOne(product)"></v-icon>
                 <p>{{ product.cantidad }}</p>
+                <!-- <p @click="addOne(product)">+</p> -->
                 <v-icon name="io-add-circle-sharp" scale="2" fill="orange" @click="addOne(product)"></v-icon>
             </div>
         </div>
@@ -57,8 +59,10 @@ export default {
                 <p>{{product.precio}}€</p>
             </div>
             <div class="amount">
+                <!-- <p @click="lessOne(product)">-</p> -->
                 <v-icon name="io-remove-circle" scale="2" fill="orange" @click="lessOne(product)"></v-icon>
                 <p>{{ product.cantidad }}</p>
+                <!-- <p @click="addOne(product)">+</p> -->
                 <v-icon name="io-add-circle-sharp" scale="2" fill="orange" @click="addOne(product)"></v-icon>
             </div>
         </div>
@@ -73,7 +77,6 @@ export default {
 <style scoped>
 .products-list {
     box-sizing: border-box;
-    height: 100%;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -107,9 +110,10 @@ export default {
     align-items: flex-end;
     background-color: antiquewhite;
 }
-.product-info h3 {
+.product-info h2 {
     max-width: 90%;
     height: 45px;
+    font-size: 1.3rem;
 }
 .product-details {
     width: 100%;
@@ -180,7 +184,7 @@ export default {
 .product-cart-info .amount {
     display: flex;
     width: 20%;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     justify-content: space-evenly;
     align-items: center;
     color: black;
@@ -188,7 +192,7 @@ export default {
 
 .product-cart-total {
     width: 15%;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -17,7 +17,7 @@ export default {
     <div class="products-list">
             <div class="product-item" v-for="product in state.productsList" @click="$router.push('/admin/productos/'+product.id_producto)">
                 <div class="product-image">
-                    <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`">
+                  <img :src="`${secret.ADMIN_SERVER}/public/${product.imagen}`">
                 </div>
                 <div class="product-info">
                     <div>

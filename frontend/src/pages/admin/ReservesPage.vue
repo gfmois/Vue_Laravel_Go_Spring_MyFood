@@ -17,7 +17,7 @@ export default {
         const reserves = reactive(computed(() => store.state.reservas.reserves))
         const clicked = ref(false);
         const headOptions = ['Cliente', 'Fecha', 'Servicio', 'Nº Comensales', 'Estado'];
-
+        
         return { reserves, clicked, headOptions, isInForm }
     },
     components: {
@@ -30,7 +30,7 @@ export default {
 <template>
 <div class="main">
     <div class="qr-reader">
-         <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
+        <v-icon name="bi-qr-code-scan" scale="2" @click="clicked = true" />
         <QrReaderComponentVue @open_close="clicked = $event" v-if="clicked" />
     </div>
     <div class="add-reserve">
@@ -45,7 +45,7 @@ export default {
 <style scoped>
 .qr-reader {
     position: absolute;
-    top: 20px;
+    top: 10px;
     box-sizing: border-box;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     width: 60px;
@@ -57,7 +57,6 @@ export default {
     align-items: center;
     cursor: pointer;
 }
-
 .add-reserve {
     position: absolute;
     top: 10px;
@@ -84,5 +83,4 @@ export default {
     width: 100%;
     border-radius: 10px;
 }
-
 </style>
