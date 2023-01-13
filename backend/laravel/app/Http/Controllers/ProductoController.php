@@ -3,13 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Producto\StoreProductoRequest;
-use App\Http\Resources\Producto\ProductoCollection;
-use App\Http\Resources\Producto\ProductoResource;
 use App\Models\Producto;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class ProductoController extends Controller
 {
@@ -42,7 +37,7 @@ class ProductoController extends Controller
         $newProduct->generateAttribute($request->nombre);
         $file_name = $newProduct->slug.'_'.$request->upload_image->getClientOriginalName();
         $request->upload_image->move("uploads",$file_name);
-        $newProduct->imagen = $file_name;
+        $newProduct->icono = $file_name;
         $this->producto::create($newProduct->toArray());
         $newProduct->categorias()->attach(explode(',',$request->categorias));
         $newProduct->alergenos()->attach(explode(',',$request->alergenos));

@@ -1,158 +1,205 @@
 <script>
+import { reactive, ref, watch } from 'vue'
 import { RouterView } from 'vue-router'
+import { useGetClientes, useGetClientProperties } from "../../composables/clientes/useClientes"
+import CustomModal from '../../components/CustomModal.vue'
+
 export default {
     setup() {
+        const clients = reactive({ fromDB: useGetClientes().clients, properties: useGetClientProperties().properties })
+        const showUsersModal = ref(false)
+        const uItem = ref({})
+        const dItem = ref({})
+
         let routes = [
             {
                 icon: "bi-house-fill",
                 scale: "2.2",
                 name: "Dasboard",
-                path: "dashboard"
+                path: "dashboard",
+                isRoute: true
             },
             {
                 icon: "bi-box2-fill",
                 scale: "2",
                 name: "Productos",
-                path: "productos"
+                path: "productos",
+                isRoute: true
             },
             {
                 icon: "io-calendar-clear",
                 scale: "2",
                 name: "Reservas",
-                path: "reservas"
+                path: "reservas",
+                isRoute: true
+            },
+            {
+                icon: "fa-user",
+                scale: "2",
+                isRoute: false
             }
         ]
-        return {routes}
+
+        watch(
+            () => dItem.value,
+            (v, pv) => {
+                // Elimina el usuario del array de usuarios para que no aparezva en el listado.
+                clients.fromDB.splice(clients.fromDB.findIndex(e => e.id_cliente == v.id_cliente), 1)
+            },
+            { deep: true }
+        )
+
+        watch(
+            () => uItem.value,
+            (v, pv) => {
+                clients.fromDB[clients.fromDB.findIndex((e) => e.id_cliente == v.id_cliente)] = v
+            }
+        )
+
+        return { routes, clients, showUsersModal, uItem, dItem }
+    },
+    components: {
+        CustomModal
     }
 }
 </script>
 <template>
-<div class="admin-panel">
-    <input type="checkbox" id="show_menu" class="show-menu"> 
-    <aside>
-        <div class="logo-wrapper">
-            <div class="logo" @click="$router.push('/')">
-                <img src="../../assets/MyFood.png">
+    <div class="admin-panel">
+        <input type="checkbox" id="show_menu" class="show-menu">
+        <aside>
+            <div class="logo-wrapper">
+                <div class="logo" @click="$router.push('/')">
+                    <img src="../../assets/MyFood.png">
+                </div>
+                <div class="app-name" @click="$router.push('/')">
+                    <h1>MyFood</h1>
+                </div>
             </div>
-            <div class="app-name" @click="$router.push('/')">
-                <h1>MyFood</h1>
+            <ul>
+                <li v-for="route in routes" :class="{ active: route.path === $route.name }"
+                    @click="route.isRoute ? $router.replace({ path: '/admin/' + route.path }) : showUsersModal = true">
+                    <v-icon :name="route.icon" fill="white" :scale="route.scale" />
+                    <p>{{ route.name }}</p>
+                </li>
+            </ul>
+            <div class="return" @click="$router.push('/')">
+                <v-icon name="md-exittoapp-twotone" fill="white" scale="2" />
+                <p>Volver</p>
             </div>
-        </div>
-        <ul>
-            <li v-for="route in routes" :class="{active: route.path === $route.name}" @click="$router.replace({path: '/admin/'+route.path })">
-                <v-icon :name="route.icon" fill="white" :scale="route.scale"/>
-                <p>{{route.name}}</p>
-            </li>
-        </ul>
-        <div class="return" @click="$router.push('/')">
-            <v-icon name="md-exittoapp-twotone" fill="white" scale="2"/>
-            <p>Volver</p>
-        </div>
-    </aside>    
-    <main>
-        <nav>
-            <label class="hamburger-lines" for="show_menu">
-                <span class="line line1"></span>
-                <span class="line line2"></span>
-                <span class="line line3"></span>
-            </label>  
-            <div class="user-image">
-                <img src="/src/assets/IMG/Ximo.png">
+        </aside>
+        <main>
+            <nav>
+                <label class="hamburger-lines" for="show_menu">
+                    <span class="line line1"></span>
+                    <span class="line line2"></span>
+                    <span class="line line3"></span>
+                </label>
+                <div class="user-image">
+                    <img src="/src/assets/IMG/Ximo.png">
+                </div>
+            </nav>
+            <div class="main-admin">
+                <CustomModal v-if="showUsersModal" @updatedItem="uItem = $event" :key="showUsersModal"
+                    :properties="clients.properties" :where="'Clientes'" :data="clients.fromDB"
+                    @close="showUsersModal = $event" @deletedItem="dItem = $event" :show="showUsersModal" />
+                <RouterView />
             </div>
-        </nav>
-        <div class="main-admin">
-            <RouterView />
-        </div>
-    </main>
-</div>
+        </main>
+    </div>
 </template>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 
 .hamburger-lines {
-  height: 26px;
-  width: 32px;
-  top: 17px;
-  left: 20px;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
+    height: 26px;
+    width: 32px;
+    top: 17px;
+    left: 20px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
 }
 
 .hamburger-lines .line {
-  display: block;
-  height: 4px;
-  width: 100%;
-  border-radius: 10px;
-  background: #0e2431;
+    display: block;
+    height: 4px;
+    width: 100%;
+    border-radius: 10px;
+    background: #0e2431;
 }
 
 .hamburger-lines .line1 {
-  transform-origin: 0% 0%;
-  transition: transform 0.4s ease-in-out;
+    transform-origin: 0% 0%;
+    transition: transform 0.4s ease-in-out;
 }
 
 .hamburger-lines .line2 {
-  transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out;
 }
 
 .hamburger-lines .line3 {
-  transform-origin: 0% 100%;
-  transition: transform 0.4s ease-in-out;
+    transform-origin: 0% 100%;
+    transition: transform 0.4s ease-in-out;
 }
 
-input[type="checkbox"]:checked ~ main nav .hamburger-lines .line1 {
-  transform: rotate(45deg);
+input[type="checkbox"]:checked~main nav .hamburger-lines .line1 {
+    transform: rotate(45deg);
 }
 
-input[type="checkbox"]:checked ~ main nav .hamburger-lines .line2 {
-  transform: scaleY(0);
+input[type="checkbox"]:checked~main nav .hamburger-lines .line2 {
+    transform: scaleY(0);
 }
 
-input[type="checkbox"]:checked ~ main nav .hamburger-lines .line3 {
-  transform: rotate(-45deg);
+input[type="checkbox"]:checked~main nav .hamburger-lines .line3 {
+    transform: rotate(-45deg);
 }
 
-input[type="checkbox"]:checked ~ main {
+input[type="checkbox"]:checked~main {
     width: 80%;
 }
-input[type="checkbox"]:checked ~ aside {
+
+input[type="checkbox"]:checked~aside {
     width: 20%;
 }
 
-input[type="checkbox"]:checked ~ aside .app-name {
+input[type="checkbox"]:checked~aside .app-name {
     display: block;
 }
 
-input[type="checkbox"]:checked ~ aside ul li p {
+input[type="checkbox"]:checked~aside ul li p {
     display: block;
 }
 
-input[type="checkbox"]:checked ~ aside .return p {
+input[type="checkbox"]:checked~aside .return p {
     display: block;
 }
 
 .show-menu {
     display: none;
 }
+
 .admin-panel {
     width: 100vw;
     height: 100vh;
     display: flex;
     background-color: #eeeeee;
 }
+
 a {
-    all:unset;
+    all: unset;
 }
+
 ul li {
     list-style: none;
 }
+
 main {
     width: 95%;
     transition: width 0.7s ease-in-out;
 }
+
 nav {
     background-color: transparent;
     height: 8vh;
@@ -175,6 +222,7 @@ nav {
     align-items: center;
     cursor: pointer;
 }
+
 .user-image img {
     width: 100%;
     height: 100%;
@@ -194,12 +242,15 @@ nav {
     font-family: 'Dancing Script', cursive;
     font-size: 1.5rem;
 }
+
 .app-name {
     display: none;
 }
+
 .logo {
     height: 70%;
 }
+
 .logo img {
     height: 100%;
 }
@@ -226,6 +277,7 @@ aside ul {
     font-size: 1.3rem;
     font-weight: 700;
 }
+
 aside ul li {
     padding: 10px 0px 10px 15px;
     display: flex;
@@ -233,10 +285,12 @@ aside ul li {
     gap: 30px;
     position: relative;
 }
+
 aside ul li p {
     display: none;
-    
+
 }
+
 aside ul li:hover {
     background-color: #eeeeee;
     border-top-left-radius: 30px;
@@ -265,6 +319,7 @@ aside ul li.active::before {
     box-shadow: 35px 35px 0 10px #eeeeee;
     pointer-events: none;
 }
+
 aside ul li.active::after {
     content: '';
     width: 50px;
@@ -294,6 +349,7 @@ aside ul li:hover:before {
     box-shadow: 35px 35px 0 10px #eeeeee;
     pointer-events: none;
 }
+
 aside ul li:hover:after {
     content: '';
     width: 50px;
@@ -314,20 +370,17 @@ aside ul li:hover svg {
 .main-admin {
     box-sizing: border-box;
     padding: 20px;
-<<<<<<< HEAD
-
-=======
->>>>>>> mois-dev
     height: 90vh;
 }
+
 .return {
     position: absolute;
     width: 100%;
     border-top: 2px solid white;
     display: flex;
-    bottom:0;
+    bottom: 0;
     left: 0;
-    padding: 10px;  
+    padding: 10px;
     padding-left: 25px;
     display: flex;
     align-items: center;
@@ -336,9 +389,11 @@ aside ul li:hover svg {
     font-weight: 700;
     cursor: pointer;
 }
+
 .return:hover {
     background-color: red;
 }
+
 .return p {
     display: none;
 }
@@ -349,21 +404,25 @@ aside ul li:hover svg {
         z-index: 2;
         display: none;
     }
+
     main {
         width: 100%;
     }
-    input[type="checkbox"]:checked ~ aside {
+
+    input[type="checkbox"]:checked~aside {
         width: 100%;
         display: block;
     }
-    input[type="checkbox"]:checked ~ main {
+
+    input[type="checkbox"]:checked~main {
         width: 100%;
     }
-    
+
     .logo-wrapper {
         justify-content: flex-end;
         padding-right: 20px;
     }
+
     .main-admin {
         padding: 0px;
     }

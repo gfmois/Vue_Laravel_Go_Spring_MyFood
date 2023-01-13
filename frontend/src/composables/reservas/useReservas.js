@@ -1,6 +1,5 @@
 import { ref } from "vue";
 import reservaService from "../../services/client/ReservasService";
-import { reservas } from "../../store/modules/reservas";
 
 export const useGetHolidays = (params) => {
   const holidays = ref([]);
@@ -47,7 +46,6 @@ export const useGetReserve = (id_reserva) => {
   return { reserve };
 };
 
-// FIXME: Reserva Service make petition from client server, change it to admin server
 export const useGetReserves = () => {
   const reserves = ref([]);
   reservaService.getReserves().then((data) => (reserves.value = data.data));

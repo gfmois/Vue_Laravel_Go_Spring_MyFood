@@ -7,7 +7,7 @@
 </template>
 <style>
 footer {
-    background-color: #00aae480;
+    background-color: #E8C39e;
     height: 8vh;
     display: flex;
     justify-content: center;

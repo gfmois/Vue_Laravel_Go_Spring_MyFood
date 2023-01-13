@@ -5,10 +5,6 @@ import router from './router'
 import { OhVueIcon, addIcons } from "oh-vue-icons";
 import * as VIcons from "oh-vue-icons/icons";
 import VueQrcode from '@chenfengyuan/vue-qrcode';
-<<<<<<< HEAD
-import 'vue-toast-notification/dist/theme-sugar.css';
-=======
->>>>>>> mois-dev
 
 // Toastr
 import 'vue-toast-notification/dist/theme-sugar.css';

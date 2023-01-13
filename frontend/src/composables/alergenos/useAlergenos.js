@@ -4,12 +4,12 @@ export const useGetAllergens = () => {
     let allergens = ref([])
     AlergenosService.getAllergens()
     .then(res => {
-        console.log(res);
+        allergens.value = res.data
     })
     .catch(error => {
         console.log(error);
     })
-    return { allergens}
+    return { allergens }
 }
 
 export const useGetAllergensInput = () => {
@@ -20,8 +20,8 @@ export const useGetAllergensInput = () => {
         allergens.value.map(a => {
             a.name = a.nombre,
             a.active = false,
-            a.icon = a.imagen.split("|")[0],
-            a.color = a.imagen.split("|")[1],
+            a.icon = a.icono.split("|")[0],
+            a.color = a.icono.split("|")[1],
             a.value = a.id_alergeno
         })
     })
@@ -29,4 +29,49 @@ export const useGetAllergensInput = () => {
         console.log(error);
     })
     return { allergens}
+}
+
+export const useGetAllergensProperties = () => {
+    let properties = ref([])
+    AlergenosService.getProperties()
+        .then(({ data }) => {
+            properties.value = data
+        })
+
+    return { properties }
+}
+
+export const useAddAlergenos = (allergen) => {
+    let result = ref([])
+    AlergenosService.addAllergen(allergen)
+        .then(({ data }) => {
+            result.value = data
+        })
+        .catch((data) => {
+            result.value = false
+        })
+
+    return { result }
+}
+
+export const useUpdateAlergenos = (allergen) => {
+    let result = ref([])
+    AlergenosService.updateAllergen(allergen)
+        .then(({ data }) => {
+            result.value = data
+        })
+        .catch(( data ) => {
+            result.value = false
+        })
+
+    return { result }
+}
+
+export const useDeleteAlergenos = (id_alergeno) => {
+    let result = ref([])
+    AlergenosService.deleteAllergen(id_alergeno)
+        .then(({ data }) => result.value = data)
+        .catch((e) => result.value = false)
+
+    return { result }
 }

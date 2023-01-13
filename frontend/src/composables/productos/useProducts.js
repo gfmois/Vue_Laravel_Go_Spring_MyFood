@@ -8,3 +8,13 @@ export const useDeleteProduct = (id_product) => {
 
     return { data }
 }
+
+export const useGetProducts = () => {
+    const products = ref()
+    productService.getProducts()
+        .then(({ data }) => {
+            products.value = data
+        })
+
+    return { products }
+}

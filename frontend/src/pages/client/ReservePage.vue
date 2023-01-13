@@ -1,14 +1,16 @@
 <script>
 import { DatePicker, CustomInput } from "../../components";
+import { ref, watch } from "vue";
 import { ReservePDF } from "../../components/client";
-import json from "../../assets/loading_dp.json"
-import { Vue3Lottie } from 'vue3-lottie';
+import json from "../../assets/json/loading_dp.json";
+import { Vue3Lottie } from "vue3-lottie";
 
 export default {
-  data: () => ({
-    date: null,
-    step: 0,
-    steps: {
+  setup() {
+    const isInvalid = ref(true);
+    const date = ref(null);
+    const step = ref(0);
+    const steps = ref({
       contact: {
         name: "Información Reserva",
         children: [
@@ -46,10 +48,33 @@ export default {
       },
       confirmation: {
         name: "Confirmación",
-        children: []
+        children: [],
       },
-    },
-  }),
+    });
+
+    watch(
+      () => steps,
+      (v, pv) => {
+        const stepKeys = Object.keys(v.value);
+        const selected = ref(v.value[stepKeys[step.value]]);
+
+        if (selected.value.children) {
+          selected.value.children.map((i) => {
+            i.value == ""
+              ? (isInvalid.value = true)
+              : (isInvalid.value = false);
+          });
+        } else {
+          selected.value.value == ""
+            ? (isInvalid.value = true)
+            : (isInvalid.value = false);
+        }
+      },
+      { deep: true }
+    );
+
+    return { json, isInvalid, steps, date, step };
+  },
   computed: {
     stepperProgress() {
       return (100 / Object.keys(this.steps).length) * this.step + "%";
@@ -61,31 +86,33 @@ export default {
         .map((j) =>
           j.children != null
             ? j.children.map((k) => {
-              return { name: k.name, value: k.value, disabled: true };
-            })
+                return { name: k.name, value: k.value, disabled: true };
+              })
             : { ...j, disabled: true }
         )
-        .flat().map((l) => { 
-          return { 
-            ...l, 
-            value: l.value == this.steps.date.value 
-              ? new Date(l.value).toLocaleDateString() 
-              : l.value 
-            }
-          })
+        .flat()
+        .map((l) => {
 
-      return
+          if (l.value == this.steps.date.value) {
+            let options = {year: 'numeric', month: '2-digit', day: '2-digit' };
+            l.value = new Date(l.value).toLocaleDateString("es-ES", options)
+          }
+
+          return {
+            ...l,
+            value: l.value
+          };
+        });
+
+      return;
     },
   },
   components: {
     DatePicker,
     CustomInput,
     ReservePDF,
-    Vue3Lottie
+    Vue3Lottie,
   },
-  setup() {
-    return { json }
-  }
 };
 </script>
 
@@ -93,14 +120,24 @@ export default {
   <div class="wrapper-stepper">
     <div class="stepper">
       <div class="stepper-progress">
-        <div class="stepper-progress-bar" :style="'width:' + stepperProgress"></div>
+        <div
+          class="stepper-progress-bar"
+          :style="'width:' + stepperProgress"
+        ></div>
       </div>
 
-      <div class="stepper-item" v-for="item in Object.keys(steps).length"
-        :class="{ current: step == item - 1, success: step >= item }" :key="item">
+      <div
+        class="stepper-item"
+        v-for="item in Object.keys(steps).length"
+        :class="{ current: step == item - 1, success: step >= item }"
+        :key="item"
+      >
         <div class="stepper-item-counter">
-          <img class="icon-success"
-            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png" alt="" />
+          <img
+            class="icon-success"
+            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png"
+            alt=""
+          />
           <span class="number">
             {{ item }}
           </span>
@@ -111,24 +148,48 @@ export default {
       </div>
     </div>
 
-    <div class="stepper-content" v-for="(step_collection, step_name) in steps" :key="step_collection">
-      <div class="stepper-pane" v-if="step == Object.keys(steps).findIndex((i) => i == step_name)">
+    <div
+      class="stepper-content"
+      v-for="(step_collection, step_name) in steps"
+      :key="step_collection"
+    >
+      <div
+        class="stepper-pane"
+        v-if="step == Object.keys(steps).findIndex((i) => i == step_name)"
+      >
         {{ getValues }}
         <div class="middle-input" v-if="step_name != 'date'">
           <div class="lf-input">
             <div class="inputs">
               <CustomInput :step_collection="step_collection" />
-              <ReservePDF class="reserve-button" v-if="step_name == 'confirmation'" :reserve_info="steps.confirmation.children" />
+              <ReservePDF
+                class="reserve-button"
+                v-if="step_name == 'confirmation'"
+                :reserve_info="steps.confirmation.children"
+              />
             </div>
           </div>
           <div class="rg-img">
-            <img src="../../assets/GIF/chef.gif" alt="" v-if="step_name == 'contact'">
-            <ReservePDF v-if="step_name == 'confirmation'" :reserve_info="steps.confirmation.children" />
+            <img
+              src="../../assets/GIF/chef.gif"
+              alt=""
+              v-if="step_name == 'contact'"
+            />
+            <ReservePDF
+              v-if="step_name == 'confirmation'"
+              :reserve_info="steps.confirmation.children"
+            />
           </div>
         </div>
-        <div class="middle-input" v-if="step == Object.keys(steps).findIndex((i) => i == 'date')">
+        <div
+          class="middle-input"
+          v-if="step == Object.keys(steps).findIndex((i) => i == 'date')"
+        >
           <div class="lf-input">
-            <DatePicker :params="steps.contact.children" v-model="steps.date.value" />
+            <DatePicker
+              :params="steps.contact.children"
+              v-model="steps.date.value"
+            />
           </div>
           <div class="rg-img">
             <Vue3Lottie :animation-data="json" :height="400" :width="400" />
@@ -141,7 +202,14 @@ export default {
       <button class="btn" @click="step--" :disabled="step == 0">
         Anterior
       </button>
-      <button class="btn btn--green-1" @click="step++" :disabled="step == Object.keys(steps).length - 1">
+      <button
+        class="btn btn--green-1"
+        @click="
+          step++;
+          isInvalid = true;
+        "
+        :disabled="step == Object.keys(steps).length - 1 || isInvalid"
+      >
         Siguiente
       </button>
     </div>
@@ -149,10 +217,10 @@ export default {
 </template>
 
 <style>
-.reserve-button, .inputs .confirm {
+.reserve-button,
+.inputs .confirm {
   display: none;
 }
-
 
 .middle-input {
   display: flex;
@@ -170,7 +238,6 @@ export default {
   gap: 20px;
   width: 70%;
 }
-
 
 .dp__main {
   height: 100%;
@@ -205,7 +272,7 @@ export default {
   width: 50%;
   height: 100%;
   display: flex;
-  transition:  width 0.7s ease-in-out;
+  transition: width 0.7s ease-in-out;
   justify-content: center;
   align-items: center;
 }
@@ -408,18 +475,19 @@ export default {
   .stepper-pane {
     width: 100%;
   }
-  .reserve-button, .inputs .confirm {
+  .reserve-button,
+  .inputs .confirm {
     display: block;
   }
   .lf-input {
     width: 100%;
-    transition:  width 0.7s ease-in-out;
+    transition: width 0.7s ease-in-out;
   }
   .rg-img {
     display: none;
   }
 }
-@media (max-width: 500px ) {
+@media (max-width: 500px) {
   .wrapper-stepper {
     width: 100%;
     padding: 0px;
