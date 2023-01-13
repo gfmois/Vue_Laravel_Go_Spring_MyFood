@@ -5,6 +5,7 @@ import router from './router'
 import { OhVueIcon, addIcons } from "oh-vue-icons";
 import * as VIcons from "oh-vue-icons/icons";
 import VueQrcode from '@chenfengyuan/vue-qrcode';
+import 'vue-toast-notification/dist/theme-sugar.css';
 
 // Toastr
 import 'vue-toast-notification/dist/theme-sugar.css';

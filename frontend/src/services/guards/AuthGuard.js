@@ -4,14 +4,11 @@ import ClientesService from "../admin/ClientesService.js"
 export default {
     authIsAdmin(to, from, next) {
         ClientesService.checkAdmin().then(({ data }) => {
-            console.log(data, 2);
             localStorage.token = data.message.token;
             localStorage.setItem('user', JSON.stringify(data.message.user))
             next()
         }).catch((e) => {
-            console.log(e);
             store.clientes.authUser.isAdmin = false
-            console.log('Error');
             next("/auth")
         })
     },

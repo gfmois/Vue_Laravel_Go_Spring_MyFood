@@ -1,11 +1,25 @@
-import { ref } from "vue";
-import CategoriasService from "../../services/admin/CategoriasService";
+import {ref} from "vue";
+import AdminCategoriasService from "../../services/admin/CategoriasService";
+import CategoriasService from "../../services/client/CategoriasService";
 
 export const useGetCategories = () => {
-  let categories = ref([]);
-  CategoriasService.getCategories()
-    .then((res) => {
-      categories.value = res.data;
+    let categories = ref([])
+    AdminCategoriasService.getCategories()
+    .then(res =>{
+        categories.value = res.data
+    })
+    .catch(error => {
+        categories.value = false
+    })
+    return { categories }
+}
+
+export const useGetCategoriesFilter = () => {
+    let categories = ref([])
+    CategoriasService.getCategories()
+    .then(res =>{
+        res.data.categories.map(c => categories.value.push({value: c.id_categoria, label: c.nombre}))
+        
     })
     .catch((error) => {
       console.log(error);
@@ -14,15 +28,15 @@ export const useGetCategories = () => {
 };
 
 export const useGetCategoriesInput = () => {
-  let categories = ref([]);
-  CategoriasService.getCategories()
-    .then((res) => {
-      categories.value = res.data;
-      categories.value.map((c) => {
-        c.name = c.nombre;
-        c.tag = "option";
-        c.value = c.id_categoria;
-      });
+    let categories = ref([])
+    AdminCategoriasService.getCategories()
+    .then(res => {
+        categories.value = res.data
+        categories.value.map(c => {
+            c.name = c.nombre
+            c.tag = "option"
+            c.value = c.id_categoria
+        })
     })
     .catch((error) => {
       console.log(error);
@@ -32,7 +46,7 @@ export const useGetCategoriesInput = () => {
 
 export const useGetCategoryProperties = () => {
   let properties = ref([]);
-  CategoriasService.getProperties().then(({ data }) => {
+  AdminCategoriasService.getProperties().then(({ data }) => {
     properties.value = data;
   });
 
@@ -41,7 +55,7 @@ export const useGetCategoryProperties = () => {
 
 export const useAddCategorias = (category) => {
   let result = ref([]);
-  CategoriasService.addCategory(category)
+  AdminCategoriasService.addCategory(category)
     .then((data) => {
       result.value = data.data;
     })
@@ -54,7 +68,7 @@ export const useAddCategorias = (category) => {
 
 export const useUpdateCategorias = (category) => {
   let result = ref([]);
-  CategoriasService.updateCategory(category)
+  AdminCategoriasService.updateCategory(category)
     .then(({ data }) => {
       result.value = data;
     })
@@ -67,7 +81,7 @@ export const useUpdateCategorias = (category) => {
 
 export const useDeleteCategorias = (id_categpory) => {
   let result = ref([])
-  CategoriasService.deleteCategory(id_categpory)
+  AdminCategoriasService.deleteCategory(id_categpory)
     .then(({ data }) => result.value = data)
     .catch((e) => result.value = false)
 

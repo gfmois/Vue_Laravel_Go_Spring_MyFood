@@ -5,11 +5,16 @@ import { ref, reactive, watch } from 'vue'
 import { useGetCategories, useGetCategoryProperties } from '../../composables/categorias/useCategorias'
 import { useGetAllergens, useGetAllergensProperties } from '../../composables/alergenos/useAlergenos'
 
+import { useStore } from 'vuex';
+import Constant from '../../Constant';
 export default {
     components: {
         CustomModal
     },
     setup() {
+        const store = useStore();
+        store.state.productos.productsList ? null : store.dispatch(Constant.ADMIN_GET_PRODUCTS)
+
         const showModalCategories = ref(false)
         const showModalAllergens = ref(false)
 
@@ -107,27 +112,27 @@ export default {
                     <h1>20</h1>
                     <h3>Productos</h3>
                 </div>
-                <v-icon name="bi-box2-fill" scale="3" />
+                 <v-icon name="bi-box2-fill" scale="3" />
             </div>
             <div class="statistic-card" @click="showModalCategories = true">
                 <div class="card-info">
                     <h1>{{ categories.from_db.length }}</h1>
                     <h3>Categorias</h3>
                 </div>
-                <v-icon name="md-category" scale="3" />
+                 <v-icon name="md-category" scale="3" />
             </div>
             <div class="statistic-card" @click="showModalAllergens = true">
                 <div class="card-info">
                     <h1>{{ allergens.from_db.length }}</h1>
                     <h3>Productos alergenos</h3>
                 </div>
-                <v-icon name="md-block" scale="3" />
+                 <v-icon name="md-block" scale="3" />
             </div>
             <div class="statistic-card" @click="$router.replace('/admin/productos/nuevo_producto')">
                 <div class="card-info">
                     <h3>Crear Producto</h3>
                 </div>
-                <v-icon name="md-addcircle" scale="3" />
+                 <v-icon name="md-addcircle" scale="3" />
             </div>
         </div>
         <CustomModal v-if="showModalCategories" @updatedItem="uItem = $event" :key="showModalCategories"

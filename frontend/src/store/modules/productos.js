@@ -1,10 +1,14 @@
 import Constant from "../../Constant";
-import ProductosService from "../../services/admin/ProductosService";
+import AdminProductosService from "../../services/admin/ProductosService";
+import ProductosService from "../../services/client/ProductosService";
 
 export const productos = {
     namespaces: true,
     state: {},
     mutations: {
+        [Constant.GET_PRODUCTS]: (state, payload) => {
+            state.productsListClient = payload.productos
+        },
         [Constant.ADMIN_GET_PRODUCTS]: (state, payload) => {
             state.productsList = payload
         },
@@ -23,19 +27,22 @@ export const productos = {
         }
     },
     actions: {
+        [Constant.GET_PRODUCTS]: (store, payload) => {
+            ProductosService.getProducts().then((res) => store.commit(Constant.GET_PRODUCTS, res.data))
+        },
         [Constant.ADMIN_GET_PRODUCTS]: (store, payload) => {
-            ProductosService.getProducts().then((res) => store.commit(Constant.ADMIN_GET_PRODUCTS, res.data))
+            AdminProductosService.getProducts().then((res) => store.commit(Constant.ADMIN_GET_PRODUCTS, res.data))
         },
         [Constant.ADMIN_ADD_PRODUCT]: (store, payload) => {
-            ProductosService.addProduct(payload).then(res =>{
-                store.commit(Constant.ADMIN_ADD_PRODUCT,res.data)
+            AdminProductosService.addProduct(payload).then(res =>{
+                store.commit(Constant.ADMIN_ADD_PRODUCT, res.data)
             })
             .catch(error=>{
                 console.log(error)
             })
         },
         [Constant.ADMIN_DELETE_PRODUCT]: (store, payload) => {
-            ProductosService.deleteProduct(payload).then(res => {
+            AdminProductosService.deleteProduct(payload).then(res => {
                 store.commit(Constant.ADMIN_DELETE_PRODUCT, payload)
             })
             .catch(error => {
@@ -43,7 +50,7 @@ export const productos = {
             })
         },
         [Constant.ADMIN_UPDATE_PRODUCT]: (store, payload) => {
-            ProductosService.updateProduct(payload).then(res => {
+            AdminProductosService.updateProduct(payload).then(res => {
                 store.commit(Constant.ADMIN_UPDATE_PRODUCT, res.data)
             })
             .catch(error => {
