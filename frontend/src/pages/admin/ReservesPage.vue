@@ -6,6 +6,7 @@ import ListTableComponent from "../../components/ListTableComponent.vue"
 import { ReserveFormComponent } from "../../components/admin"
 import Constant from '../../Constant';
 import { useRoute } from 'vue-router';
+
 export default {
     setup() {
         const store = useStore()
@@ -16,6 +17,7 @@ export default {
         const reserves = reactive(computed(() => store.state.reservas.reserves))
         const clicked = ref(false);
         const headOptions = ['Cliente', 'Fecha', 'Servicio', 'Nº Comensales', 'Estado'];
+        
         return { reserves, clicked, headOptions, isInForm }
     },
     components: {
