@@ -102,6 +102,7 @@ const router = createRouter({
     {
       path: "/auth",
       name: "auth",
+      beforeEnter: authGuard.noAuth,
       component: () => import("../pages/client/AuthFormPage.vue")
     },
     {

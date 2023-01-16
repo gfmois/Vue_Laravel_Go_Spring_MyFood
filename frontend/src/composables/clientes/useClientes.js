@@ -36,8 +36,8 @@ export const useDeleteClientes = (id_cliente) => {
   AdminClientesService
     .deleteClient(id_cliente)
       .then(({ data }) => result.value = data)
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        console.log(error);
         result.value = false
       })
   

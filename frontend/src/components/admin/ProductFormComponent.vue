@@ -1,11 +1,13 @@
 <script>
 import { computed, reactive, ref } from '@vue/reactivity';
+import { watch } from 'vue';
 import { useStore } from "vuex"
 import { UploadFile } from "../"
 import { CustomInput, ItemsForm } from "../"
 import { useGetCategoriesInput } from "../../composables/categorias/useCategorias"
 import { useGetAllergensInput } from "../../composables/alergenos/useAlergenos"
 import { useGetProduct } from "../../composables/productos/useProductos"
+import ModalComponent from "../ModalComponent.vue";
 import Constant from "../../Constant"
 import { useRoute, useRouter } from "vue-router"
 import { useToast } from "vue-toast-notification"
@@ -15,9 +17,9 @@ export default {
         const router = useRouter()
         const store = useStore()
         const toast = useToast()
-        const product = reactive(route.params.id_producto
-            ? useGetProduct(route.params.slug).product
-            : { nombre: "", precio: 0, imagen: "", upload_image: "" })
+        const showModal = ref(false)
+        const product = ref({ nombre: "", precio: 0, imagen: "", upload_image: ""})
+            
         let category_input = reactive({
             name: "Categoria",
             children: [
@@ -46,7 +48,8 @@ export default {
         let urlImage = ref("")
 
         if (route.params.id_producto) {
-            setTimeout(() => {        
+            watch(useGetProduct(route.params.id_producto).product,(val) => {
+                product.value = val
                 name_input.value = product.value.nombre
                 price_input.value = product.value.precio
                 category_input.children[0].value = product.value.categorias[0].nombre
@@ -56,11 +59,12 @@ export default {
                     })
                 })
                 urlImage.value = product.value.imagen
-            },1000)
+            })
+            
         }
-        return { product, store, category_input, allergens_input, name_input, price_input, urlImage, route, categories, toast, router }
+        return { product, store, category_input, allergens_input, name_input, price_input, urlImage, route, categories, toast, router , showModal}
     },
-    components: { UploadFile, CustomInput, ItemsForm },
+    components: { UploadFile, CustomInput, ItemsForm, ModalComponent },
     methods: {
         submitProduct() {
             let allergensOut = []
@@ -83,7 +87,7 @@ export default {
                     position: "top-right"
                 })
                 this.router.replace('/admin/productos/')
-            }, 2000)
+            }, 1000)
         },
         updateProduct() {
             let allergensOut = []
@@ -116,7 +120,6 @@ export default {
                 })
                 this.router.replace('/admin/productos/')
             }, 1000)
-
         },
         changeImage(e) {
             this.product.upload_image = e
@@ -154,7 +157,7 @@ export default {
                 </div>
                   <v-icon name="md-modeeditoutline" scale="2" />
             </div>
-            <div class="add-icon" @click="deleteProduct()">
+            <div class="add-icon" @click="showModal = true">
                 <div class="card-info">
                     <h3>Borrar</h3>
                 </div>
@@ -165,7 +168,13 @@ export default {
             <h2>Alergenos</h2>
             <ItemsForm :items="allergens_input" />
         </div>
-
+        <ModalComponent
+            @close="deleteProduct()"
+            :show="showModal"
+            :route="'/admin/productos'"
+            :header="'¿Vas a elminar un producto?'"
+            :body="'Si le das ha cerrar será borrado completamente.'"
+        />
     </div>
 </template>
 <style scoped>
@@ -180,7 +189,9 @@ export default {
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     box-sizing: border-box;
+    overflow-y: scroll;
 }
+.add-product::-webkit-scrollbar { display: none; }
 
 .add-product div {
     width: 100%;
@@ -244,6 +255,7 @@ export default {
 .product-image {
     grid-area: 1 / 1 / 3 / 3;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .product-image img {

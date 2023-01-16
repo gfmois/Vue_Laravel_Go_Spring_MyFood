@@ -32,6 +32,7 @@ export const auth = {
                 })
             } else {
                 store.commit(Constant.CHECK_IS_ADMIN, false)
+                router.push("/auth")
             }
         },
         [Constant.CHECK_HAS_USER]: (store, payload) => {

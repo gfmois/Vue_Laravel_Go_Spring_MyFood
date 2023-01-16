@@ -1,8 +1,7 @@
 <script>
-import { watch } from 'vue';
 import { RouterView } from 'vue-router'
 import CustomModal from "../../components/CustomModal.vue"
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import { useGetCategories, useGetCategoryProperties } from '../../composables/categorias/useCategorias'
 import { useGetAllergens, useGetAllergensProperties } from '../../composables/alergenos/useAlergenos'
 
@@ -16,6 +15,13 @@ export default {
         const store = useStore();
         store.state.productos.productsList ? null : store.dispatch(Constant.ADMIN_GET_PRODUCTS)
 
+        const products = computed(() => store.state.productos.productsList)
+        const products_length = ref()
+        
+        watch(products, (val) => {
+            products_length.value = val.length
+        })
+        
         const showModalCategories = ref(false)
         const showModalAllergens = ref(false)
 
@@ -101,7 +107,7 @@ export default {
             }
         )
 
-        return { showModalCategories, showModalAllergens, categories, allergens, uItem, dItem }
+        return { showModalCategories, showModalAllergens, categories, allergens, uItem, dItem, products_length }
     }
 }
 </script>
@@ -110,7 +116,7 @@ export default {
         <div class="statistics">
             <div class="statistic-card" @click="$router.replace('/admin/productos/')">
                 <div class="card-info">
-                    <h1>20</h1>
+                    <h1>{{ products_length }}</h1>
                     <h3>Productos</h3>
                 </div>
                   <v-icon name="bi-box2-fill" scale="3" />

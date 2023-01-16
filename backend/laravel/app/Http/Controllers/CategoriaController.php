@@ -47,9 +47,15 @@ class CategoriaController extends Controller
         $modCategory->generateSlug($request->nombre);
         $result = $this->categoria::where('id_categoria',$id_categoria)->update($modCategory->toArray());
         if ($result) {
-            return "Categoria modificada";
+            return [
+                "msg" => "Categoria Modificada",
+                "status" => "success"
+            ];
         } else {
-            return "No se ha podido modificar la categoria";
+            return [
+                "msg" => "No se ha podido modificar la categoria",
+                "status" => "error"
+            ];
         }
     }
 

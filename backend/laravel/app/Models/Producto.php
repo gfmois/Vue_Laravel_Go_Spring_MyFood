@@ -19,7 +19,7 @@ class Producto extends Model
         'slug',
         'nombre',
         'precio',
-        'icono'
+        'imagen'
     ];
 
     public function categorias()
