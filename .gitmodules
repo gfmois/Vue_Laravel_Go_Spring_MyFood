@@ -1,3 +1,6 @@
 [submodule "backend/spring"]
 	path = backend/spring
 	url = https://github.com/JoaquimRS/SpringBoot_MyFood.git
+[submodule "backend/go"]
+	path = backend/go
+	url = https://github.com/gfmois/GoGin_MyFood.git
