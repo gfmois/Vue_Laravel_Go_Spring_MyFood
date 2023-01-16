@@ -95,7 +95,6 @@ export default {
                 () => inputs.value,
                 (v, pv) => {
                     Object.keys(item.value).forEach((l) => {
-                        // FIXME: Al añadir un nuevo elemento el id en los details no sale hasta que recargas
                         let input = inputs.value[inputs.value.findIndex(e => e.name == l)].value
                         item.value[l] = input
                     })
@@ -104,6 +103,7 @@ export default {
             )
         }
 
+        // Habilita el poder crear un nuevo item dejando todos sus campos en blanco menos el ID
         function enableNew() {
             inputs.value.map((e) => {
                 if (String(e.name).includes("id")) {
@@ -114,6 +114,7 @@ export default {
             })
         }
 
+        // Actualiza el item en la BD y hace un emit hacia el padre para que lo actualice también en el array
         function updateItem() {
             const result = reactive(eval(`useUpdate${whereName.value}`)(item.value).result)
 

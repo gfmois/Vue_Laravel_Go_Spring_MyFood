@@ -39,6 +39,26 @@ const router = createRouter({
       component: () => import("../pages/client/CartPage.vue")
     },
     {
+      path: "/perfil",
+      name: "perfil",
+      meta: { requiredAuth: true },
+      component: () => import("../pages/client/NavProfilePage.vue"),
+      children: [
+        {
+          path: "",
+          component: () => import("../pages/client/ProfilePage.vue"),
+        },
+        {
+          path: "pedidos",
+          component: () => import("../pages/client/ClientOrdersPage.vue")
+        },
+        {
+          path: "reservas",
+          component: () => import("../pages/client/ClientReservesPage.vue")
+        }
+      ]
+    },
+    {
       path: "/reserve/:id",
       name: "pdfReserve",
       component: () => import("../components/client/ReservePDF.vue"),

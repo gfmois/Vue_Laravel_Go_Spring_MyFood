@@ -35,6 +35,7 @@ export default {
             },
             {
                 icon: "fa-user",
+                name: "Clientes",
                 scale: "2",
                 isRoute: false
             }

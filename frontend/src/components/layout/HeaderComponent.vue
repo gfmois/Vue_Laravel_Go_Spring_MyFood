@@ -76,9 +76,9 @@ watch(isAdmin,() => {
                 <img :src="userInfo.avatar">
                 <div class="dropdown">
                     <div class="hover-dropdown"></div>
-                    <div class="dropdown-item" v-for="item in user_dropdown">
+                    <div class="dropdown-item" v-for="item in user_dropdown" @click="$router.push(item.src)">
                         <v-icon :name="item.icon" scale="1.3"/>
-                        <p @click="$router.push(item.src)">{{ item.name }}</p>
+                        <p>{{ item.name }}</p>
                     </div>
                 </div>
             </div>

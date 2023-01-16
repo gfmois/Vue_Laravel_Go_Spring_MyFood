@@ -33,5 +33,8 @@ export default {
   },
   updateReserveAdmin(reserva) {
     return Api(`${secret.ADMIN_SERVER}`).post('/reservas/update', reserva);
+  },
+  getClientReserves() {
+    return Api(`${secret.CLIENT_SERVER}`).get("/reservas")
   }
 };

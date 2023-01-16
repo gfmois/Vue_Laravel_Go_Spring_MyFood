@@ -1,5 +1,6 @@
 <script>
 import { computed, reactive, ref } from '@vue/reactivity';
+import { watch } from 'vue';
 import { useStore } from "vuex"
 import { UploadFile } from "../"
 import { CustomInput, ItemsForm } from "../"
@@ -15,9 +16,8 @@ export default {
         const router = useRouter()
         const store = useStore()
         const toast = useToast()
-        const product = reactive(route.params.id_producto
-            ? useGetProduct(route.params.slug).product
-            : { nombre: "", precio: 0, imagen: "", upload_image: "" })
+        const product = ref({ nombre: "", precio: 0, imagen: "", upload_image: ""})
+            
         let category_input = reactive({
             name: "Categoria",
             children: [
@@ -46,7 +46,8 @@ export default {
         let urlImage = ref("")
 
         if (route.params.id_producto) {
-            setTimeout(() => {        
+            watch(useGetProduct(route.params.id_producto).product,(val) => {
+                product.value = val
                 name_input.value = product.value.nombre
                 price_input.value = product.value.precio
                 category_input.children[0].value = product.value.categorias[0].nombre
@@ -56,7 +57,8 @@ export default {
                     })
                 })
                 urlImage.value = product.value.imagen
-            },1000)
+            })
+            
         }
         return { product, store, category_input, allergens_input, name_input, price_input, urlImage, route, categories, toast, router }
     },
@@ -83,7 +85,7 @@ export default {
                     position: "top-right"
                 })
                 this.router.replace('/admin/productos/')
-            }, 2000)
+            }, 1000)
         },
         updateProduct() {
             let allergensOut = []
@@ -180,7 +182,9 @@ export default {
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     box-sizing: border-box;
+    overflow-y: scroll;
 }
+.add-product::-webkit-scrollbar { display: none; }
 
 .add-product div {
     width: 100%;
@@ -244,6 +248,7 @@ export default {
 .product-image {
     grid-area: 1 / 1 / 3 / 3;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .product-image img {

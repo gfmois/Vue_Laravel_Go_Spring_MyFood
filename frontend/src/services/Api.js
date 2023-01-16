@@ -1,7 +1,5 @@
 import axios from "axios"
-import Constant from "../Constant"
 import { useCookies } from "vue3-cookies";
-import store from "../store";
 import { useRouter } from "vue-router";
 import secret from "../secret";
 const { cookies } = useCookies()
@@ -26,8 +24,7 @@ export default (URL) => {
         
         if (config.baseURL == secret.ADMIN_SERVER && token_user) {
             config.headers = {
-                "Authorization": `Bearer ${token_user}`,
-                "Content-Type": "multipart/form-data"
+                "Authorization": `Bearer ${token_user}`
             }
         }
         return config;
@@ -38,11 +35,9 @@ export default (URL) => {
         (e) => {
             if (e.response.status == "401") {
                 cookies.remove("token_user")
+                cookies.remove("token_client")
+                router.replace("/auth")
             }
-
-            // if (e.response.status == "500") {
-            //     cookies.remove("token_client")
-            // }
 
             return Promise.reject(e)
         }

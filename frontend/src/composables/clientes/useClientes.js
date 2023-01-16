@@ -31,6 +31,15 @@ export const useUpdateClientes = (client) => {
   return { result }
 }
 
+export const useUpdateProfile = (profile) => {
+  const result = ref([])
+  ClientService.updateProfile(profile)
+    .then(({ data }) => result.value = data)
+    .catch((e) =>  result.value = false)
+
+  return { result }
+}
+
 export const useDeleteClientes = (id_cliente) => {
   const result = ref([])
   AdminClientesService
@@ -53,6 +62,7 @@ export const useGetClientProperties = () => {
 
   return { properties }
 }
+
 export const useGetUserProfile = () => {
   const client = ref()
   ClientService.getProfile()
@@ -62,5 +72,4 @@ export const useGetUserProfile = () => {
   .catch(error => client.value = false)
 
   return { client }
-
 }

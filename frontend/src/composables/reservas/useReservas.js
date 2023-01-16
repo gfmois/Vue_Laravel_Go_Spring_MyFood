@@ -52,3 +52,12 @@ export const useGetReserves = () => {
 
   return { reserves };
 };
+
+export const useGetClientReserves = () => {
+  const reserves = ref([])
+  reservaService.getClientReserves()
+    .then(({ data }) => reserves.value = data)
+    .catch((e) => reserves.value = false)
+
+  return { reserves }
+}

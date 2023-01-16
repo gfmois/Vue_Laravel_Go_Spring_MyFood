@@ -6,6 +6,7 @@ import { useGetProducts } from '../../composables/productos/useProducts';
 import { useGetCategories } from '../../composables/categorias/useCategorias';
 import { useGetPedidos } from '../../composables/pedidos/usePedidos';
 import moment from 'moment';
+import LoadingComponent from '../../components/LoadingComponent.vue';
 
 export default {
     setup() {
@@ -18,6 +19,9 @@ export default {
         const reservesData = ref(Array.from(Array(num_years), () => Array.from(Array(num_months), () => [])))
         const categoriesData = reactive(useGetCategories().categories)
         const months = moment.monthsShort()
+        
+        // Loading
+        const hasData = reactive({ value: false })
 
         // Reserves
         const reserves = reactive(useGetReserves().reserves);
@@ -88,6 +92,7 @@ export default {
                         })
                     )
 
+                    hasData.value = true
                     refresh(comLine)
                 }
             })
@@ -118,6 +123,7 @@ export default {
                     }
 
                     datadough.value.datasets[0].data = temp
+                    hasData.value = true
                     refresh(comDough)
                 }
             )
@@ -175,6 +181,7 @@ export default {
                         )
                     })
 
+                    hasData.value = true
                     refresh(comBar)
                 }
             )
@@ -188,9 +195,9 @@ export default {
         dataProductsCategories()
         dataOrders()
 
-        return { reserves, reservesData, months, totalReserves, dataline, datadough, databar, comDough, comLine, comBar }
+        return { products, reserves, orders, reservesData, months, totalReserves, dataline, datadough, databar, comDough, comLine, comBar, hasData }
     },
-    components: { ChartComponent }
+    components: { ChartComponent, LoadingComponent }
 }
 </script>
 
@@ -198,17 +205,21 @@ export default {
     <div>
         <div class="wrapper">
             <div class="lf-card">
-                <ChartComponent :key="comLine" :data="dataline" :type="'line'" />
+                <ChartComponent v-if="reserves.length > 0" :key="comLine" :data="dataline" :type="'line'" />
+                <div class="noDataLine" v-if="reserves.length == 0">Sin Reservas Todavía</div>
             </div>
             <div class="rg-card">
-                <ChartComponent :key="comDough" :data="datadough" :type="'doug'" />
+                <ChartComponent v-if="products" :key="comDough" :data="datadough" :type="'doug'" />
+                <div class="noDataLine" v-if="!products">Sin Productos Todavía</div>
             </div>
             <div class="bt-card">
-                <ChartComponent :key="comBar" :data="databar" :type="'bar'" />
+                <ChartComponent v-if="orders.data.length > 0" :key="comBar" :data="databar" :type="'bar'" />
+                <div class="noDataLine" v-if="orders.data.length == 0">Sin Pedidos Todavía</div>
             </div>
 
         </div>
     </div>
+    <LoadingComponent :site="'Dashboard'" v-bind:hasData="hasData" />
 </template>
 <style scoped>
 .wrapper {

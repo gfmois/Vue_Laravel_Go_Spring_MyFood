@@ -1,5 +1,4 @@
 <script>
-import { watch } from 'vue';
 import { RouterView } from 'vue-router'
 import CustomModal from "../../components/CustomModal.vue"
 import { ref, reactive, watch } from 'vue'
@@ -8,13 +7,29 @@ import { useGetAllergens, useGetAllergensProperties } from '../../composables/al
 
 import { useStore } from 'vuex';
 import Constant from '../../Constant';
+
+import LoadingComponent from '../../components/LoadingComponent.vue'
+
 export default {
     components: {
-        CustomModal
+        CustomModal,
+        LoadingComponent
     },
     setup() {
         const store = useStore();
+        const hasData = reactive({ value: false })
         store.state.productos.productsList ? null : store.dispatch(Constant.ADMIN_GET_PRODUCTS)
+
+        if (store.state.productos.productsList) {
+            hasData.value = true
+        }
+
+        watch(
+            () => store.state.productos.productsList,
+            (v, pv) => {
+                hasData.value = true
+            }
+        )
 
         const showModalCategories = ref(false)
         const showModalAllergens = ref(false)
@@ -101,8 +116,8 @@ export default {
             }
         )
 
-        return { showModalCategories, showModalAllergens, categories, allergens, uItem, dItem }
-    }
+        return { showModalCategories, showModalAllergens, categories, allergens, uItem, dItem, hasData }
+    },
 }
 </script>
 <template>
@@ -136,6 +151,9 @@ export default {
                   <v-icon name="md-addcircle" scale="3" />
             </div>
         </div>
+        <!-- // FIXME: hasData changes but children not receives the new data. -->
+        <LoadingComponent :site="'Productos'" v-bind:hasData="hasData" />
+        <!-- {{ hasData }} -->
         <CustomModal v-if="showModalCategories" @updatedItem="uItem = $event" :key="showModalCategories"
             :properties="categories.properties" @deletedItem="dItem = $event" :where="'Categorias'"
             :data="categories.from_db" @close="showModalCategories = $event" :show="showModalCategories" />

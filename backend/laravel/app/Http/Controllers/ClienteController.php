@@ -26,7 +26,8 @@ class ClienteController extends Controller
 
     public function addClient(StoreClienteRequest $request) {
         $newClient = new Cliente($request->toArray());
-        $newClient->contraseña = Hash::make($newClient->contraseña);
+        $newClient["contraseña"] = Hash::make($request->contraseña);
+
         if ($this->cliente::create($newClient->toArray()) != null) {
             return new ClientResource($newClient);
         }

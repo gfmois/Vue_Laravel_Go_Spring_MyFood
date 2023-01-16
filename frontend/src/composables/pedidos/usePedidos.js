@@ -22,3 +22,12 @@ export const useAddOrders = (products) => {
     });
   return { response };
 };
+
+export const useGetClientOrders = () => {
+  const response = ref([]);
+  OrderService.getOrders()
+    .then(({ data }) => response.value = data)
+    .catch((e) => response.value = false)
+
+  return { response }
+}

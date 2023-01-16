@@ -21,7 +21,7 @@ export default {
         return Api(`${secret.ADMIN_SERVER}`).delete(`clients/${id_cliente}`)
     },
     updateCliente(cliente) {
-        return Api(`${secret.ADMIN_SERVER}`).put("clients", cliente);
+        return Api(`${secret.ADMIN_SERVER}`).post("clients/update", cliente);
     },
     getProperties() {
         return Api(`${secret.ADMIN_SERVER}`).get("clients/properties")

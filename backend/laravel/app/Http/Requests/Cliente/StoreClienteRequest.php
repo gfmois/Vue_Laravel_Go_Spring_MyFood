@@ -9,11 +9,11 @@ class StoreClienteRequest extends FormRequest {
 
     public function rules() {
         return [
+            "contraseña" => ["required"],
             "nombre" => ["required"],
             "id_cliente" => ["required"],
             "email" => ["required"],
             "telefono" => ["required"],
-            "contraseña" => ["required"],
             "avatar" => ["required"]
         ];
     }

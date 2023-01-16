@@ -68,6 +68,7 @@ export const useUpdateAlergenos = (allergen) => {
 }
 
 export const useDeleteAlergenos = (id_alergeno) => {
+    console.log(id_alergeno);
     let result = ref([])
     AlergenosService.deleteAllergen(id_alergeno)
         .then(({ data }) => result.value = data)
