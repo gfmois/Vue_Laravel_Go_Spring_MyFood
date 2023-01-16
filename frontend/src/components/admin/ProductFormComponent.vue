@@ -7,6 +7,7 @@ import { CustomInput, ItemsForm } from "../"
 import { useGetCategoriesInput } from "../../composables/categorias/useCategorias"
 import { useGetAllergensInput } from "../../composables/alergenos/useAlergenos"
 import { useGetProduct } from "../../composables/productos/useProductos"
+import ModalComponent from "../ModalComponent.vue";
 import Constant from "../../Constant"
 import { useRoute, useRouter } from "vue-router"
 import { useToast } from "vue-toast-notification"
@@ -16,6 +17,7 @@ export default {
         const router = useRouter()
         const store = useStore()
         const toast = useToast()
+        const showModal = ref(false)
         const product = ref({ nombre: "", precio: 0, imagen: "", upload_image: ""})
             
         let category_input = reactive({
@@ -60,9 +62,9 @@ export default {
             })
             
         }
-        return { product, store, category_input, allergens_input, name_input, price_input, urlImage, route, categories, toast, router }
+        return { product, store, category_input, allergens_input, name_input, price_input, urlImage, route, categories, toast, router , showModal}
     },
-    components: { UploadFile, CustomInput, ItemsForm },
+    components: { UploadFile, CustomInput, ItemsForm, ModalComponent },
     methods: {
         submitProduct() {
             let allergensOut = []
@@ -118,7 +120,6 @@ export default {
                 })
                 this.router.replace('/admin/productos/')
             }, 1000)
-
         },
         changeImage(e) {
             this.product.upload_image = e
@@ -156,7 +157,7 @@ export default {
                 </div>
                   <v-icon name="md-modeeditoutline" scale="2" />
             </div>
-            <div class="add-icon" @click="deleteProduct()">
+            <div class="add-icon" @click="showModal = true">
                 <div class="card-info">
                     <h3>Borrar</h3>
                 </div>
@@ -167,7 +168,13 @@ export default {
             <h2>Alergenos</h2>
             <ItemsForm :items="allergens_input" />
         </div>
-
+        <ModalComponent
+            @close="deleteProduct()"
+            :show="showModal"
+            :route="'/admin/productos'"
+            :header="'¿Vas a elminar un producto?'"
+            :body="'Si le das ha cerrar será borrado completamente.'"
+        />
     </div>
 </template>
 <style scoped>

@@ -75,7 +75,7 @@ Route::prefix('categorias')->group(function (){
     Route::middleware('jwt.verify')->group(function() {
         Route::post('/',[CategoriaController::class, 'addCategory']);
         Route::delete('/{id_categoria}',[CategoriaController::class, 'deleteCategory']);
-        Route::put('/{id_categoria}',[CategoriaController::class, 'updateCategory']);
+        Route::post('/{id_categoria}',[CategoriaController::class, 'updateCategory']);
     });
 });
 

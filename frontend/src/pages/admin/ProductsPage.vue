@@ -1,7 +1,7 @@
 <script>
 import { RouterView } from 'vue-router'
 import CustomModal from "../../components/CustomModal.vue"
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import { useGetCategories, useGetCategoryProperties } from '../../composables/categorias/useCategorias'
 import { useGetAllergens, useGetAllergensProperties } from '../../composables/alergenos/useAlergenos'
 
@@ -19,7 +19,7 @@ export default {
         const store = useStore();
         const hasData = reactive({ value: false })
         store.state.productos.productsList ? null : store.dispatch(Constant.ADMIN_GET_PRODUCTS)
-
+        const products_length = ref()
         if (store.state.productos.productsList) {
             hasData.value = true
         }
@@ -28,6 +28,7 @@ export default {
             () => store.state.productos.productsList,
             (v, pv) => {
                 hasData.value = true
+                products_length.value = v.length
             }
         )
 
@@ -116,8 +117,8 @@ export default {
             }
         )
 
-        return { showModalCategories, showModalAllergens, categories, allergens, uItem, dItem, hasData }
-    },
+        return { showModalCategories, showModalAllergens, categories, allergens, uItem, dItem, hasData, products_length }
+    }
 }
 </script>
 <template>
@@ -125,7 +126,7 @@ export default {
         <div class="statistics">
             <div class="statistic-card" @click="$router.replace('/admin/productos/')">
                 <div class="card-info">
-                    <h1>20</h1>
+                    <h1>{{ products_length }}</h1>
                     <h3>Productos</h3>
                 </div>
                   <v-icon name="bi-box2-fill" scale="3" />

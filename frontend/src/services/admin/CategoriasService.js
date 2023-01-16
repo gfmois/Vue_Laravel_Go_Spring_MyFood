@@ -12,7 +12,7 @@ export default {
         return Api(`${secret.ADMIN_SERVER}`).post("categorias", category)
     },
     updateCategory(category) {
-        return Api(`${secret.ADMIN_SERVER}`).put(`categorias/${category.id_categoria}`, category)
+        return Api(`${secret.ADMIN_SERVER}`).post("categorias/"+category.id_categoria, category)
     },
     deleteCategory(id_categoria) {
         return Api(`${secret.ADMIN_SERVER}`).delete(`categorias/${id_categoria}`)

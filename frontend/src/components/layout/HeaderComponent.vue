@@ -5,15 +5,19 @@ import { useStore } from 'vuex';
 import { useGetUserProfile } from '../../composables/clientes/useClientes';
 import { useSearchProducts } from '../../composables/productos/useProductos';
 import { SearchList } from '..';
+import { useCookies } from 'vue3-cookies';
+import Constant from '../../Constant';
 
 const store = useStore()
+const { cookies } = useCookies()
 const hasUser = computed(() => store.state.auth.hasUser)
 const isAdmin = computed(() => store.state.auth.isAdmin)
 const userInfo = ref({})
 const user_dropdown = ref([
     {name: "Mi perfil", src: "/perfil", icon: "fa-user"},
     {name: "Mis pedidos", src: "/perfil/pedidos", icon: "bi-basket2-fill"},
-    {name: "Mis reservas", src: "/perfil/reservas", icon: "md-daterange"}
+    {name: "Mis reservas", src: "/perfil/reservas", icon: "md-daterange"},
+    {name: "Logout", click: "logout", icon: "md-logout"}
 ])
 const search_products = ref()
 const input_value = ref()
@@ -53,6 +57,13 @@ watch(isAdmin,() => {
         user_dropdown.value.pop()
     }
 })
+
+const logout = () => {
+    cookies.remove("token_client")
+    cookies.remove("token_user")
+    store.dispatch(Constant.CHECK_HAS_USER)
+    store.dispatch(Constant.CHECK_IS_ADMIN)
+}
 </script>
 <template>
     <nav>
@@ -76,7 +87,7 @@ watch(isAdmin,() => {
                 <img :src="userInfo.avatar">
                 <div class="dropdown">
                     <div class="hover-dropdown"></div>
-                    <div class="dropdown-item" v-for="item in user_dropdown" @click="$router.push(item.src)">
+                    <div class="dropdown-item" v-for="item in user_dropdown" @click=" item.src ? $router.replace(item.src) : null, item.click == 'logout' ? logout() : null" >
                         <v-icon :name="item.icon" scale="1.3"/>
                         <p>{{ item.name }}</p>
                     </div>

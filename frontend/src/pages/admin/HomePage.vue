@@ -3,6 +3,8 @@ import { reactive, ref, watch } from 'vue'
 import { RouterView } from 'vue-router'
 import { useGetClientes, useGetClientProperties } from "../../composables/clientes/useClientes"
 import CustomModal from '../../components/CustomModal.vue'
+import { useStore } from 'vuex'
+import Constant from '../../Constant'
 
 export default {
     setup() {
@@ -10,6 +12,14 @@ export default {
         const showUsersModal = ref(false)
         const uItem = ref({})
         const dItem = ref({})
+        const store = useStore()
+        let check_token = setInterval(()=>{
+            if (store.state.auth.isAdmin) {
+                store.dispatch(Constant.CHECK_IS_ADMIN)
+            } else {
+                clearInterval(check_token)
+            }
+        }, 1000 * 10)
 
         let routes = [
             {
