@@ -323,8 +323,9 @@ The available endpoints are:
 * Image Server
 
 ## USAGE
-Este servidor esta destinado tanto al uso administrativo del poyecto ([MyFood]), como servidor de imagenes en el cliente.
-Este servidor se lanza directamente desde docker, si quieres lanzarlo ve a la raiz del proyecto y ejecuta el comando `docker-compose up`, este te levantara tres contenedores:
+This server is intended both for the administrative use of the project ([MyFood]) and as an image server for the client.
+
+This server is launched directly from docker, if you want to launch it go to the root of the project and run the command `docker-compose up`, this will raise three containers:
 * MySQL
 * PhpMyAdmin
 * Laravel
