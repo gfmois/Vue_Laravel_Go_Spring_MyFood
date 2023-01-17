@@ -1,66 +1,349 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[Laravel]: <https://laravel.com>
+[Eloquent]: <https://laravel.com/docs/9.x/eloquent>
+[MyFood]: <https://github.com/gfmois/Vue_Laravel_Go_Spring_MyFood.git>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ABOUT THIS PROJECT
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+>We have used Laravel as a server to perform all administrator tasks such as 
+  ·  Creating
+  ·  Modifying
+  ·  Deleting
+  ·  Managing 
+The entire application from an admin panel.
+You need to be an administrator to make requests.
+The application will authorize or not your actions based on the generated token.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## BUILT WITH
+* [Laravel] - Backend
+* [Eloquent] - ORM
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## API
+URL
+```
+http://localhost:8000/api/
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The available endpoints are:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+<td colspan=6> Client
+<table>
+  <tr>
+    <th>Function</th>
+    <th>Request</th>
+    <th>Route</th>
+    <th>Params</th>
+    <th>Body</th>
+    <th>Response</th>
+  </tr>
+  <tr>
+    <th colspan="6">Clients</th>
+  </tr>
+  <tr>
+    <td>getClients()</td>
+    <td>GET</td>
+    <td>/clients</td>
+    <td></td>
+    <td></td>
+    <td>[clients]</td>
+  </tr>
+  <tr>
+    <td>addClient()</td>
+    <td>POST</td>
+    <td>/clients</td>
+    <td></td>
+    <td>{infoClient}</td>
+    <td>{client}</td>
+  </tr>
+  <tr>
+    <td>updateClient()</td>
+    <td>POST</td>
+    <td>/clients/update</td>
+    <td></td>
+    <td>{infoClient}</td>
+    <td>{status,msg}</td>
+  </tr>
+  <tr>
+    <td>deleteClient()</td>
+    <td>DELETE</td>
+    <td>/clients/:id_client</td>
+    <td></td>
+    <td></td>
+    <td>{status,msg}</td>
+  </tr>
+  <tr>
+    <td>getClientProperties()</td>
+    <td>GET</td>
+    <td>/clients/properties</td>
+    <td></td>
+    <td></td>
+    <td>[column_name,data_type]</td>
+  </tr>
+  <tr>
+    <th colspan="6">Products</th>
+  </tr>
+  <tr>
+    <td>getProducts()</td>
+    <td>GET</td>
+    <td>/productos</td>
+    <td></td>
+    <td></td>
+    <td>[products]</td>
+  </tr>
+  <tr>
+    <td>addProduct()</td>
+    <td>POST</td>
+    <td>/productos</td>
+    <td></td>
+    <td>{infoProduct}</td>
+    <td>{product}</td>
+  </tr>
+  <tr>
+    <td>updateProduct()</td>
+    <td>POST</td>
+    <td>/productos/:id_product</td>
+    <td></td>
+    <td>{infoProduct}</td>
+    <td>{product}</td>
+  </tr>
+  <tr>
+    <td>deleteProduct()</td>
+    <td>DELETE</td>
+    <td>/productos/:id_product</td>
+    <td></td>
+    <td></td>
+    <td>{msg}</td>
+  </tr>
+  <tr>
+    <td>getProduct()</td>
+    <td>GET</td>
+    <td>/productos/:id_product</td>
+    <td></td>
+    <td></td>
+    <td>{product}</td>
+  </tr>
+  <tr>
+    <th colspan="6">Reserves</th>
+  </tr>
+  <tr>
+    <td>getReserves()</td>
+    <td>GET</td>
+    <td>/reservas</td>
+    <td></td>
+    <td></td>
+    <td>[reserves]</td>
+  </tr>
+  <tr>
+    <td>createReserva()</td>
+    <td>POST</td>
+    <td>/reservas</td>
+    <td></td>
+    <td>{infoReserva}</td>
+    <td>{reserva}</td>
+  </tr>
+  <tr>
+    <td>updateReserva()</td>
+    <td>POST</td>
+    <td>/reservas/update</td>
+    <td></td>
+    <td>{infoReserva}</td>
+    <td>{status,msg}</td>
+  </tr>
+  <tr>
+    <td>getReserva()</td>
+    <td>GET</td>
+    <td>/reservas/:id_reserve</td>
+    <td></td>
+    <td></td>
+    <td>{reserve}</td>
+  </tr>
+  <tr>
+  <tr>
+    <th colspan="6">Categories</th>
+  </tr>
+  <tr>
+    <td>getCategories()</td>
+    <td>GET</td>
+    <td>/categorias</td>
+    <td></td>
+    <td></td>
+    <td>[categories]</td>
+  </tr>
+  <tr>
+    <td>addCategory()</td>
+    <td>POST</td>
+    <td>/categorias</td>
+    <td></td>
+    <td>{infoCategory}</td>
+    <td>{category}</td>
+  </tr>
+  <tr>
+    <td>updateCategory()</td>
+    <td>POST</td>
+    <td>/categorias/:id_category</td>
+    <td></td>
+    <td>{infoCategory}</td>
+    <td>{status,msg}</td>
+  </tr>
+  <tr>
+    <td>deleteCategory()</td>
+    <td>DELETE</td>
+    <td>/categorias/:id_category</td>
+    <td></td>
+    <td></td>
+    <td>{status}</td>
+  </tr>
+  <tr>
+    <td>getCategoryProperties()</td>
+    <td>GET</td>
+    <td>/categorias/properties</td>
+    <td></td>
+    <td></td>
+    <td>[column_name,data_type]</td>
+  </tr>
+  <tr>
+    <th colspan="6">Allergens</th>
+  </tr>
+  <tr>
+    <td>getAllergens()</td>
+    <td>GET</td>
+    <td>/alergenos</td>
+    <td></td>
+    <td></td>
+    <td>[allergens]</td>
+  </tr>
+  <tr>
+    <td>addAllergen()</td>
+    <td>POST</td>
+    <td>/alergenos</td>
+    <td></td>
+    <td>{infoAllergen}</td>
+    <td>{allergen}</td>
+  </tr>
+  <tr>
+    <td>updateAllergen()</td>
+    <td>POST</td>
+    <td>/alergenos/:id_allergen</td>
+    <td></td>
+    <td>{infoAllergen}</td>
+    <td>{status,msg}</td>
+  </tr>
+  <tr>
+    <td>deleteAllergen()</td>
+    <td>DELETE</td>
+    <td>/alergenos/:id_allergen</td>
+    <td></td>
+    <td></td>
+    <td>{status}</td>
+  </tr>
+  <tr>
+    <td>getAllergenProperties()</td>
+    <td>GET</td>
+    <td>/alergenos/properties</td>
+    <td></td>
+    <td></td>
+    <td>[column_name,data_type]</td>
+  </tr>
+  <tr>
+    <th colspan="6">Orders</th>
+  </tr>
+  <tr>
+    <td>getOrders()</td>
+    <td>GET</td>
+    <td>/pedidos</td>
+    <td></td>
+    <td></td>
+    <td>[pedidos]</td>
+  </tr>
+  <tr>
+    <th colspan="6">Images</th>
+  </tr>
+  <tr>
+    <td>getImage()</td>
+    <td>GET</td>
+    <td>/public/:image</td>
+    <td></td>
+    <td></td>
+    <td>{image}</td>
+  </tr>
+  <tr>
+    <th colspan="6">Auth</th>
+  </tr>
+  <tr>
+    <td>login()</td>
+    <td>POST</td>
+    <td>/auth/login</td>
+    <td></td>
+    <td>{infoUser}</td>
+    <td>{user,token}</td>
+  </tr>
+  <tr>
+    <td>register()</td>
+    <td>POST</td>
+    <td>/auth/register</td>
+    <td></td>
+    <td>{infoUser}</td>
+    <td>{user,token}</td>
+  </tr>
+  <tr>
+    <td>isAdmin()</td>
+    <td>GET</td>
+    <td>/auth/isAdmin</td>
+    <td></td>
+    <td></td>
+    <td>{user,token}</td>
+  </tr>
+  <tr>
+    <td>refresh()</td>
+    <td>GET</td>
+    <td>/auth/refresh</td>
+    <td></td>
+    <td></td>
+    <td>{user,token}</td>
+  </tr>
+  <tr>
+    <td>me()</td>
+    <td>GET</td>
+    <td>/auth/profile</td>
+    <td></td>
+    <td></td>
+    <td>{meta,data}</td>
+  </tr>
+</table>
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## FEATURES
+* JWT Auth
+* Guards On Routes
+* Server Dockerized
+* File Upload
+* Image Server
 
-### Premium Partners
+## USAGE
+Este servidor esta destinado tanto al uso administrativo del poyecto ([MyFood]), como servidor de imagenes en el cliente.
+Este servidor se lanza directamente desde docker, si quieres lanzarlo ve a la raiz del proyecto y ejecuta el comando `docker-compose up`, este te levantara tres contenedores:
+* MySQL
+* PhpMyAdmin
+* Laravel
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
 
-## Contributing
+## AUTHORS
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<div class="authors" style="display: flex;
+        align-items: center;
+        margin: 10px;
+        flex-direction: row;
+        justify-content: center;
+        gap: 50px;">
+<div style="text-align:center;">
+  <a href="https://github.com/gfmois"><img style="margin-bottom: 10px;" src="https://avatars.githubusercontent.com/u/102977172?s=400&v=4" alt="Creator gfmois" width="150" height="150"></a>
+  <h3>gfmois</h3>
+</div>
+<div style="text-align: center;">
+  <a href="https://github.com/JoaquimRS"><img style="margin-bottom: 10px;" src="https://avatars.githubusercontent.com/u/94555035?v=4" alt="Creator JoaquimRS" width="150" height="150"></a>
+  <h3>JoaquimRS</h3>
+</div>
+</div>
